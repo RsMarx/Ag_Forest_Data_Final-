@@ -1,0 +1,250 @@
+---
+output: 
+  pdf_document:
+    keep_tex: yes
+    fig_caption: yes
+    number_sections: yes
+geometry: margin=2.54cm
+title: Experiment Title
+subtitle: Web address for GitHub repository
+author: Your Name
+abstract: "Experimental overview. This section should be no longer than 250 words."
+fontsize: 12pt
+mainfont: Times New Roman
+---
+
+<Information in these brackets are used for annotating the RMarkdown file. They will not appear in the final version of the PDF document>
+
+\newpage
+\tableofcontents 
+\newpage
+\listoftables 
+\newpage
+\listoffigures 
+\newpage
+
+<Setup the global options for the R chunks in your document>
+
+<Note: set up autoreferencing for figures and tables in your document>
+
+```{r setup, include=FALSE}
+# Set your working directory
+setwd("C:/Users/rsmar/OneDrive/Documents/Spring 2019/RFolder/Ag_Forest_Data_Final-")
+
+# Load your packages
+library(tidyverse)
+library(ggplot2)
+
+# Set your ggplot theme
+RMtheme <- theme_bw(base_size = 10) +
+  theme(plot.title = element_text(size = 16, color = "gray13", hjust = .5),
+    axis.text = element_text(color = "gray13"),
+    axis.title.x = element_text(size = 13),
+    axis.title.y = element_text(size = 13),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10),
+  legend.position = "bottom", legend.text = element_text(size = 12), legend.title = element_text(size = 13)) +
+  theme(panel.grid.major.x = element_blank(),
+  panel.grid.major.y = element_line( size=.1, color="gray99")) 
+theme_set(RMtheme)
+
+```
+
+
+# Research Question and Rationale
+
+<Paragraph detailing the rationale for your analysis. What is the significant application and/or interest in this topic? Connect to environmental topic(s)/challenge(s).>
+
+<Paragraph detailing your research question(s) and goals. What do you want to find out? Include a sentence (or a few) on the dataset you are using to answer this question - just enough to give your reader an idea of where you are going with the analysis.>
+
+\newpage
+
+# Dataset Information
+
+<Information on how the dataset for this analysis were collected, the data contained in the dataset, and any important pieces of information that are relevant to your analyses. This section should contain much of same information as the README file for the dataset but formatted in a way that is more narrative.>
+
+<Add a table that summarizes your data structure. This table can be made in markdown text or inserted as a `kable` function in an R chunk. If the latter, do not include the code used to generate your table.>
+
+\newpage
+
+# Exploratory Data Analysis and Wrangling
+
+```{r}
+World_Bank_Master <-read.csv("../Raw/WorldBank_Raw2_4.8.19.csv")
+
+#Data Subset
+World_Bank_Filter <- filter(World_Bank_Master, Indicator.Name == "Forest area (% of land area)" | Indicator.Name == "Agricultural land (% of land area)" | Indicator.Name == "Arable land (% of land area)" | Indicator.Name == "Access to electricity (% of population)" | Indicator.Name == "Renewable electricity output (% of total electricity output)" | Indicator.Name == "CO2 emissions (kt)" | Indicator.Name == "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Agricultural methane emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Aquaculture production (metric tons)")
+
+WorldBank_Gather <- gather(World_Bank_Filter, "Year", "Level", X1960:X2018)
+
+WorldBank_Gather <- select(WorldBank_Gather, -Indicator.Code)
+
+WorldBank_Spread <-  spread(WorldBank_Gather, Indicator.Name, Level)
+
+#Format as character 
+WorldBank_Spread$Year <- as.character(WorldBank_Spread$Year)
+
+#create string
+WB_String <- substr(WorldBank_Spread$Year, 2, 5)
+
+#Get rid of X in date
+WorldBank_Spread$Year = WB_String
+
+#Format as date
+#WB_Fixed$Year <- as.Date(WB_Fixed$Year)
+WorldBank_Spread$Year <- as.Date(WorldBank_Spread$Year, format = "%Y") #can I get it to show only the year? 
+
+class(WorldBank_Spread$Year)
+
+#Change column names 
+names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "Electricity Access", "Agriculture", "Ag.Methane", "Ag.NO2", "Aquaculture", "ArableLand", "CO2Emissions", "Forest", "RenewableElectricity")
+
+#Save processed file 
+#write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")
+   
+Four_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Spain" | Country == "Indonesia" | Country == "Canada")
+
+Five_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Kenya" | Country == "Spain" | Country == "Indonesia" | Country == "Canada")
+
+Six_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Kenya" | Country == "Spain" | Country == "Pakistan" | Country == "Indonesia" | Country == "Canada")
+
+```
+
+```{r}
+
+
+```
+
+<Include R chunks for 5+ lines of summary code (display code and output), 3+ exploratory graphs (display graphs only), and any wrangling you do to your dataset(s).> 
+
+```{r}
+colnames(WorldBank_Spread)
+dim(WorldBank_Spread)
+head(WorldBank_Spread)
+
+summary(WorldBank_Spread)
+summary(WorldBank_Spread$Agriculture)
+summary(WorldBank_Spread$Forest)
+summary(WorldBank_Spread$`Renewable Electricity`)
+```
+```{r}
+#Full Plot
+AgVForest <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Forest, y = Agriculture)) +
+  ggtitle("Agriculture vs. Forest") +
+  ylab(expression("% Agriculture")) +
+  xlab(expression("% Forest")) +
+  scale_y_continuous(limits = c(0,100)) +
+  scale_x_continuous(limits = c(0,100)) 
+print(AgVForest)
+
+```
+
+
+```{r}
+LegendTitle1 <-"Land Use"
+
+FourCountries.Facet <- 
+  ggplot(Four_Countries) +
+  geom_line(aes(x = Year, y = Agriculture, color = "Agriculture")) + 
+  geom_line(aes(x = Year, y = Forest, color = "Forest")) + 
+  facet_grid(rows = vars(Country)) +
+  ggtitle("Change in Land Use") +
+  ylab(expression("Land Area (%)")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "24 months", date_labels = "%Y") +
+  scale_y_continuous(limits = c(0,70)) +
+  scale_color_manual(LegendTitle1,values = c("gold3", "darkcyan")) +
+  labs(caption = "Data Source: World Bank")
+print(FourCountries.Facet)
+
+
+
+```
+```{r}
+FiveCountries.Facet <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = Agriculture, color = "Agriculture")) + 
+  geom_line(aes(x = Year, y = Forest, color = "Forest")) + 
+  facet_grid(rows = vars(Country)) +
+  ggtitle("Change in Land Use from 1990 to 2014") +
+  ylab(expression("Land Area (%)")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "24 months", date_labels = "%Y") +
+  scale_y_continuous(limits = c(0,70)) +
+  scale_color_manual(LegendTitle1,values = c("goldenrod3", "darkcyan")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+print(FiveCountries.Facet)
+
+#seashell3 turquoise palegreen3 darkseagreen3 darkcyan aquamarine3
+```
+```{r}
+SixCountries.Facet <- 
+  ggplot(Six_Countries) +
+  geom_line(aes(x = Year, y = Agriculture, color = "Agriculture")) + 
+  geom_line(aes(x = Year, y = Forest, color = "Forest")) + 
+  facet_grid(rows = vars(Country)) +
+  ggtitle("Change in Land Use") +
+  ylab(expression("Land Area (%)")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "24 months", date_labels = "%Y") +
+  scale_y_continuous(limits = c(0,65)) +
+  scale_color_manual(LegendTitle1,values = c("goldenrod3", "darkcyan")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "ivory2", "darkslategray"))
+print(SixCountries.Facet)
+```
+
+
+```{r}
+#Plot1
+RenewableElectricity <- 
+  ggplot(Four_Countries) +
+  geom_line(aes(x = Year, y = RenewableElectricity)) + 
+  facet_grid(rows = vars(Country)) +
+  ggtitle("Renewable Electricity Output") +
+  ylab(expression("% of Total Electricity Output")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "24 months", date_labels = "%Y") +
+  scale_y_continuous(limits = c(0,100)) +
+  labs(caption = "Data Source: World Bank")
+print(RenewableElectricity)
+
+RE <- 
+  ggplot(data = Four_Countries, aes(x = Year, y = RenewableElectricity, color = Country)) +
+  geom_line()+
+  ggtitle("Renewable Electricity Output") +
+  ylab(expression("% of Total Electricity Output")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "24 months", date_labels = "%Y") +
+  scale_y_continuous(limits = c(0,100)) +
+  labs(caption = "Data Source: World Bank")
+print(RE)
+
+```
+
+```{r}
+# Plots
+
+```
+
+<Include text sections to accompany these R chunks to explain the reasoning behind your workflow, and the rationale for your approach.>
+
+
+\newpage
+
+# Analysis
+<Include R chunks for 3+ statistical tests (display code and output) and 3+ final visualization graphs (display graphs only).>
+
+<Include text sections to accompany these R chunks to explain the reasoning behind your workflow, rationale for your approach, and the justification of meeting or failing to meet assumptions of tests.>
+
+
+\newpage
+
+# Summary and Conclusions
+<Summarize your major findings from your analyses. What conclusions do you draw from your findings? Make sure to apply this to a broader application for the research question you have answered.>
+
+
+
