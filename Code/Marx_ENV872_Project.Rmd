@@ -28,6 +28,7 @@ mainfont: Times New Roman
 <Note: set up autoreferencing for figures and tables in your document>
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 # Set your working directory
 setwd("C:/Users/rsmar/OneDrive/Documents/Spring 2019/RFolder/Ag_Forest_Data_Final-")
 
@@ -38,6 +39,10 @@ library(trend)
 library(lubridate)
 library(lsmeans)
 library(nlme)
+library(gridExtra)
+library(knitr)
+#install.packages("car")
+library(car)
 
 # Set your ggplot theme
 RMtheme <- theme_bw(base_size = 10) +
@@ -52,7 +57,19 @@ RMtheme <- theme_bw(base_size = 10) +
   panel.grid.major.y = element_line( size=.1, color="gray99")) 
 theme_set(RMtheme)
 
+#Set up global options for R chuck in document 
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE)
+
 ```
+
+
+```{r table, echo = FALSE}
+
+#="\\label{tab:table}Name of Table")
+
+```
+
+
 
 
 # Research Question and Rationale
@@ -69,15 +86,59 @@ This research looks at the trends and tradeoffs in land use across countries fro
 - Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
 - Is there a relationship between access to electricity or renewable electricity output and the percentage of land dedicated to forestry versus agriculture? 
 
-The research utilizes a data set from the World Bank that has 135 environment-related variables for 264 countries. I have narrowed the environment variable down to 9 that are relevant to land use. Although the full data set dates back to 1960, I have limited to the time scope of the analysis to between 1990 and 2014 because those are the dates for which forest cover data is available. 
+The research utilizes a data set from the World Bank that has 135 environment-related variables for 264 countries. I have narrowed the environment variable down to 7 that are relevant to land use. Although the full data set dates back to 1960, I have limited to the time scope of the analysis to between 1990 and 2014 because those are the dates for which forest cover data is available. 
 
 \newpage
 
 # Dataset Information
 
+## Database Information 
+Data were collected from the World Bank website. More information can be found here: https://data.worldbank.org/topic/environment
+Data were downloaded as a full data set called “API_6_DS2_en_csv_v2_10518155”. The csv file was saved as “WorldBank_Raw_4.8.19”. 
+Variables from among the raw data set were selected to be used in the data set analysed. Only 7 of a possible 135 environment-related variables were retained in the processed data. This csv file was saved as [“WorldBank_Processed”; “WorldBank_Spread” or “WB_Spread”]. 
+
+## Data Content Information 
+Country: Originally named “Country.Name”, the Country variable includes 264 countries. 
+
+Year: The Year variable was originally spread horizontally from 1960 – 2018. The years were gathered in to one column named “Year” and formatted as a date. 
+
+Forest: The Forest variable was originally named “Forest area (% of land area)”. Its data range is 1990 – 2016.  
+
+Agriculture: The Agriculture variable was originally named “Agriculture land (% of land area). Its data range is from 1961 – 2018. 
+
+Ag.Methane: The Ag.Methane variable was originally named “Agriculture methane emissions (thousand metric tons of CO2 equivalent). Its data range is 1970 – 2008. 
+
+Ag.NO2: The Ag.NO2 variable was originally named “Agriculture nitrous oxide emissions (thousand metric tons of CO2 equivalent). Its data range is 1970 – 2008.
+
+CO2Emissions: The CO2Emissions variable was originally named “CO2 emissions (kt). Its data range is 1960 – 2014. 
+
+ElectricityAccess: The ElectricityAccess variable was originally named “Access to electricity (% of total population). Data range is 1990 – 2016. 
+
+RenewableElectricity: The RenewableElectricity variable was originally named “Renewable electricity output (% of total electricity output). Its data range is 1990 – 2015. 
+
+## Naming conventions and file formats
+The files are named according to the following convention:
+`databasename_datatype_details_stage.format`, where:
+Files are named according to the following naming convention: 
+**databasename** refers to the database from where the data originated
+**details** are additional descriptive details related to the stage of data wrangling 
+**stage**refers to the stage in data management pipelines (e.g., raw or processed)
+**format** is a non-proprietary file format (e.g., .csv, .txt)
+
+
+## Additional Information and Support
+For more information, please contact the data assembler, **Rebecca Marx** (rebecca.marx@duke.edu)
+
+
 <Information on how the dataset for this analysis were collected, the data contained in the dataset, and any important pieces of information that are relevant to your analyses. This section should contain much of same information as the README file for the dataset but formatted in a way that is more narrative.>
 
 <Add a table that summarizes your data structure. This table can be made in markdown text or inserted as a `kable` function in an R chunk. If the latter, do not include the code used to generate your table.>
+
+Variable     | Units     | Data Strcuture | 
+------------ | --------- | -------------- |
+ Cell 1      |  Cell 2   | Cells          |
+ Cell 3      |  Cell 4   | Cells          |
+
 
 \newpage
 
@@ -85,11 +146,13 @@ The research utilizes a data set from the World Bank that has 135 environment-re
 
 Wrangling the data required multiple operations. First, I used the filter function to select only 9 of a possible 135 variables in the data set. Since the data set was arranged with the years going horizontally, I then had to gather the years in to one column, and create a new column called “Level” that contained the values recorded for each variable in each year. 
 
+
+
 ```{r}
 World_Bank_Master <-read.csv("../Raw/WorldBank_Raw2_4.8.19.csv")
 
 #Data Subset
-World_Bank_Filter <- filter(World_Bank_Master, Indicator.Name == "Forest area (% of land area)" | Indicator.Name == "Agricultural land (% of land area)" | Indicator.Name == "Arable land (% of land area)" | Indicator.Name == "Access to electricity (% of population)" | Indicator.Name == "Renewable electricity output (% of total electricity output)" | Indicator.Name == "CO2 emissions (kt)" | Indicator.Name == "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Agricultural methane emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Aquaculture production (metric tons)")
+World_Bank_Filter <- filter(World_Bank_Master, Indicator.Name == "Forest area (% of land area)" | Indicator.Name == "Agricultural land (% of land area)" | Indicator.Name == "Access to electricity (% of population)" | Indicator.Name == "Renewable electricity output (% of total electricity output)" | Indicator.Name == "CO2 emissions (kt)" | Indicator.Name == "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Agricultural methane emissions (thousand metric tons of CO2 equivalent)")
 
 WorldBank_Gather <- gather(World_Bank_Filter, "Year", "Level", X1960:X2018)
 
@@ -110,18 +173,16 @@ WorldBank_Spread$Year = WB_String
 #WB_Fixed$Year <- as.Date(WB_Fixed$Year)
 WorldBank_Spread$Year <- as.Date(WorldBank_Spread$Year, format = "%Y") #can I get it to show only the year? 
 
-class(WorldBank_Spread$Year)
-
 #Change column names 
-names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.NO2", "Aquaculture", "ArableLand", "CO2Emissions", "Forest", "RenewableElectricity")
+names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.NO2", "CO2Emissions", "Forest", "RenewableElectricity")
 
 #Save processed file 
 #write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")
    
 Five_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Kenya" | Country == "Spain" | Country == "Indonesia" | Country == "Canada")
 
-WB_Spread <- WorldBank_Spread %>%
-  na.exclude
+WB_Spread <- WorldBank_Spread %>% 
+  na.exclude #check if I need this for my tests
 
 WB_Brazil <- filter(WB_Spread, Country == "Brazil")
 
@@ -139,6 +200,7 @@ After the data was wrangled into a format that would function well with my inten
 #5+ lines of summary 
 
 colnames(WorldBank_Spread)
+class(WorldBank_Spread$Year)
 dim(WorldBank_Spread)
 head(WorldBank_Spread)
 summary(WorldBank_Spread)
@@ -149,72 +211,56 @@ summary(WB_Spread$Ag.Methane)
 
 ```
 
-```{r echo=FALSE}
+Figure\ref{fig:fig1} plots agriculture and forest land covers to see if there is a noticable trend. It appears that there is a tendency for forest cover to decrease as agriculture cover increases. 
+
+```{r fig1, echo=FALSE, fig.cap="\\label{fig:fig1}Percentage of Land Use for Forest and Agriculture", fig.widtch=5, fig.height=6, fig.pos='H', warning= FALSE}
+suppressWarnings(expr)
+
 #Exploratory graph 1: Agriculture vs. Forest 
 AgVForest <- 
   ggplot(WorldBank_Spread) + 
   geom_point(aes(x = Agriculture, y = Forest)) +
-  ggtitle("Agriculture vs. Forest") +
-  ylab(expression("% Forest")) +
-  xlab(expression("% Agriculture")) +
+  ggtitle("Percentage of Land Use for Forest and Agriculture") +
+  ylab(expression("% Land Cover in Forest")) +
+  xlab(expression("% Land Cover in Agriculture")) +
   scale_y_continuous(limits = c(0,100)) +
   scale_x_continuous(limits = c(0,100)) 
 print(AgVForest)
 ```
 
-```{r echo=FALSE}
+
+A second exploratory graph (Figure\ref{fig:fig2}) plots forest levels for all 264 countries over time. The resulting graph shows that there is some movement over time, but many countries see constant levels of land use. Similarly, the plot of agriculture over time shows some movement over time, but many countries see constant levels of land use for agriculture. In later graphs I decided to reduce the number of countries included to be able to better visualized changes. 
+
+```{r echo=FALSE, fig.cap="\\label{fig:fig2}Percentage of Land Use for Forest and Agriculture", fig.widtch=10, fig.height=10, fig.pos='H', warning= FALSE}
+suppressWarnings(expr)
+
 #Exploratory graph 2: Forest over time 
 ForestTime <- 
   ggplot(WB_Spread) +
   geom_line(aes(x = Year, y = Forest, color = Country)) +
   scale_y_continuous(limits = c(0,100)) +
+  ggtitle("Change in % Forest Cover Over Time") +
+  ylab(expression("% Land Cover in Forest")) +
+  xlab(expression("Year")) +
   theme(legend.position = "none")
-print(ForestTime)
+#print(ForestTime)
+
+AgricultureTime <- 
+   ggplot(WB_Spread) +
+  geom_line(aes(x = Year, y = Agriculture, color = Country)) +
+  scale_y_continuous(limits = c(0,100)) +
+    ggtitle("Change in % Agriculture Cover Over Time") +
+  ylab(expression("% Land Cover in Agriculture")) +
+  xlab(expression("Year")) +
+  theme(legend.position = "none")
+#print(AgricultureTime)
+
+grid.arrange(ForestTime, AgricultureTime)
 
 ```
 
-```{r echo=FALSE}
-#Exploratory graph 3: Methane emissions over time 
-AgVMethane <- 
-  ggplot(WorldBank_Spread) + 
-  geom_point(aes(x = Agriculture, y = Ag.Methane)) +
-  ggtitle("Agriculture vs. Methane") +
-  ylab(expression("Methane (thousand metric tons)")) +
-  xlab(expression("% Land in Agriculture")) +
-  scale_x_continuous(limits = c(0,100)) 
-print(AgVMethane)
+```{r echo=FALSE, fig.cap="\\label{fig:fig3}Change in Land Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=10, fig.pos='H', warning= FALSE}
 
-ForestVMethane <- 
-  ggplot(WorldBank_Spread) + 
-  geom_point(aes(x = Forest, y = Ag.Methane)) +
-  ggtitle("Forest vs. Methane") +
-  ylab(expression("Methane (thousand metric tons)")) +
-  xlab(expression("% Land in Forest")) +
-  scale_x_continuous(limits = c(0,100)) 
-print(ForestVMethane)
-
-
-AgVCarbon <- 
-  ggplot(WorldBank_Spread) + 
-  geom_point(aes(x = Agriculture, y = CO2Emissions)) +
-  ggtitle("Agriculture vs. Carbon") +
-  ylab(expression("Carbon")) +
-  xlab(expression("% Land in Agriculture")) +
-  scale_x_continuous(limits = c(0,100)) +
-  scale_color_manual(values = c("brown", "goldenrod")) 
-print(AgVCarbon)
-
-ForestVCarbon <- 
-  ggplot(WorldBank_Spread) + 
-  geom_point(aes(x = Forest, y = CO2Emissions)) +
-  ggtitle("Forest vs. Carbon") +
-  ylab(expression("Carbon")) +
-  xlab(expression("% Land in Forest")) +
-  scale_x_continuous(limits = c(0,100)) 
-print(ForestVCarbon)
-```
-
-```{r echo=FALSE}
 LegendTitle1 <-"Land Use"
 
 FiveCountries.Facet <- 
@@ -233,25 +279,116 @@ FiveCountries.Facet <-
   theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
 print(FiveCountries.Facet)
 ```
-```{r echo=FALSE}
-FiveCountries.Methane <- 
+
+
+Since the research attempts to decipher whether a change in forest levels is related to a change in agriculture levels, I also wanted to see if a change in the amount of land dedicated to agriculture leads to a change in various emissions levels. The following graphs explore these relationships using the 5 selected countries. 
+
+```{r echo=FALSE, fig.cap="\\label{fig:fig4}Change in Emissions Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=10, fig.pos='H', warning= FALSE}
+
+LegendTitle2 <- "Emmissions Type"
+
+FiveCountries.Meth.NO2 <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = Ag.Methane, color = "Methane Levels")) + 
   geom_line(aes(x = Year, y = Ag.NO2, color = "NO2 Levels")) +
   facet_grid(cols = vars(Country)) +
-  ggtitle("Change in Methane Emissions from 1990 to 2014") +
-  ylab(expression("Methane Emissions (thousand metric tons)")) +
+  ggtitle("Change in Methane and NO2 Emissions from 1990 to 2014") +
+  ylab(expression("Emissions (thousand metric tons)")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
   date_breaks = "48 months", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
-  scale_color_manual(values = c("brown", "gray")) +
+  scale_color_manual(LegendTitle2,values = c("brown", "gray")) +
   labs(caption = "Data Source: World Bank") +
   theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
-print(FiveCountries.Methane)
-```
+#print(FiveCountries.Meth.NO2)
+
+FiveCountries.Carbon <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = CO2Emissions, color = "CO2 Levels")) + 
+  facet_grid(cols = vars(Country)) +
+  ggtitle("Change in CO2 Emissions from 1990 to 2014") +
+  ylab(expression("CO2 Emissions (thousand metric tons)")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  scale_color_manual(values = c("Orange")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+#print(FiveCountries.Carbon)
+
+grid.arrange(FiveCountries.Meth.NO2, FiveCountries.Carbon)
 
 ```
 
+
+
+```{r echo=FALSE, fig.cap="\\label{fig:fig4}Emissions versus Agriculture", fig.widtch=10, fig.height=10, fig.pos='H', warning= FALSE}
+suppressWarnings(expr)
+
+#Exploratory graph 3: Methane emissions over time 
+
+AgVMethane <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Agriculture, y = Ag.Methane)) +
+  ggtitle("Agriculture vs. Methane") +
+  ylab(expression("Methane (thousand metric tons)")) +
+  xlab(expression("% Land in Agriculture")) +
+  scale_x_continuous(limits = c(0,100)) 
+#print(AgVMethane)
+
+AgVCarbon <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Agriculture, y = CO2Emissions)) +
+  ggtitle("Agriculture vs. Carbon") +
+  ylab(expression("Carbon")) +
+  xlab(expression("% Land in Agriculture")) +
+  scale_x_continuous(limits = c(0,100)) +
+  scale_color_manual(values = c("brown", "goldenrod")) 
+#print(AgVCarbon)
+
+grid.arrange(AgVMethane, AgVCarbon) 
+##ggarrange ggpubr package 
+```
+
+```
+Deforestation is also associated with the release of Carbon, so I checked to see whether a relationship between forst and carbon emissions could be seen. 
+
+```{r}
+
+ForestVCarbon <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Forest, y = CO2Emissions)) +
+  ggtitle("Forest vs. Carbon") +
+  ylab(expression("Carbon")) +
+  xlab(expression("% Land in Forest")) +
+  scale_x_continuous(limits = c(0,100)) 
+print(ForestVCarbon)
+
+grid.arrange(ForestVCarbon, AgVCarbon) 
+```
+
+
+```{r echo=FALSE}
+
+
+```
+
+```
+```{r}
+FiveCountries.RE <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = RenewableElectricity, color = "Renewable Energy Output")) + 
+  geom_line(aes(x = Year, y = ElectricityAccess, color = "Population with Electricty Access")) +
+  facet_grid(cols = vars(Country)) +
+  ggtitle("Change in Methane Emissions from 1990 to 2014") +
+  ylab(expression("Percentage of Total")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  scale_color_manual(values = c("purple", "blue")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+print(FiveCountries.RE)
 ```
 
 
@@ -300,39 +437,39 @@ print(FiveCountries.RE)
 
 ```{r echo=TRUE}
 #Statistical Test 1: How has forest changed over time 
-Forest.Fixed <- gls(data = WB_Spread, 
+Forest.Time1 <- gls(data = WB_Spread, 
                     Forest ~ Year,
                     method = "REML")
-summary(Forest.Fixed)
-#Did not do "* Country)". Result shows on average Forest decreases by -.00485 each year. 
+summary(Forest.Time1)
+
+Forest.Time2 <- lme(data = WB_Spread,
+                Forest ~ Year,
+                random = ~1| Country)
+summary(Forest.Time2)
+
 ```
 
-A fixed effects model was used to see how land percetnage of forest area accross the whoel data set changes over time. The results show that, on average, forest decreases by -.00485% each year. 
+A fixed effects model was used to see how land percetnage of forest area accross the whoel data set changes over time. The results show that, on average, forest decreases by -.00485% each year. Was not worride about seasonality of the data because there is only one data point per year. As such, I did not calculate autocorrelations. I did add country as a random effect. 
 
 ```{r echo=TRUE}
-
-Test1 <-  lme(data = WB_Spread,
-              Forest ~ Year,
-              random = ~1| Country)
-Test1
-#On average forest decreases by -.0047% a year?
-
-Forest.Fixed_Ag. <- gls(data = WB_Spread, 
+For.Ag.1 <- gls(data = WB_Spread, 
                     Forest ~ Year + Agriculture,
                     method = "REML")
-Forest.Fixed_Ag. #-.5067
+summary(For.Ag.1)
 
-#Random effect??
-Test2 <-  lme(data = WB_Spread,
-              Forest ~ Year + Agriculture, 
+For.Ag.2 <-  lme(data = WB_Spread,
+              Forest ~ Year + Agriculture,
               random = ~1| Country)
-Test2 # -.557
+summary(For.Ag.2)
 
-anova(Forest.Fixed, Test2) # Said: fitted objects with different fixed effects. REML comparisons are not meaningful.
+#anova(Forest.Fixed, Test2) # Said: fitted objects with different fixed effects. REML comparisons are not meaningful.
 
 ```
 
-I am interested in whether access to electricity or the levels of renewable energy produced in countries have a relationship with deforestation. This is becasue a lack of electricity could drive the use of forest biomass products as an energy source. Electricity access appears to have a negative impact on forest (-.333) which may be because electricity is needed for some agricultural operations, or electricity is being produced via biofuels, the production of which might require more forest to be converted to agricultural land. 
+Results of first set of tests: 
+
+
+I am interested in whether access to electricity or the levels of renewable energy produced in countries have a relationship with deforestation. This is becasue a lack of electricity could drive the use of forest biomass products as an energy source. Electricity access appears to have a negative impact on forest (-.333) which may be because electricity is needed for some agricultural operations, or electricity is being produced via biofuels, the production of which might require more forest to be converted to agricultural land. ( \ref{fig:fig3})
 
 With that theory in mind, I was interested in whether there might be a relationship between forested land and renewable energy because energy produced from biomass is considered to be renewable. However, the result of my gls revealed that a 1 unit increase in renewable energy is associated with a .18% increase in forest land, meaning the production of biofule is likely not a main driver of deforestation. 
 
@@ -369,7 +506,7 @@ Reg1
 As a second statistical test I used Pettit’s test, a nonparametric test that determines if there is a shift in the central tendency of the time series. It also determines at what point in time the changepoint occurs. I used this to see if there was a point in time in particular where these seemed to be a noticeable change in forest cover. I applied the test to Brazil which graphically appears to have change points to see if 1) there was a change poing for agriculture and forest and 2) to see if the change points occured in the same year for each. 
 
 
-```{r}
+```{r echo=TRUE}
 #Statistical Test 2: Pettitts Test: Looking at Change Points in the Data
 
 #Statistical Test 2: Any change points for full forest data?
@@ -377,15 +514,31 @@ pettitt.test(WB_Spread$Forest)
 #Probable change point at time 1428 which doesn't exist.
 
 
-#Changes in Brazil 
+#Changes in Brazil Forest
 pettitt.test(WB_Brazil$Forest)
-#9 (of 19): 1998
+#9 (of 19): 1998; p-value .048 (significant at the .05 level)
+
+pettitt.test(WB_Brazil$Forest[9:19])
+
+#Changes in Brazil Agriculture 
+#5 (9+5 = 14: 2003); p-value .0023852 (significant at the .01 level)
+
+pettitt.test(WB_Brazil$Forest[14:19])
+#3 14 + 3 = 17: 2006 (p-value .29: not significant)
 
 pettitt.test(WB_Brazil$Agriculture)
-#9 (of 19): 1998 
+#9 (of 19): 1998; p-value .002386 (significant at the .01 level)
+
+pettitt.test(WB_Brazil$Agriculture[9:19])
+#5 (9+5 = 14: 2003); p-value .04852 (significant at the .05 level
+
+pettitt.test(WB_Brazil$Agriculture[14:19])
+#2 (14 +2 = 16) p-value .8487 (not significant)
+
+
 ```
 
-Pettitt's applied to a single country (Brazil) initially detects a change point in Forest and Agriculture in the same year. The change for both was in place 9, which is the year 1998. 
+Pettitt's applied to a single country (Brazil) initially detects a change point in Forest and Agriculture in the same year. The change for both was in place 9, which is the year 1998. The significant change points for agriculture and forest in Brazil occured in the same years (1998 and 2003), furhter supporting the notion that there is a relationship between the two. 
 
 [Make a graph of Brazil that shows the change points]
 
@@ -404,9 +557,9 @@ AgMethane
 ForestMethane <- gls(data = WB_Spread, 
                   Ag.Methane ~ Year + Forest,
                   method = "REML")
-ForestMethane
+summary(ForestMethane)
 
-#Statistica Test 3.3: Interaction of Forest and Agriculture on Methane Emissions
+#Statistical Test 3.3: Interaction of Forest and Agriculture on Methane Emissions #These are probably correleated. Run a VIF Test. 
 Int.Methane <-  gls(data = WB_Spread,
                     Ag.Methane ~ Year + Forest * Agriculture,
                     method = "REML")

@@ -70,6 +70,7 @@
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\NormalTok}[1]{#1}
+\usepackage{longtable,booktabs}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -174,7 +175,7 @@ countries from 1990 -- 2014. Primary questions include:
 
 The research utilizes a data set from the World Bank that has 135
 environment-related variables for 264 countries. I have narrowed the
-environment variable down to 9 that are relevant to land use. Although
+environment variable down to 7 that are relevant to land use. Although
 the full data set dates back to 1960, I have limited to the time scope
 of the analysis to between 1990 and 2014 because those are the dates for
 which forest cover data is available.
@@ -183,17 +184,99 @@ which forest cover data is available.
 
 \section{Dataset Information}\label{dataset-information}
 
+\subsection{Database Information}\label{database-information}
+
+Data were collected from the World Bank website. More information can be
+found here: \url{https://data.worldbank.org/topic/environment} Data were
+downloaded as a full data set called
+``API\_6\_DS2\_en\_csv\_v2\_10518155''. The csv file was saved as
+``WorldBank\_Raw\_4.8.19''. Variables from among the raw data set were
+selected to be used in the data set analysed. Only 7 of a possible 135
+environment-related variables were retained in the processed data. This
+csv file was saved as {[}``WorldBank\_Processed''; ``WorldBank\_Spread''
+or ``WB\_Spread''{]}.
+
+\subsection{Data Content Information}\label{data-content-information}
+
+Country: Originally named ``Country.Name'', the Country variable
+includes 264 countries.
+
+Year: The Year variable was originally spread horizontally from 1960 --
+2018. The years were gathered in to one column named ``Year'' and
+formatted as a date.
+
+Forest: The Forest variable was originally named ``Forest area (\% of
+land area)''. Its data range is 1990 -- 2016.
+
+Agriculture: The Agriculture variable was originally named ``Agriculture
+land (\% of land area). Its data range is from 1961 -- 2018.
+
+Ag.Methane: The Ag.Methane variable was originally named ``Agriculture
+methane emissions (thousand metric tons of CO2 equivalent). Its data
+range is 1970 -- 2008.
+
+Ag.NO2: The Ag.NO2 variable was originally named ``Agriculture nitrous
+oxide emissions (thousand metric tons of CO2 equivalent). Its data range
+is 1970 -- 2008.
+
+CO2Emissions: The CO2Emissions variable was originally named ``CO2
+emissions (kt). Its data range is 1960 -- 2014.
+
+ElectricityAccess: The ElectricityAccess variable was originally named
+``Access to electricity (\% of total population). Data range is 1990 --
+2016.
+
+RenewableElectricity: The RenewableElectricity variable was originally
+named ``Renewable electricity output (\% of total electricity output).
+Its data range is 1990 -- 2015.
+
+\subsection{Naming conventions and file
+formats}\label{naming-conventions-and-file-formats}
+
+The files are named according to the following convention:
+\texttt{databasename\_datatype\_details\_stage.format}, where: Files are
+named according to the following naming convention:
+\textbf{databasename} refers to the database from where the data
+originated \textbf{details} are additional descriptive details related
+to the stage of data wrangling \textbf{stage}refers to the stage in data
+management pipelines (e.g., raw or processed) \textbf{format} is a
+non-proprietary file format (e.g., .csv, .txt)
+
+\subsection{Additional Information and
+Support}\label{additional-information-and-support}
+
+For more information, please contact the data assembler, \textbf{Rebecca
+Marx}
+(\href{mailto:rebecca.marx@duke.edu}{\nolinkurl{rebecca.marx@duke.edu}})
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Variable & Units & Data Strcuture\tabularnewline
+\midrule
+\endhead
+Cell 1 & Cell 2 & Cells\tabularnewline
+Cell 3 & Cell 4 & Cells\tabularnewline
+\bottomrule
+\end{longtable}
+
 \newpage
 
 \section{Exploratory Data Analysis and
 Wrangling}\label{exploratory-data-analysis-and-wrangling}
+
+Wrangling the data required multiple operations. First, I used the
+filter function to select only 9 of a possible 135 variables in the data
+set. Since the data set was arranged with the years going horizontally,
+I then had to gather the years in to one column, and create a new column
+called ``Level'' that contained the values recorded for each variable in
+each year.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{World_Bank_Master <-}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"../Raw/WorldBank_Raw2_4.8.19.csv"}\NormalTok{)}
 
 \CommentTok{#Data Subset}
-\NormalTok{World_Bank_Filter <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(World_Bank_Master, Indicator.Name }\OperatorTok{==}\StringTok{ "Forest area (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural land (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Arable land (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Access to electricity (% of population)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Renewable electricity output (% of total electricity output)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "CO2 emissions (kt)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural methane emissions (thousand metric tons of CO2 equivalent)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Aquaculture production (metric tons)"}\NormalTok{)}
+\NormalTok{World_Bank_Filter <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(World_Bank_Master, Indicator.Name }\OperatorTok{==}\StringTok{ "Forest area (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural land (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Access to electricity (% of population)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Renewable electricity output (% of total electricity output)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "CO2 emissions (kt)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural methane emissions (thousand metric tons of CO2 equivalent)"}\NormalTok{)}
 
 \NormalTok{WorldBank_Gather <-}\StringTok{ }\KeywordTok{gather}\NormalTok{(World_Bank_Filter, }\StringTok{"Year"}\NormalTok{, }\StringTok{"Level"}\NormalTok{, X1960}\OperatorTok{:}\NormalTok{X2018)}
 
@@ -214,26 +297,16 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 \CommentTok{#WB_Fixed$Year <- as.Date(WB_Fixed$Year)}
 \NormalTok{WorldBank_Spread}\OperatorTok{$}\NormalTok{Year <-}\StringTok{ }\KeywordTok{as.Date}\NormalTok{(WorldBank_Spread}\OperatorTok{$}\NormalTok{Year, }\DataTypeTok{format =} \StringTok{"%Y"}\NormalTok{) }\CommentTok{#can I get it to show only the year? }
 
-\KeywordTok{class}\NormalTok{(WorldBank_Spread}\OperatorTok{$}\NormalTok{Year)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "Date"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#Change column names }
-\KeywordTok{names}\NormalTok{(WorldBank_Spread) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Country"}\NormalTok{, }\StringTok{"Indicator.Code"}\NormalTok{, }\StringTok{"Year"}\NormalTok{, }\StringTok{"ElectricityAccess"}\NormalTok{, }\StringTok{"Agriculture"}\NormalTok{, }\StringTok{"Ag.Methane"}\NormalTok{, }\StringTok{"Ag.NO2"}\NormalTok{, }\StringTok{"Aquaculture"}\NormalTok{, }\StringTok{"ArableLand"}\NormalTok{, }\StringTok{"CO2Emissions"}\NormalTok{, }\StringTok{"Forest"}\NormalTok{, }\StringTok{"RenewableElectricity"}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(WorldBank_Spread) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Country"}\NormalTok{, }\StringTok{"Indicator.Code"}\NormalTok{, }\StringTok{"Year"}\NormalTok{, }\StringTok{"ElectricityAccess"}\NormalTok{, }\StringTok{"Agriculture"}\NormalTok{, }\StringTok{"Ag.Methane"}\NormalTok{, }\StringTok{"Ag.NO2"}\NormalTok{, }\StringTok{"CO2Emissions"}\NormalTok{, }\StringTok{"Forest"}\NormalTok{, }\StringTok{"RenewableElectricity"}\NormalTok{)}
 
 \CommentTok{#Save processed file }
 \CommentTok{#write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")}
    
 \NormalTok{Five_Countries <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(WorldBank_Spread, Country }\OperatorTok{==}\StringTok{ "Brazil"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Kenya"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Spain"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Indonesia"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Canada"}\NormalTok{)}
 
-\NormalTok{WB_Spread <-}\StringTok{ }\NormalTok{WorldBank_Spread }\OperatorTok{%>%}
-\StringTok{  }\NormalTok{na.exclude}
+\NormalTok{WB_Spread <-}\StringTok{ }\NormalTok{WorldBank_Spread }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{na.exclude }\CommentTok{#check if I need this for my tests}
 
 \NormalTok{WB_Brazil <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(WB_Spread, Country }\OperatorTok{==}\StringTok{ "Brazil"}\NormalTok{)}
 \end{Highlighting}
@@ -244,6 +317,9 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 <Include R chunks for 5+ lines of summary code (display code and output), 3+ exploratory graphs (display graphs only), and any wrangling you do to your dataset(s).> 
 
 \end{verbatim}
+
+After the data was wrangled into a format that would function well with
+my intended R operations, I was able to begin exploring the data set.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -256,8 +332,18 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 \begin{verbatim}
 ##  [1] "Country"              "Indicator.Code"       "Year"                
 ##  [4] "ElectricityAccess"    "Agriculture"          "Ag.Methane"          
-##  [7] "Ag.NO2"               "Aquaculture"          "ArableLand"          
-## [10] "CO2Emissions"         "Forest"               "RenewableElectricity"
+##  [7] "Ag.NO2"               "CO2Emissions"         "Forest"              
+## [10] "RenewableElectricity"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{class}\NormalTok{(WorldBank_Spread}\OperatorTok{$}\NormalTok{Year)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Date"
 \end{verbatim}
 
 \begin{Shaded}
@@ -267,7 +353,7 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 15576    12
+## [1] 15576    10
 \end{verbatim}
 
 \begin{Shaded}
@@ -284,20 +370,13 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 ## 4 Afghanistan            AFG 1963-04-15                NA    57.91441
 ## 5 Afghanistan            AFG 1964-04-15                NA    58.01091
 ## 6 Afghanistan            AFG 1965-04-15                NA    58.01397
-##   Ag.Methane Ag.NO2 Aquaculture ArableLand CO2Emissions Forest
-## 1         NA     NA          NA         NA      414.371     NA
-## 2         NA     NA          NA   11.71767      491.378     NA
-## 3         NA     NA          NA   11.79426      689.396     NA
-## 4         NA     NA          NA   11.87085      707.731     NA
-## 5         NA     NA          NA   11.94743      839.743     NA
-## 6         NA     NA          NA   11.94743     1008.425     NA
-##   RenewableElectricity
-## 1                   NA
-## 2                   NA
-## 3                   NA
-## 4                   NA
-## 5                   NA
-## 6                   NA
+##   Ag.Methane Ag.NO2 CO2Emissions Forest RenewableElectricity
+## 1         NA     NA      414.371     NA                   NA
+## 2         NA     NA      491.378     NA                   NA
+## 3         NA     NA      689.396     NA                   NA
+## 4         NA     NA      707.731     NA                   NA
+## 5         NA     NA      839.743     NA                   NA
+## 6         NA     NA     1008.425     NA                   NA
 \end{verbatim}
 
 \begin{Shaded}
@@ -323,22 +402,14 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 ##  3rd Qu.:100.00    3rd Qu.:52.3930   3rd Qu.:  24198   3rd Qu.:  15076.6  
 ##  Max.   :100.00    Max.   :93.4407   Max.   :3464398   Max.   :2242932.7  
 ##  NA's   :8618      NA's   :2521      NA's   :5056      NA's   :5056       
-##   Aquaculture          ArableLand       CO2Emissions     
-##  Min.   :        0   Min.   : 0.0012   Min.   :     -81  
-##  1st Qu.:       68   1st Qu.: 3.5315   1st Qu.:     964  
-##  Median :     3758   Median : 9.5558   Median :   11463  
-##  Mean   :  1601961   Mean   :13.1413   Mean   :  736069  
-##  3rd Qu.:    95447   3rd Qu.:17.5690   3rd Qu.:  143107  
-##  Max.   :106004184   Max.   :73.3886   Max.   :36138285  
-##  NA's   :4696        NA's   :2658      NA's   :3321      
-##      Forest         RenewableElectricity
-##  Min.   :    0.00   Min.   :  0.000     
-##  1st Qu.:   12.50   1st Qu.:  0.465     
-##  Median :   31.18   Median : 16.961     
-##  Mean   :   42.70   Mean   : 28.211     
-##  3rd Qu.:   46.96   3rd Qu.: 49.255     
-##  Max.   :16735.00   Max.   :100.000     
-##  NA's   :8717       NA's   :8738
+##   CO2Emissions          Forest         RenewableElectricity
+##  Min.   :     -81   Min.   :    0.00   Min.   :  0.000     
+##  1st Qu.:     964   1st Qu.:   12.50   1st Qu.:  0.465     
+##  Median :   11463   Median :   31.18   Median : 16.961     
+##  Mean   :  736069   Mean   :   42.70   Mean   : 28.211     
+##  3rd Qu.:  143107   3rd Qu.:   46.96   3rd Qu.: 49.255     
+##  Max.   :36138285   Max.   :16735.00   Max.   :100.000     
+##  NA's   :3321       NA's   :8717       NA's   :8738
 \end{verbatim}
 
 \begin{Shaded}
@@ -382,44 +453,129 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 
 \begin{verbatim}
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##       0    1258    6596  155800   53060 3464398
+##       0     687    4638  138432   36696 3464398
+\end{verbatim}
+
+(Figure\ref{fig:fig1}) plots agriculture and forest land covers to see
+if there is a noticable trend. It appears that there is a tendency for
+forest cover to decrease as agriculture cover increases.
+
+\begin{verbatim}
+## function (expr) 
+## {
+##     enexpr(expr)
+## }
+## <bytecode: 0x000000001a9610c8>
+## <environment: namespace:rlang>
 \end{verbatim}
 
 \begin{verbatim}
 ## Warning: Removed 8897 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf}
+\begin{figure}
+\centering
+\includegraphics{Marx_ENV872_Project_files/figure-latex/fig1-1.pdf}
+\caption{\label{fig:fig1}Percentage of Land Use for Forest and
+Agriculture}
+\end{figure}
+
+A second exploratory graph plots forest levels for all 264 countries
+over time. The resulting graph shows that there is some movement over
+time, but many countries see constant levels of land use. In later
+graphs I decided to reduce the number of countries included to be able
+to better visualized changes. Similarly, a plot of agriculture over time
+shows some movement over time, but many countries see constant levels of
+land use for agriculture.
 
 \begin{verbatim}
-## Warning: Removed 33 rows containing missing values (geom_path).
+## function (expr) 
+## {
+##     enexpr(expr)
+## }
+## <bytecode: 0x000000001a9610c8>
+## <environment: namespace:rlang>
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-2.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-3.pdf}
+
+Since the research attempts to decipher whether a change in forest
+levels is related to a change in agriculture levels, I also wanted to
+see if a change in the amount of land dedicated to agriculture leads to
+a change in various emissions levels. The following graphs explore these
+relationships.
+
+\begin{verbatim}
+## function (expr) 
+## {
+##     enexpr(expr)
+## }
+## <bytecode: 0x000000001a9610c8>
+## <environment: namespace:rlang>
+\end{verbatim}
 
 \begin{verbatim}
 ## Warning: Removed 6297 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 \begin{verbatim}
 ## Warning: Removed 10791 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-2.pdf}
+
+\begin{verbatim}
+## Warning: Removed 10791 rows containing missing values (geom_point).
+
+## Warning: Removed 6297 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-3.pdf}
+
+```
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AgVCarbon <-}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(WorldBank_Spread) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Agriculture, }\DataTypeTok{y =}\NormalTok{ CO2Emissions)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Agriculture vs. Carbon"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"Carbon"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"% Land in Agriculture"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{100}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_color_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"brown"}\NormalTok{, }\StringTok{"goldenrod"}\NormalTok{)) }
+\KeywordTok{print}\NormalTok{(AgVCarbon)}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
 ## Warning: Removed 3900 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-3.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ForestVCarbon <-}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(WorldBank_Spread) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Forest, }\DataTypeTok{y =}\NormalTok{ CO2Emissions)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Forest vs. Carbon"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"Carbon"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"% Land in Forest"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{100}\NormalTok{)) }
+\KeywordTok{print}\NormalTok{(ForestVCarbon)}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
 ## Warning: Removed 9616 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-4.pdf}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf}
 
 \begin{verbatim}
 ## Warning: Removed 35 rows containing missing values (geom_path).
@@ -438,19 +594,25 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf}
 
 \begin{verbatim}
+
 \end{verbatim}
+
+\subsection{Warning: Removed 35 rows containing missing values
+(geom\_path).}\label{warning-removed-35-rows-containing-missing-values-geom_path.}
 
 \begin{verbatim}
-## Warning: Removed 35 rows containing missing values (geom_path).
+
+![](Marx_ENV872_Project_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
+
 \end{verbatim}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-8-1.pdf}
+\subsection{Warning: Removed 35 rows containing missing values
+(geom\_path).}\label{warning-removed-35-rows-containing-missing-values-geom_path.-1}
 
-\begin{verbatim}
-## Warning: Removed 35 rows containing missing values (geom_path).
+\subsection{Warning: Removed 35 rows containing missing values
+(geom\_path).}\label{warning-removed-35-rows-containing-missing-values-geom_path.-2}
 
-## Warning: Removed 35 rows containing missing values (geom_path).
-\end{verbatim}
+```
 
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf}
 
@@ -461,10 +623,10 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#Statistical Test 1: How has forest changed over time }
-\NormalTok{Forest.Fixed <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
+\NormalTok{Forest.Time1 <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                    Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year,}
                     \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\KeywordTok{summary}\NormalTok{(Forest.Fixed)}
+\KeywordTok{summary}\NormalTok{(Forest.Time1)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -472,70 +634,75 @@ Wrangling}\label{exploratory-data-analysis-and-wrangling}
 ## Generalized least squares fit by REML
 ##   Model: Forest ~ Year 
 ##   Data: WB_Spread 
-##        AIC     BIC    logLik
-##   44741.09 44759.9 -22367.55
+##        AIC      BIC    logLik
+##   49977.96 49997.13 -24985.98
 ## 
 ## Coefficients:
 ##                Value Std.Error   t-value p-value
-## (Intercept) 91.42949  6.525284 14.011572       0
-## Year        -0.00485  0.000594 -8.156025       0
+## (Intercept) 83.48146  5.839645 14.295639       0
+## Year        -0.00425  0.000533 -7.987907       0
 ## 
 ##  Correlation: 
 ##      (Intr)
 ## Year -0.984
 ## 
 ## Standardized residuals:
-##        Min         Q1        Med         Q3        Max 
-## -0.7540709 -0.3205935 -0.1002986  0.1413443 15.6053463 
+##         Min          Q1         Med          Q3         Max 
+## -0.74247841 -0.33743857 -0.09641382  0.15552883 16.46833243 
 ## 
-## Residual standard error: 73.63104 
-## Degrees of freedom: 3911 total; 3909 residual
+## Residual standard error: 69.98862 
+## Degrees of freedom: 4408 total; 4406 residual
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Did not do "* Country)". Result shows on average Forest decreases by -.00485 each year. }
-\end{Highlighting}
-\end{Shaded}
-
-A fixed effects model was used to see how land percetnage of forest area
-accross the whoel data set changes over time. The results show that, on
-average, forest decreases by -.00485\% each year.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{Test1 <-}\StringTok{  }\KeywordTok{lme}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
-\NormalTok{              Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year,}
-              \DataTypeTok{random =} \OperatorTok{~}\DecValTok{1}\OperatorTok{|}\StringTok{ }\NormalTok{Country)}
-\NormalTok{Test1}
+\NormalTok{Forest.Time2 <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
+\NormalTok{                Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year,}
+                \DataTypeTok{random =} \OperatorTok{~}\DecValTok{1}\OperatorTok{|}\StringTok{ }\NormalTok{Country)}
+\KeywordTok{summary}\NormalTok{(Forest.Time2)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## Linear mixed-effects model fit by REML
-##   Data: WB_Spread 
-##   Log-restricted-likelihood: -22149.85
-##   Fixed: Forest ~ Year 
-##  (Intercept)         Year 
-## 90.835100087 -0.004799758 
+##  Data: WB_Spread 
+##        AIC      BIC    logLik
+##   49431.95 49457.52 -24711.98
 ## 
 ## Random effects:
 ##  Formula: ~1 | Country
 ##         (Intercept) Residual
-## StdDev:    30.78642 66.67633
+## StdDev:    30.52692 62.84915
 ## 
-## Number of Observations: 3911
-## Number of Groups: 223
+## Fixed effects: Forest ~ Year 
+##                Value Std.Error   DF   t-value p-value
+## (Intercept) 82.96649  5.653843 4163 14.674352       0
+## Year        -0.00421  0.000482 4163 -8.743567       0
+##  Correlation: 
+##      (Intr)
+## Year -0.923
+## 
+## Standardized Within-Group Residuals:
+##         Min          Q1         Med          Q3         Max 
+## -2.55113019 -0.14187377 -0.01873545  0.09332491 16.07509035 
+## 
+## Number of Observations: 4408
+## Number of Groups: 244
 \end{verbatim}
+
+A fixed effects model was used to see how land percetnage of forest area
+accross the whoel data set changes over time. The results show that, on
+average, forest decreases by -.00485\% each year. Was not worride about
+seasonality of the data because there is only one data point per year.
+As such, I did not calculate autocorrelations. I did add country as a
+random effect.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#On average forest decreases by -.0047% a year?}
-
-\NormalTok{Forest.Fixed_Ag. <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
+\NormalTok{For.Ag.}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                    Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture,}
                     \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{Forest.Fixed_Ag. }\CommentTok{#-.5067}
+\KeywordTok{summary}\NormalTok{(For.Ag.}\DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -543,62 +710,94 @@ average, forest decreases by -.00485\% each year.
 ## Generalized least squares fit by REML
 ##   Model: Forest ~ Year + Agriculture 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -22331.49
+##        AIC      BIC    logLik
+##   49908.57 49934.13 -24950.29
 ## 
 ## Coefficients:
-##   (Intercept)          Year   Agriculture 
-## 110.607315028  -0.004830877  -0.506739618 
+##                 Value Std.Error   t-value p-value
+## (Intercept) 100.30274  6.103018 16.434939       0
+## Year         -0.00423  0.000528 -8.007157       0
+## Agriculture  -0.44673  0.051202 -8.724865       0
 ## 
-## Degrees of freedom: 3911 total; 3908 residual
-## Residual standard error: 72.92833
+##  Correlation: 
+##             (Intr) Year  
+## Year        -0.931       
+## Agriculture -0.316 -0.006
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -0.98942500 -0.26448939 -0.05947803  0.14053065 16.59420967 
+## 
+## Residual standard error: 69.39948 
+## Degrees of freedom: 4408 total; 4405 residual
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Random effect??}
-\NormalTok{Test2 <-}\StringTok{  }\KeywordTok{lme}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
-\NormalTok{              Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture, }
+\NormalTok{For.Ag.}\DecValTok{2}\NormalTok{ <-}\StringTok{  }\KeywordTok{lme}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
+\NormalTok{              Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture,}
               \DataTypeTok{random =} \OperatorTok{~}\DecValTok{1}\OperatorTok{|}\StringTok{ }\NormalTok{Country)}
-\NormalTok{Test2 }\CommentTok{# -.557}
+\KeywordTok{summary}\NormalTok{(For.Ag.}\DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## Linear mixed-effects model fit by REML
-##   Data: WB_Spread 
-##   Log-restricted-likelihood: -22138.56
-##   Fixed: Forest ~ Year + Agriculture 
-##   (Intercept)          Year   Agriculture 
-## 112.349788617  -0.004814667  -0.557561556 
+##  Data: WB_Spread 
+##       AIC      BIC    logLik
+##   49413.7 49445.65 -24701.85
 ## 
 ## Random effects:
 ##  Formula: ~1 | Country
 ##         (Intercept) Residual
-## StdDev:    29.31384 66.60976
+## StdDev:    29.32764 62.80075
 ## 
-## Number of Observations: 3911
-## Number of Groups: 223
+## Fixed effects: Forest ~ Year + Agriculture 
+##                 Value Std.Error   DF   t-value p-value
+## (Intercept) 101.78896  6.830290 4162 14.902583       0
+## Year         -0.00421  0.000481 4162 -8.754338       0
+## Agriculture  -0.49055  0.101138 4162 -4.850333       0
+##  Correlation: 
+##             (Intr) Year  
+## Year        -0.763       
+## Agriculture -0.568  0.000
+## 
+## Standardized Within-Group Residuals:
+##         Min          Q1         Med          Q3         Max 
+## -2.53066671 -0.13903414 -0.01968184  0.09295492 16.10850732 
+## 
+## Number of Observations: 4408
+## Number of Groups: 244
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{anova}\NormalTok{(Forest.Fixed, Test2) }\CommentTok{# Said: fitted objects with different fixed effects. REML comparisons are not meaningful.}
+\CommentTok{#anova(Forest.Fixed, Test2) # Said: fitted objects with different fixed effects. REML comparisons are not meaningful.}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## Warning in nlme::anova.lme(object = Forest.Fixed, Test2): fitted objects
-## with different fixed effects. REML comparisons are not meaningful.
-\end{verbatim}
+Results of first set of tests:
 
-\begin{verbatim}
-##              Model df      AIC      BIC    logLik   Test  L.Ratio p-value
-## Forest.Fixed     1  3 44741.09 44759.90 -22367.54                        
-## Test2            2  5 44287.13 44318.48 -22138.56 1 vs 2 457.9608  <.0001
-\end{verbatim}
+I am interested in whether access to electricity or the levels of
+renewable energy produced in countries have a relationship with
+deforestation. This is becasue a lack of electricity could drive the use
+of forest biomass products as an energy source. Electricity access
+appears to have a negative impact on forest (-.333) which may be because
+electricity is needed for some agricultural operations, or electricity
+is being produced via biofuels, the production of which might require
+more forest to be converted to agricultural land. ( \ref{fig:fig3})
+
+With that theory in mind, I was interested in whether there might be a
+relationship between forested land and renewable energy because energy
+produced from biomass is considered to be renewable. However, the result
+of my gls revealed that a 1 unit increase in renewable energy is
+associated with a .18\% increase in forest land, meaning the production
+of biofule is likely not a main driver of deforestation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#Looking at Electricity Accesss and Renewable Energy as a Drive of the Ag. / Forest Tradeoff}
+
 \CommentTok{#Add Electricity }
 \NormalTok{Forest.Ag.Elec <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                    Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture }\OperatorTok{+}\StringTok{ }\NormalTok{ElectricityAccess,}
@@ -611,20 +810,42 @@ average, forest decreases by -.00485\% each year.
 ## Generalized least squares fit by REML
 ##   Model: Forest ~ Year + Agriculture + ElectricityAccess 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -22287.92
+##   Log-restricted-likelihood: -24906.59
 ## 
 ## Coefficients:
 ##       (Intercept)              Year       Agriculture ElectricityAccess 
-##     129.772497937      -0.004179189      -0.560020533      -0.334328246 
+##     117.273716122      -0.003583843      -0.514782445      -0.299412308 
 ## 
-## Degrees of freedom: 3911 total; 3907 residual
-## Residual standard error: 72.08392
+## Degrees of freedom: 4408 total; 4404 residual
+## Residual standard error: 68.68236
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Added electricity access to see whether a lack of electricity may contribute to deforestation from the use of biomass as an energy source. Electricity access appears to have a negative impact on forest (-.333) which may be because electricity is needed for some agricultural operations, or electricity is being produce via biofuels. }
+\CommentTok{#Electricity only }
+\NormalTok{Forest.Elec <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
+\NormalTok{                    Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{ElectricityAccess,}
+                    \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
+\NormalTok{Forest.Elec}
+\end{Highlighting}
+\end{Shaded}
 
+\begin{verbatim}
+## Generalized least squares fit by REML
+##   Model: Forest ~ Year + ElectricityAccess 
+##   Data: WB_Spread 
+##   Log-restricted-likelihood: -24954.6
+## 
+## Coefficients:
+##       (Intercept)              Year ElectricityAccess 
+##      95.826798295      -0.003705033      -0.256536944 
+## 
+## Degrees of freedom: 4408 total; 4405 residual
+## Residual standard error: 69.4595
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{Forest.RE <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                    Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{RenewableElectricity,}
                     \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
@@ -636,19 +857,19 @@ average, forest decreases by -.00485\% each year.
 ## Generalized least squares fit by REML
 ##   Model: Forest ~ Year + RenewableElectricity 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -22357.42
+##   Log-restricted-likelihood: -24969.59
 ## 
 ## Coefficients:
 ##          (Intercept)                 Year RenewableElectricity 
-##         84.074720108         -0.004718623          0.181761849 
+##         75.893689686         -0.004120715          0.199889723 
 ## 
-## Degrees of freedom: 3911 total; 3908 residual
-## Residual standard error: 73.40486
+## Degrees of freedom: 4408 total; 4405 residual
+## Residual standard error: 69.69694
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#On that note, I was interested in whether there might be a relationship between forested land and renewable energy because energy produced from biomass is considered to be renewable. However, the result of my gls revealed that a 1 unit increase in renewable energy is associated with a .18% increase in forest land. }
+\CommentTok{#On that note, }
 
 \CommentTok{# Regression w/o time }
 \NormalTok{Reg1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Agriculture, WorldBank_Spread)}
@@ -672,10 +893,20 @@ average, forest decreases by -.00485\% each year.
 \end{Highlighting}
 \end{Shaded}
 
+As a second statistical test I used Pettit's test, a nonparametric test
+that determines if there is a shift in the central tendency of the time
+series. It also determines at what point in time the changepoint occurs.
+I used this to see if there was a point in time in particular where
+these seemed to be a noticeable change in forest cover. I applied the
+test to Brazil which graphically appears to have change points to see if
+1) there was a change poing for agriculture and forest and 2) to see if
+the change points occured in the same year for each.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Pettitts}
-\CommentTok{#Statistical Test 2: Any change points for forest data?}
+\CommentTok{#Statistical Test 2: Pettitts Test: Looking at Change Points in the Data}
+
+\CommentTok{#Statistical Test 2: Any change points for full forest data?}
 \KeywordTok{pettitt.test}\NormalTok{(WB_Spread}\OperatorTok{$}\NormalTok{Forest)}
 \end{Highlighting}
 \end{Shaded}
@@ -685,17 +916,19 @@ average, forest decreases by -.00485\% each year.
 ##  Pettitt's test for single change-point detection
 ## 
 ## data:  WB_Spread$Forest
-## U* = 458060, p-value = 1.459e-09
+## U* = 463360, p-value = 5.895e-07
 ## alternative hypothesis: two.sided
 ## sample estimates:
 ## probable change point at time K 
-##                            1428
+##                            1739
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#Probable change point at time 1428 which doesn't exist.}
 
+
+\CommentTok{#Changes in Brazil Forest}
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Forest)}
 \end{Highlighting}
 \end{Shaded}
@@ -714,7 +947,48 @@ average, forest decreases by -.00485\% each year.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#9}
+\CommentTok{#9 (of 19): 1998; p-value .048 (significant at the .05 level)}
+
+\KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Forest[}\DecValTok{9}\OperatorTok{:}\DecValTok{19}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  WB_Brazil$Forest[9:19]
+## U* = 30, p-value = 0.04852
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K                            <NA> 
+##                               5                               6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Changes in Brazil Agriculture }
+\CommentTok{#5 (9+5 = 14: 2003); p-value .0023852 (significant at the .01 level)}
+
+\KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Forest[}\DecValTok{14}\OperatorTok{:}\DecValTok{19}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  WB_Brazil$Forest[14:19]
+## U* = 9, p-value = 0.2907
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K 
+##                               3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#3 14 + 3 = 17: 2006 (p-value .29: not significant)}
 
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Agriculture)}
 \end{Highlighting}
@@ -734,21 +1008,71 @@ average, forest decreases by -.00485\% each year.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#9}
+\CommentTok{#9 (of 19): 1998; p-value .002386 (significant at the .01 level)}
+
+\KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Agriculture[}\DecValTok{9}\OperatorTok{:}\DecValTok{19}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  WB_Brazil$Agriculture[9:19]
+## U* = 30, p-value = 0.04852
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K                            <NA> 
+##                               5                               6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#5 (9+5 = 14: 2003); p-value .04852 (significant at the .05 level}
+
+\KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Agriculture[}\DecValTok{14}\OperatorTok{:}\DecValTok{19}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  WB_Brazil$Agriculture[14:19]
+## U* = 6, p-value = 0.8487
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K 
+##                               2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2 (14 +2 = 16) p-value .8487 (not significant)}
 \end{Highlighting}
 \end{Shaded}
 
 Pettitt's applied to a single country (Brazil) initially detects a
-change point in Forest and Agriculture in the same year.
+change point in Forest and Agriculture in the same year. The change for
+both was in place 9, which is the year 1998. The significant change
+points for agriculture and forest in Brazil occured in the same years
+(1998 and 2003), furhter supporting the notion that there is a
+relationship between the two.
+
+{[}Make a graph of Brazil that shows the change points{]}
+
+The next series of tests address the question: Is there a relationship
+between land uses (agriculture or forest) and levels of CO2, methane,
+and NO3 emissions?
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Statistical Test 3: Emmissions}
+\CommentTok{#Statistical Test 3.1: Agriculture & Methane Emmissions}
 
 \NormalTok{AgMethane <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
 \NormalTok{                 Ag.Methane }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture,}
                  \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{AgMethane }\CommentTok{#Ag. increases by 1, Ag Methane increases by 6.57}
+\NormalTok{AgMethane}
 \end{Highlighting}
 \end{Shaded}
 
@@ -756,22 +1080,23 @@ change point in Forest and Agriculture in the same year.
 ## Generalized least squares fit by REML
 ##   Model: Ag.Methane ~ Year + Agriculture 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -56249.62
+##   Log-restricted-likelihood: -63169.07
 ## 
 ## Coefficients:
-##   (Intercept)          Year   Agriculture 
-##  1.366512e+05 -5.517731e-01  6.577395e+02 
+##  (Intercept)         Year  Agriculture 
+## 1.172434e+05 3.206730e-02 5.445887e+02 
 ## 
-## Degrees of freedom: 3911 total; 3908 residual
-## Residual standard error: 428750.1
+## Degrees of freedom: 4408 total; 4405 residual
+## Residual standard error: 406812.4
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#Statistica Test 3.2: Forest & Methane Emmissions}
 \NormalTok{ForestMethane <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                  Ag.Methane }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Forest,}
                   \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{ForestMethane }\CommentTok{#Forest increase by 1, methane increases by .035; Agricultural emmisions are not strongly related to deforestation. }
+\KeywordTok{summary}\NormalTok{(ForestMethane)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -779,22 +1104,35 @@ change point in Forest and Agriculture in the same year.
 ## Generalized least squares fit by REML
 ##   Model: Ag.Methane ~ Year + Forest 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -56245.46
+##        AIC      BIC    logLik
+##   126331.7 126357.3 -63161.87
 ## 
 ## Coefficients:
-##  (Intercept)         Year       Forest 
-## 1.289670e+05 1.195051e+00 3.563036e+02 
+##                 Value Std.Error  t-value p-value
+## (Intercept) 104949.59  34655.09 3.028404  0.0025
+## Year             1.73      3.11 0.557427  0.5773
+## Forest         392.90     87.40 4.495392  0.0000
 ## 
-## Degrees of freedom: 3911 total; 3908 residual
-## Residual standard error: 428151.9
+##  Correlation: 
+##        (Intr) Year  
+## Year   -0.980       
+## Forest -0.211  0.119
+## 
+## Standardized residuals:
+##        Min         Q1        Med         Q3        Max 
+## -0.9349863 -0.3368465 -0.3079788 -0.2493750  8.1856088 
+## 
+## Residual standard error: 406034.1 
+## Degrees of freedom: 4408 total; 4405 residual
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#Statistical Test 3.3: Interaction of Forest and Agriculture on Methane Emissions #These are probably correleated. Run a VIF Test. }
 \NormalTok{Int.Methane <-}\StringTok{  }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
 \NormalTok{                    Ag.Methane }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Forest }\OperatorTok{*}\StringTok{ }\NormalTok{Agriculture,}
                     \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{Int.Methane }\CommentTok{#Interaction of forest and agriculture: Increase of 1 leads to an increase of 98.856}
+\NormalTok{Int.Methane }
 \end{Highlighting}
 \end{Shaded}
 
@@ -802,24 +1140,38 @@ change point in Forest and Agriculture in the same year.
 ## Generalized least squares fit by REML
 ##   Model: Ag.Methane ~ Year + Forest * Agriculture 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -56201.69
+##   Log-restricted-likelihood: -63123.24
 ## 
 ## Coefficients:
 ##        (Intercept)               Year             Forest 
-##       217760.79850            1.76024        -3223.93002 
+##      170978.276563           2.186635       -2547.247815 
 ##        Agriculture Forest:Agriculture 
-##        -2149.63528           98.85697 
+##       -1627.888779          81.435201 
 ## 
-## Degrees of freedom: 3911 total; 3906 residual
-## Residual standard error: 424598.6
+## Degrees of freedom: 4408 total; 4403 residual
+## Residual standard error: 403492.6
 \end{verbatim}
+
+As the percetage of land under agriculture increases by 1, methane
+emissions increase by 6.57 thousand metric tons.
+
+As Forest land increases by 1\%, methane emissions increase by .035
+thoushand metric tons (or 35 metirc tons), meaning that deforestation is
+not strongly related to methan emissions.
+
+However, if the interaction of forest and agriculture land cover is
+considered, an increase of 1 leads to an increase of 98.86 thousand
+metric tons of methane.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#Carbon Emissions Tests }
+
+\CommentTok{#Test 4.1: Forest and Carbon}
 \NormalTok{Forest.CO2 <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                  CO2Emissions }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Forest,}
                   \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{Forest.CO2 }\CommentTok{#1% increase in forest leads to a -235.25 decrease in CO2}
+\NormalTok{Forest.CO2 }
 \end{Highlighting}
 \end{Shaded}
 
@@ -827,22 +1179,23 @@ change point in Forest and Agriculture in the same year.
 ## Generalized least squares fit by REML
 ##   Model: CO2Emissions ~ Year + Forest 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -63931.14
+##   Log-restricted-likelihood: -71822.3
 ## 
 ## Coefficients:
 ##  (Intercept)         Year       Forest 
-## 420051.95130     56.36262   -235.25547 
+## 311972.83203     54.86307     30.35953 
 ## 
-## Degrees of freedom: 3911 total; 3908 residual
-## Residual standard error: 3059879
+## Degrees of freedom: 4408 total; 4405 residual
+## Residual standard error: 2900052
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#Test 4.2: Agriculture and Carbon }
 \NormalTok{Ag.CO2 <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
 \NormalTok{                 CO2Emissions }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture,}
                  \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{Ag.CO2 }\CommentTok{# 1% increase in Ag. leads to an increase of 1493 kt of carbon. }
+\NormalTok{Ag.CO2 }
 \end{Highlighting}
 \end{Shaded}
 
@@ -850,22 +1203,23 @@ change point in Forest and Agriculture in the same year.
 ## Generalized least squares fit by REML
 ##   Model: CO2Emissions ~ Year + Agriculture 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -63929.71
+##   Log-restricted-likelihood: -71820.95
 ## 
 ## Coefficients:
 ##  (Intercept)         Year  Agriculture 
-## 342001.55481     57.45718   1493.99738 
+## 274157.42618     54.67258   1071.59529 
 ## 
-## Degrees of freedom: 3911 total; 3908 residual
-## Residual standard error: 3059780
+## Degrees of freedom: 4408 total; 4405 residual
+## Residual standard error: 2899970
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#Test 4.3: Interaction of Forest & Agriculture on Carbon }
 \NormalTok{Int.CO2 <-}\StringTok{ }\KeywordTok{gls}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
 \NormalTok{                    CO2Emissions }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Forest }\OperatorTok{*}\StringTok{ }\NormalTok{Agriculture,}
                     \DataTypeTok{method =} \StringTok{"REML"}\NormalTok{)}
-\NormalTok{Int.CO2 }\CommentTok{#How do you interperet this? }
+\NormalTok{Int.CO2 }
 \end{Highlighting}
 \end{Shaded}
 
@@ -873,17 +1227,21 @@ change point in Forest and Agriculture in the same year.
 ## Generalized least squares fit by REML
 ##   Model: CO2Emissions ~ Year + Forest * Agriculture 
 ##   Data: WB_Spread 
-##   Log-restricted-likelihood: -63894.08
+##   Log-restricted-likelihood: -71789.87
 ## 
 ## Coefficients:
 ##        (Intercept)               Year             Forest 
-##      1130009.41628           59.26258       -22533.93863 
+##       847291.77408           57.25021       -17883.04480 
 ##        Agriculture Forest:Agriculture 
-##       -17186.46246          611.63238 
+##       -13175.94334          492.65459 
 ## 
-## Degrees of freedom: 3911 total; 3906 residual
-## Residual standard error: 3042769
+## Degrees of freedom: 4408 total; 4403 residual
+## Residual standard error: 2888536
 \end{verbatim}
+
+1\% increase in forest leads to a -235.25 decrease in CO2. 1\% increase
+in Ag. leads to an increase of 1493 kt of carbon. Interaction: How do
+you interpret?
 
 \newpage
 
