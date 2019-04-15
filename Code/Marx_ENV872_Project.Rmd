@@ -7,7 +7,7 @@ output:
 geometry: margin=2.54cm
 title: Experiment Title
 subtitle: Web address for GitHub repository
-author: Your Name
+author: Rebecca Marx
 abstract: "Experimental overview. This section should be no longer than 250 words."
 fontsize: 12pt
 mainfont: Times New Roman
@@ -34,6 +34,10 @@ setwd("C:/Users/rsmar/OneDrive/Documents/Spring 2019/RFolder/Ag_Forest_Data_Fina
 # Load your packages
 library(tidyverse)
 library(ggplot2)
+library(trend)
+library(lubridate)
+library(lsmeans)
+library(nlme)
 
 # Set your ggplot theme
 RMtheme <- theme_bw(base_size = 10) +
@@ -97,138 +101,180 @@ WorldBank_Spread$Year <- as.Date(WorldBank_Spread$Year, format = "%Y") #can I ge
 class(WorldBank_Spread$Year)
 
 #Change column names 
-names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "Electricity Access", "Agriculture", "Ag.Methane", "Ag.NO2", "Aquaculture", "ArableLand", "CO2Emissions", "Forest", "RenewableElectricity")
+names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.NO2", "Aquaculture", "ArableLand", "CO2Emissions", "Forest", "RenewableElectricity")
 
 #Save processed file 
 #write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")
    
-Four_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Spain" | Country == "Indonesia" | Country == "Canada")
-
 Five_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Kenya" | Country == "Spain" | Country == "Indonesia" | Country == "Canada")
 
-Six_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Kenya" | Country == "Spain" | Country == "Pakistan" | Country == "Indonesia" | Country == "Canada")
+WB_Spread <- WorldBank_Spread %>%
+  na.exclude
+
+WB_Brazil <- filter(WB_Spread, Country == "Brazil")
 
 ```
-
-```{r}
-
 
 ```
 
 <Include R chunks for 5+ lines of summary code (display code and output), 3+ exploratory graphs (display graphs only), and any wrangling you do to your dataset(s).> 
 
+
+```
+
 ```{r}
+#5+ lines of summary 
+
 colnames(WorldBank_Spread)
 dim(WorldBank_Spread)
 head(WorldBank_Spread)
-
 summary(WorldBank_Spread)
 summary(WorldBank_Spread$Agriculture)
 summary(WorldBank_Spread$Forest)
-summary(WorldBank_Spread$`Renewable Electricity`)
+summary(WorldBank_Spread$RenewableElectricty)
+summary(WB_Spread$Ag.Methane)
+
 ```
+
 ```{r}
-#Full Plot
+#Exploratory graph 1: Agriculture vs. Forest 
 AgVForest <- 
   ggplot(WorldBank_Spread) + 
-  geom_point(aes(x = Forest, y = Agriculture)) +
+  geom_point(aes(x = Agriculture, y = Forest)) +
   ggtitle("Agriculture vs. Forest") +
-  ylab(expression("% Agriculture")) +
-  xlab(expression("% Forest")) +
+  ylab(expression("% Forest")) +
+  xlab(expression("% Agriculture")) +
   scale_y_continuous(limits = c(0,100)) +
   scale_x_continuous(limits = c(0,100)) 
 print(AgVForest)
+```
+
+```{r}
+#Exploratory graph 2: Forest over time 
+ForestTime <- 
+  ggplot(WB_Spread) +
+  geom_line(aes(x = Year, y = Forest, color = Country)) +
+  scale_y_continuous(limits = c(0,100)) +
+  theme(legend.position = "none")
+print(ForestTime)
 
 ```
 
+```{r}
+#Exploratory graph 3: Methane emissions over time 
+AgVMethane <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Agriculture, y = Ag.Methane)) +
+  ggtitle("Agriculture vs. Methane") +
+  ylab(expression("Methane (thousand metric tons)")) +
+  xlab(expression("% Land in Agriculture")) +
+  scale_x_continuous(limits = c(0,100)) 
+print(AgVMethane)
+
+ForestVMethane
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Forest, y = Ag.Methane)) +
+  ggtitle("Forest vs. Methane") +
+  ylab(expression("Methane (thousand metric tons)")) +
+  xlab(expression("% Land in Forest")) +
+  scale_x_continuous(limits = c(0,100)) 
+print(ForestVMethane)
+
+
+AgVCarbon <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Agriculture, y = CO2Emissions)) +
+  ggtitle("Agriculture vs. Carbon") +
+  ylab(expression("Carbon")) +
+  xlab(expression("% Land in Agriculture")) +
+  scale_x_continuous(limits = c(0,100)) +
+  scale_color_manual(values = c("brown", "goldenrod")) 
+print(AgVCarbon)
+
+ForestVCarbon <- 
+  ggplot(WorldBank_Spread) + 
+  geom_point(aes(x = Forest, y = CO2Emissions)) +
+  ggtitle("Forest vs. Carbon") +
+  ylab(expression("Carbon")) +
+  xlab(expression("% Land in Forest")) +
+  scale_x_continuous(limits = c(0,100)) 
+print(ForestVCarbon)
+```
 
 ```{r}
 LegendTitle1 <-"Land Use"
 
-FourCountries.Facet <- 
-  ggplot(Four_Countries) +
-  geom_line(aes(x = Year, y = Agriculture, color = "Agriculture")) + 
-  geom_line(aes(x = Year, y = Forest, color = "Forest")) + 
-  facet_grid(rows = vars(Country)) +
-  ggtitle("Change in Land Use") +
-  ylab(expression("Land Area (%)")) +
-  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
-  date_breaks = "24 months", date_labels = "%Y") +
-  scale_y_continuous(limits = c(0,70)) +
-  scale_color_manual(LegendTitle1,values = c("gold3", "darkcyan")) +
-  labs(caption = "Data Source: World Bank")
-print(FourCountries.Facet)
-
-
-
-```
-```{r}
 FiveCountries.Facet <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = Agriculture, color = "Agriculture")) + 
   geom_line(aes(x = Year, y = Forest, color = "Forest")) + 
-  facet_grid(rows = vars(Country)) +
+  facet_grid(cols = vars(Country)) +
   ggtitle("Change in Land Use from 1990 to 2014") +
   ylab(expression("Land Area (%)")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
-  date_breaks = "24 months", date_labels = "%Y") +
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   scale_y_continuous(limits = c(0,70)) +
   scale_color_manual(LegendTitle1,values = c("goldenrod3", "darkcyan")) +
   labs(caption = "Data Source: World Bank") +
   theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
 print(FiveCountries.Facet)
-
-#seashell3 turquoise palegreen3 darkseagreen3 darkcyan aquamarine3
 ```
 ```{r}
-SixCountries.Facet <- 
-  ggplot(Six_Countries) +
-  geom_line(aes(x = Year, y = Agriculture, color = "Agriculture")) + 
-  geom_line(aes(x = Year, y = Forest, color = "Forest")) + 
-  facet_grid(rows = vars(Country)) +
-  ggtitle("Change in Land Use") +
-  ylab(expression("Land Area (%)")) +
+FiveCountries.Methane <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = Ag.Methane, color = "Methane Levels")) + 
+  geom_line(aes(x = Year, y = Ag.NO2, color = "NO2 Levels")) +
+  facet_grid(cols = vars(Country)) +
+  ggtitle("Change in Methane Emissions from 1990 to 2014") +
+  ylab(expression("Methane Emissions (thousand metric tons)")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
-  date_breaks = "24 months", date_labels = "%Y") +
-  scale_y_continuous(limits = c(0,65)) +
-  scale_color_manual(LegendTitle1,values = c("goldenrod3", "darkcyan")) +
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  scale_color_manual(values = c("brown", "gray")) +
   labs(caption = "Data Source: World Bank") +
-  theme(strip.background = element_rect(fill= "ivory2", "darkslategray"))
-print(SixCountries.Facet)
+  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+print(FiveCountries.Methane)
+```
+
+```
+
 ```
 
 
 ```{r}
-#Plot1
-RenewableElectricity <- 
-  ggplot(Four_Countries) +
-  geom_line(aes(x = Year, y = RenewableElectricity)) + 
-  facet_grid(rows = vars(Country)) +
-  ggtitle("Renewable Electricity Output") +
-  ylab(expression("% of Total Electricity Output")) +
+FiveCountries.Carbon <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = CO2Emissions, color = "CO2 Levels")) + 
+  facet_grid(cols = vars(Country)) +
+  ggtitle("Change in CO2 Emissions from 1990 to 2014") +
+  ylab(expression("CO2 Emissions (thousand metric tons)")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
-  date_breaks = "24 months", date_labels = "%Y") +
-  scale_y_continuous(limits = c(0,100)) +
-  labs(caption = "Data Source: World Bank")
-print(RenewableElectricity)
-
-RE <- 
-  ggplot(data = Four_Countries, aes(x = Year, y = RenewableElectricity, color = Country)) +
-  geom_line()+
-  ggtitle("Renewable Electricity Output") +
-  ylab(expression("% of Total Electricity Output")) +
-  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
-  date_breaks = "24 months", date_labels = "%Y") +
-  scale_y_continuous(limits = c(0,100)) +
-  labs(caption = "Data Source: World Bank")
-print(RE)
-
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  scale_color_manual(values = c("Orange")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+print(FiveCountries.Carbon)
 ```
 
 ```{r}
-# Plots
-
+FiveCountries.RE <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = RenewableElectricity, color = "Renewable Energy Output")) + 
+  geom_line(aes(x = Year, y = ElectricityAccess, color = "Population with Electricty Access")) +
+  facet_grid(cols = vars(Country)) +
+  ggtitle("Change in Methane Emissions from 1990 to 2014") +
+  ylab(expression("Percentage of Total")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  scale_color_manual(values = c("purple", "blue")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+print(FiveCountries.RE)
 ```
+
 
 <Include text sections to accompany these R chunks to explain the reasoning behind your workflow, and the rationale for your approach.>
 
@@ -237,6 +283,98 @@ print(RE)
 
 # Analysis
 <Include R chunks for 3+ statistical tests (display code and output) and 3+ final visualization graphs (display graphs only).>
+
+```{r}
+#Statistical Test 1: How has forest changed over time 
+Forest.Fixed <- gls(data = WB_Spread, 
+                    Forest ~ Year,
+                    method = "REML")
+summary(Forest.Fixed)
+#Did not do "* Country)". Result shows on average Forest decreases by -.00485 each year. 
+
+Test1 <-  lme(data = WB_Spread,
+              Forest ~ Year,
+              random = ~1| Country)
+Test1
+#On average forest decreases by -.0047% a year?
+
+Forest.Fixed_Ag. <- gls(data = WB_Spread, 
+                    Forest ~ Year + Agriculture,
+                    method = "REML")
+Forest.Fixed_Ag. #-.5067
+
+#Random effect??
+Test2 <-  lme(data = WB_Spread,
+              Forest ~ Year + Agriculture, 
+              random = ~1| Country)
+Test2 # -.557
+
+anova(Forest.Fixed, Test2) # Said: fitted objects with different fixed effects. REML comparisons are not meaningful.
+
+
+#Add Electricity 
+Forest.Ag.Elec <- gls(data = WB_Spread, 
+                    Forest ~ Year + Agriculture + ElectricityAccess,
+                    method = "REML")
+Forest.Ag.Elec
+#Added electricity access to see whether a lack of electricity may contribute to deforestation from the use of biomass as an energy source. Electricity access appears to have a negative impact on forest (-.333) which may be because electricity is needed for some agricultural operations, or electricity is being produce via biofuels. 
+
+Forest.RE <- gls(data = WB_Spread, 
+                    Forest ~ Year + RenewableElectricity,
+                    method = "REML")
+Forest.RE
+#On that note, I was interested in whether there might be a relationship between forested land and renewable energy because energy produced from biomass is considered to be renewable. However, the result of my gls revealed that a 1 unit increase in renewable energy is associated with a .18% increase in forest land. 
+
+#Statistical Test 2: Any change points for forest data?
+pettitt.test(WB_Spread$Forest)
+#Probable change point at time 1428 which doesn't exist.
+
+pettitt.test(WB_Brazil$Forest)
+#9
+
+pettitt.test(WB_Brazil$Agriculture)
+#9
+
+#Statistical Test 3: Linear regression for change in forest? 
+Reg1 <- lm(Forest ~ Agriculture, WorldBank_Spread)
+Reg1
+
+#A 1 unit increas in agriculture leads to a -.44 decrease in forest 
+
+AgMethane <- gls(data = WB_Spread,
+                 Ag.Methane ~ Year + Agriculture,
+                 method = "REML")
+AgMethane #Ag. increases by 1, Ag Methane increases by 6.57
+
+ForestMethane <- gls(data = WB_Spread, 
+                  Ag.Methane ~ Year + Forest,
+                  method = "REML")
+
+ForestMethane #Forest increase by 1, methane increases by .035; Agricultural emmisions are not strongly related to deforestation. 
+
+Int.Methane <-  gls(data = WB_Spread,
+                    Ag.Methane ~ Year + Forest * Agriculture,
+                    method = "REML")
+Int.Carbon #Interaction of forest and agriculture: Increase of 1 leads to an increase of 98.856
+
+Forest.CO2 <- gls(data = WB_Spread, 
+                  CO2Emissions ~ Year + Forest,
+                  method = "REML")
+Forest.CO2 #1% increase in forest leads to a -235.25 decrease in CO2
+
+Ag.CO2 <- gls(data = WB_Spread,
+                 CO2Emissions ~ Year + Agriculture,
+                 method = "REML")
+Ag.CO2 # 1% increase in Ag. leads to an increase of 1493 kt of carbon. 
+
+Int.CO2 <- gls(data = WB_Spread,
+                    CO2Emissions ~ Year + Forest * Agriculture,
+                    method = "REML")
+Int.CO2 #How do you interperet this? 
+
+
+```
+
 
 <Include text sections to accompany these R chunks to explain the reasoning behind your workflow, rationale for your approach, and the justification of meeting or failing to meet assumptions of tests.>
 
