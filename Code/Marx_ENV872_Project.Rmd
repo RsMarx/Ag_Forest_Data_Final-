@@ -5,8 +5,8 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: Experiment Title
-subtitle: Web address for GitHub repository
+title: Changes in Land Use between 1990 and 2014
+subtitle: https://github.com/RsMarx/Ag_Forest_Data_Final-
 author: Rebecca Marx
 abstract: "Experimental overview. This section should be no longer than 250 words."
 fontsize: 12pt
@@ -61,6 +61,16 @@ theme_set(RMtheme)
 
 <Paragraph detailing your research question(s) and goals. What do you want to find out? Include a sentence (or a few) on the dataset you are using to answer this question - just enough to give your reader an idea of where you are going with the analysis.>
 
+As the global population continues to grow and require more food and fuel resources, deforestation trends are expected to accelerate. Deforestation can be problematic as forests provide ecosystem services such as carbon storage, nutrient cycling, water filtration, and wildlife habitat. Agriculture is one of the most commonly sited drivers of deforestation, in addition to being a source of emissions. Given that forest and agriculture can be contending land uses, this research examines the relationship between agriculture and forest as land uses and, more broadly, explores the causes and impacts of changes in land use. 
+
+This research looks at the trends and tradeoffs in land use across countries from 1990 – 2014. Primary questions include: 
+
+- Is there a relationship between the percentage of land area dedicated to forest versus agricultural in countries?
+- Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
+- Is there a relationship between access to electricity or renewable electricity output and the percentage of land dedicated to forestry versus agriculture? 
+
+The research utilizes a data set from the World Bank that has 135 environment-related variables for 264 countries. I have narrowed the environment variable down to 9 that are relevant to land use. Although the full data set dates back to 1960, I have limited to the time scope of the analysis to between 1990 and 2014 because those are the dates for which forest cover data is available. 
+
 \newpage
 
 # Dataset Information
@@ -72,6 +82,8 @@ theme_set(RMtheme)
 \newpage
 
 # Exploratory Data Analysis and Wrangling
+
+Wrangling the data required multiple operations. First, I used the filter function to select only 9 of a possible 135 variables in the data set. Since the data set was arranged with the years going horizontally, I then had to gather the years in to one column, and create a new column called “Level” that contained the values recorded for each variable in each year. 
 
 ```{r}
 World_Bank_Master <-read.csv("../Raw/WorldBank_Raw2_4.8.19.csv")
@@ -121,8 +133,9 @@ WB_Brazil <- filter(WB_Spread, Country == "Brazil")
 
 
 ```
+After the data was wrangled into a format that would function well with my intended R operations, I was able to begin exploring the data set. 
 
-```{r}
+```{r echo=TRUE}
 #5+ lines of summary 
 
 colnames(WorldBank_Spread)
@@ -136,7 +149,7 @@ summary(WB_Spread$Ag.Methane)
 
 ```
 
-```{r}
+```{r echo=FALSE}
 #Exploratory graph 1: Agriculture vs. Forest 
 AgVForest <- 
   ggplot(WorldBank_Spread) + 
@@ -149,7 +162,7 @@ AgVForest <-
 print(AgVForest)
 ```
 
-```{r}
+```{r echo=FALSE}
 #Exploratory graph 2: Forest over time 
 ForestTime <- 
   ggplot(WB_Spread) +
@@ -160,7 +173,7 @@ print(ForestTime)
 
 ```
 
-```{r}
+```{r echo=FALSE}
 #Exploratory graph 3: Methane emissions over time 
 AgVMethane <- 
   ggplot(WorldBank_Spread) + 
@@ -171,7 +184,7 @@ AgVMethane <-
   scale_x_continuous(limits = c(0,100)) 
 print(AgVMethane)
 
-ForestVMethane
+ForestVMethane <- 
   ggplot(WorldBank_Spread) + 
   geom_point(aes(x = Forest, y = Ag.Methane)) +
   ggtitle("Forest vs. Methane") +
@@ -201,7 +214,7 @@ ForestVCarbon <-
 print(ForestVCarbon)
 ```
 
-```{r}
+```{r echo=FALSE}
 LegendTitle1 <-"Land Use"
 
 FiveCountries.Facet <- 
@@ -220,7 +233,7 @@ FiveCountries.Facet <-
   theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
 print(FiveCountries.Facet)
 ```
-```{r}
+```{r echo=FALSE}
 FiveCountries.Methane <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = Ag.Methane, color = "Methane Levels")) + 
@@ -242,7 +255,7 @@ print(FiveCountries.Methane)
 ```
 
 
-```{r}
+```{r echo=FALSE}
 FiveCountries.Carbon <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = CO2Emissions, color = "CO2 Levels")) + 
@@ -258,7 +271,7 @@ FiveCountries.Carbon <-
 print(FiveCountries.Carbon)
 ```
 
-```{r}
+```{r echo=FALSE}
 FiveCountries.RE <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = RenewableElectricity, color = "Renewable Energy Output")) + 
@@ -284,13 +297,19 @@ print(FiveCountries.RE)
 # Analysis
 <Include R chunks for 3+ statistical tests (display code and output) and 3+ final visualization graphs (display graphs only).>
 
-```{r}
+
+```{r echo=TRUE}
 #Statistical Test 1: How has forest changed over time 
 Forest.Fixed <- gls(data = WB_Spread, 
                     Forest ~ Year,
                     method = "REML")
 summary(Forest.Fixed)
 #Did not do "* Country)". Result shows on average Forest decreases by -.00485 each year. 
+```
+
+A fixed effects model was used to see how land percetnage of forest area accross the whoel data set changes over time. The results show that, on average, forest decreases by -.00485% each year. 
+
+```{r echo=TRUE}
 
 Test1 <-  lme(data = WB_Spread,
               Forest ~ Year,
@@ -311,69 +330,119 @@ Test2 # -.557
 
 anova(Forest.Fixed, Test2) # Said: fitted objects with different fixed effects. REML comparisons are not meaningful.
 
+```
+
+I am interested in whether access to electricity or the levels of renewable energy produced in countries have a relationship with deforestation. This is becasue a lack of electricity could drive the use of forest biomass products as an energy source. Electricity access appears to have a negative impact on forest (-.333) which may be because electricity is needed for some agricultural operations, or electricity is being produced via biofuels, the production of which might require more forest to be converted to agricultural land. 
+
+With that theory in mind, I was interested in whether there might be a relationship between forested land and renewable energy because energy produced from biomass is considered to be renewable. However, the result of my gls revealed that a 1 unit increase in renewable energy is associated with a .18% increase in forest land, meaning the production of biofule is likely not a main driver of deforestation. 
+
+```{r echo=TRUE}
+#Looking at Electricity Accesss and Renewable Energy as a Drive of the Ag. / Forest Tradeoff
 
 #Add Electricity 
 Forest.Ag.Elec <- gls(data = WB_Spread, 
                     Forest ~ Year + Agriculture + ElectricityAccess,
                     method = "REML")
 Forest.Ag.Elec
-#Added electricity access to see whether a lack of electricity may contribute to deforestation from the use of biomass as an energy source. Electricity access appears to have a negative impact on forest (-.333) which may be because electricity is needed for some agricultural operations, or electricity is being produce via biofuels. 
+
+#Electricity only 
+Forest.Elec <- gls(data = WB_Spread, 
+                    Forest ~ Year + ElectricityAccess,
+                    method = "REML")
+Forest.Elec
+
 
 Forest.RE <- gls(data = WB_Spread, 
                     Forest ~ Year + RenewableElectricity,
                     method = "REML")
 Forest.RE
-#On that note, I was interested in whether there might be a relationship between forested land and renewable energy because energy produced from biomass is considered to be renewable. However, the result of my gls revealed that a 1 unit increase in renewable energy is associated with a .18% increase in forest land. 
+#On that note, 
 
-#Statistical Test 2: Any change points for forest data?
-pettitt.test(WB_Spread$Forest)
-#Probable change point at time 1428 which doesn't exist.
-
-pettitt.test(WB_Brazil$Forest)
-#9
-
-pettitt.test(WB_Brazil$Agriculture)
-#9
-
-#Statistical Test 3: Linear regression for change in forest? 
+# Regression w/o time 
 Reg1 <- lm(Forest ~ Agriculture, WorldBank_Spread)
 Reg1
 
 #A 1 unit increas in agriculture leads to a -.44 decrease in forest 
 
+```
+
+As a second statistical test I used Pettit’s test, a nonparametric test that determines if there is a shift in the central tendency of the time series. It also determines at what point in time the changepoint occurs. I used this to see if there was a point in time in particular where these seemed to be a noticeable change in forest cover. I applied the test to Brazil which graphically appears to have change points to see if 1) there was a change poing for agriculture and forest and 2) to see if the change points occured in the same year for each. 
+
+
+```{r}
+#Statistical Test 2: Pettitts Test: Looking at Change Points in the Data
+
+#Statistical Test 2: Any change points for full forest data?
+pettitt.test(WB_Spread$Forest)
+#Probable change point at time 1428 which doesn't exist.
+
+
+#Changes in Brazil 
+pettitt.test(WB_Brazil$Forest)
+#9 (of 19): 1998
+
+pettitt.test(WB_Brazil$Agriculture)
+#9 (of 19): 1998 
+```
+
+Pettitt's applied to a single country (Brazil) initially detects a change point in Forest and Agriculture in the same year. The change for both was in place 9, which is the year 1998. 
+
+[Make a graph of Brazil that shows the change points]
+
+
+The next series of tests address the question: Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
+
+```{r echo=TRUE}
+#Statistical Test 3.1: Agriculture & Methane Emmissions
+
 AgMethane <- gls(data = WB_Spread,
                  Ag.Methane ~ Year + Agriculture,
                  method = "REML")
-AgMethane #Ag. increases by 1, Ag Methane increases by 6.57
+AgMethane
 
+#Statistica Test 3.2: Forest & Methane Emmissions
 ForestMethane <- gls(data = WB_Spread, 
                   Ag.Methane ~ Year + Forest,
                   method = "REML")
+ForestMethane
 
-ForestMethane #Forest increase by 1, methane increases by .035; Agricultural emmisions are not strongly related to deforestation. 
-
+#Statistica Test 3.3: Interaction of Forest and Agriculture on Methane Emissions
 Int.Methane <-  gls(data = WB_Spread,
                     Ag.Methane ~ Year + Forest * Agriculture,
                     method = "REML")
-Int.Carbon #Interaction of forest and agriculture: Increase of 1 leads to an increase of 98.856
+Int.Methane 
+```
 
+As the percetage of land under agriculture increases by 1, methane emissions increase by 6.57 thousand metric tons. 
+
+As Forest land increases by 1%, methane emissions increase by .035 thoushand metric tons (or 35 metirc tons), meaning that deforestation is not strongly related to methan emissions. 
+
+However, if the interaction of forest and agriculture land cover is considered, an increase of 1 leads to an increase of 98.86 thousand metric tons of methane. 
+
+```{r echo=TRUE}
+#Carbon Emissions Tests 
+
+#Test 4.1: Forest and Carbon
 Forest.CO2 <- gls(data = WB_Spread, 
                   CO2Emissions ~ Year + Forest,
                   method = "REML")
-Forest.CO2 #1% increase in forest leads to a -235.25 decrease in CO2
+Forest.CO2 
 
+#Test 4.2: Agriculture and Carbon 
 Ag.CO2 <- gls(data = WB_Spread,
                  CO2Emissions ~ Year + Agriculture,
                  method = "REML")
-Ag.CO2 # 1% increase in Ag. leads to an increase of 1493 kt of carbon. 
+Ag.CO2 
 
+#Test 4.3: Interaction of Forest & Agriculture on Carbon 
 Int.CO2 <- gls(data = WB_Spread,
                     CO2Emissions ~ Year + Forest * Agriculture,
                     method = "REML")
-Int.CO2 #How do you interperet this? 
-
-
+Int.CO2 
 ```
+1% increase in forest leads to a -235.25 decrease in CO2. 
+1% increase in Ag. leads to an increase of 1493 kt of carbon. 
+Interaction: How do you interpret? 
 
 
 <Include text sections to accompany these R chunks to explain the reasoning behind your workflow, rationale for your approach, and the justification of meeting or failing to meet assumptions of tests.>
