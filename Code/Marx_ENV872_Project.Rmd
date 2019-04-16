@@ -45,7 +45,7 @@ library(knitr)
 library(car)
 
 # Set your ggplot theme
-RMtheme <- theme_bw(base_size = 10) +
+RMtheme <- theme_bw(base_size = 11) +
   theme(plot.title = element_text(size = 16, color = "gray13", hjust = .5),
     axis.text = element_text(color = "gray13"),
     axis.title.x = element_text(size = 13),
@@ -135,9 +135,21 @@ For more information, please contact the data assembler, **Rebecca Marx** (rebec
 <Add a table that summarizes your data structure. This table can be made in markdown text or inserted as a `kable` function in an R chunk. If the latter, do not include the code used to generate your table.>
 
 
+
 ```{r table1, echo = FALSE, table.cap="\\label{tab:table1}Data Structure"}
 
+Names <-c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.N2O", "CO2Emissions", "Forest", "RenewableElectricity      ")
+
+Units <-c("Name", "Abbrv", "YYYY", "% Total Population", "% Land Area", "Thousand Metric Tons of CO2 Equivalent      ", "Thousand Metric Tons of CO2 Equivalent      ", "Kilotons", "% Land Area", "% Total Output")
+
+Data_Structure <- c("Factor", "Factor", "Date", "Numeric", "Numeric", "Numeric", "Numeric", "Numeric", "Numeric", "Numeric")
+
+data_Label <- data.frame(Names, Units, Data_Structure)
+colnames(data_Label) <- (c("Indicator", "Units", "Data Structure"))
+kable(data_Label,caption="\\label{tab:table} World Bank Land Cover Data Summary")
+
 ```
+
 
 Variable     | Units     | Data Strcuture | 
 ------------ | --------- | -------------- |
@@ -178,7 +190,7 @@ WorldBank_Spread$Year = WB_String
 WorldBank_Spread$Year <- as.Date(WorldBank_Spread$Year, format = "%Y") #can I get it to show only the year? 
 
 #Change column names 
-names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.NO2", "CO2Emissions", "Forest", "RenewableElectricity")
+names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.N2O", "CO2Emissions", "Forest", "RenewableElectricity")
 
 #Save processed file 
 #write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")
@@ -207,6 +219,7 @@ After the data was wrangled into a format that would function well with my inten
 #5+ lines of summary 
 
 colnames(WorldBank_Spread)
+str(WorldBank_Spread)
 class(WorldBank_Spread$Year)
 dim(WorldBank_Spread)
 head(WorldBank_Spread)
@@ -484,6 +497,26 @@ summary(Forest.RE)
 
 ```
 
+```{r echo=FALSE, fig.cap="\\label{fig:fig6}Electricity Trends", fig.widtch=10, fig.height=8, fig.pos='H', warning= FALSE}
+FiveCountries.RE <- 
+  ggplot(Five_Countries) +
+  geom_line(aes(x = Year, y = RenewableElectricity, color = "Renewable Electricy Output")) + 
+  geom_line(aes(x = Year, y = ElectricityAccess, color = "Population with Electricty Access")) +
+  facet_grid(cols = vars(Country)) +
+  ggtitle("Changes in Renewable Electricity and Electricity Access from 1990 to 2014") +
+  ylab(expression("Percentage of Total")) +
+  scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
+  date_breaks = "48 months", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  scale_color_manual(values = c("purple", "blue")) +
+  labs(caption = "Analyses show that forest cover has a negative relationship with electricity access and a positive relationship with renewable electricity.                                                                                                                                Data Source: World Bank") +
+  theme(strip.background = element_rect(fill = "aquamarine3", "darkslategray")) 
+#print(FiveCountries.RE)
+
+grid.arrange(FiveCountries.RE, FiveCountries.Facet)
+```
+
+
 The next series of tests address the question: Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
 
 In a model with methane as the dependent variable and forest and agriculture as the explanatory variables, A 1% increase in agriculture leads to an increase of methane of 662.28 thousand metric tons of CO2 equivalent (p-value 0.00); A 1% increase in forest leads to a decrease of methane of -17.51 thousand metric tons of CO2 equivalent (p-value .003). I have tested this model for multicollinearity given the significant relationship between agriculture and forest, but it does not seem to be a problem in this model with VIFs around 1. The coefficients are only slightly different that if I made two separate models for agriculture and forest. 
@@ -504,13 +537,13 @@ summary(Ag.For.Meth)
 car::vif(Ag.For.Meth)
 
 #NO2 Emissions
-Ag.For.NO2 <- lme(data = WB_Spread,
-                 Ag.NO2 ~ Year + Agriculture + Forest,
+Ag.For.N2O <- lme(data = WB_Spread,
+                 Ag.N2O ~ Year + Agriculture + Forest,
                  random = ~1| Country,
                  method = "REML")
-summary(Ag.For.NO2)
+summary(Ag.For.N2O)
 
-car::vif(Ag.For.NO2)
+car::vif(Ag.For.N2O)
 
 #CO2 Emissions
 Ag.For.CO2 <- lme(data = WB_Spread,
@@ -526,22 +559,22 @@ ForCO2 <- lme(data = WB_Spread,
 summary(ForCO2)
 ```
 
-```{r echo=FALSE, fig.cap="\\label{fig:fig6}Change in Emissions Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=10, fig.pos='H', warning= FALSE}
+```{r echo=FALSE, fig.cap="\\label{fig:fig7}Change in Emissions Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=9, fig.pos='H', warning= FALSE}
 
 LegendTitle2 <- "Emmissions Type"
 
-FiveCountries.Meth.NO2 <- 
+FiveCountries.Meth.N2O <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = Ag.Methane, color = "Methane Levels")) + 
-  geom_line(aes(x = Year, y = Ag.NO2, color = "NO2 Levels")) +
+  geom_line(aes(x = Year, y = Ag.N2O, color = "N2O Levels")) +
   facet_grid(cols = vars(Country)) +
-  ggtitle("Change in Methane and NO2 Emissions from 1990 to 2014") +
+  ggtitle("Change in Methane and N2O Emissions from 1990 to 2014") +
   ylab(expression("Emissions (thousand metric tons)")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
   date_breaks = "48 months", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   scale_color_manual(LegendTitle2,values = c("brown", "gray")) +
-  labs(caption = "Data Source: World Bank") +
+  labs(caption = "Analyses show that agriculture has a positive relationship with methane and N20 emissions while forest has a negative relationship.                                                                                                                                                         Data Source: World Bank") +
   theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
 #print(FiveCountries.Meth.NO2)
 
@@ -555,13 +588,13 @@ FiveCountries.Carbon <-
   date_breaks = "48 months", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   scale_color_manual(values = c("brown")) +
-  labs(caption = "Data Source: World Bank") +
+  labs(caption = "CO2 does not have a statistically significant relationship with either forest or agriculture.                                                                                                                                                                                                                                     Data Source: World Bank") +
   theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
 #print(FiveCountries.Carbon)
 
-grid.arrange(FiveCountries.Meth.NO2, FiveCountries.Facet, FiveCountries.Carbon)
+grid.arrange(FiveCountries.Meth.N2O, FiveCountries.Facet, FiveCountries.Carbon)
 
-#grid.arrange(FiveCountries.Meth.NO2, FiveCountries.Facet)
+#grid.arrange(FiveCountries.Meth.N2O, FiveCountries.Facet)
 
 ```
 
@@ -609,6 +642,6 @@ While the theory that an increase in renewable energy could actually lead to mor
 
 The study draws a clear link between increases in agriculture, decreases in forest, and increases in emissions of methane, which should continue to be explored as we continue to make land use decisions in a time of increasing climate change. This study highlights methane as a priority over nitrous oxide when it comes to land conversion both because its impacts were bigger and because the relationship between nitrous oxide and forest cover is not statistically significant. Going forward, it may be prudent to conduct a study that considers emissions from total agricultural activities as opposed to area under agriculture because agricultural intensification—i.e. more production on the same amount of land—may also be driving emissions. It may be interesting to see how agricultural intensification compares to additional land conversion in terms of emissions. 
 
-All in all, these findings are they are helpful in continuing the discussion around protecting forests from conversion to other land uses, such as agriculture. Preservation of forest ecosystem services such as carbon storage, nutrient cycling, water filtration, and wildlife habitat should start to be part of the conversation when deciding whether to give up forest land for agriculture, which continues to be a trend. 
+All in all, these findings are they are helpful in continuing the discussion around protecting forests from conversion to other land uses, such as agriculture. Preservation of forest ecosystem services such as carbon storage, nutrient cycling, water filtration, and wildlife habitat should start to be part of the conversation when deciding whether to give up forest land for agriculture, which continues to be a trend. A more robust study of the causes and impacts of land use changes is in order. 
 
 
