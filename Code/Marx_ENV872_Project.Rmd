@@ -8,7 +8,7 @@ geometry: margin=2.54cm
 title: Changes in Land Use between 1990 and 2014
 subtitle: https://github.com/RsMarx/Ag_Forest_Data_Final-
 author: Rebecca Marx
-abstract: "This study uses data spanning 264 countries to explore the causes and impacts of changes in land use from 1990 to 2014. It confirms a slight trend of decreasing levels of forest cover globally which can be explained, in part, by an increase in agriculture cover. In addition to addressing the impacts of agricultural expansion on forest cover, the study considers the roles that electricity access and renewable energy have to play in forest cover trends. Finally, a clear link is drawn between increases in agriculture, decreases in forest, and increases in emissions of methane and nitrous oxide. The study was conducted using a series of linear mixed-effect models with country as a random effect, as well as tests to confirm there are no problems with multicollinearity. While the study looks at trends across all countries in the data set, it also highlights the chain of causes and impacts of land cover change in five countries in five distinct regions. A set of graphs illustrate the differences and similarities of individual country experiences. Overall, the study is a helpful resource for continuing the discussion around protecting forests from conversion to other land uses, such as agriculture."
+abstract: "This study uses data spanning 264 countries to explore the causes and impacts of changes in land use from 1990 to 2014. It confirms a slight trend of decreasing levels of forest cover globally which can be explained, in part, by an increase in agriculture cover. In addition to addressing the impacts of agricultural expansion on forest cover, the study considers the roles that electricity access and renewable energy have to play in forest cover trends. Finally, a clear link is drawn between increases in agriculture cover, decreases in forest cover, and increases in emissions of methane and nitrous oxide. The study was conducted using a series of linear mixed-effect models with country as a random effect, as well as tests to confirm there are no problems with multicollinearity. While the study looks at trends across all countries in the data set, it also highlights the chain of causes and impacts of land cover change in five countries in five distinct regions. A set of graphs illustrate the differences and similarities of individual country experiences. Overall, the study is a helpful resource for continuing the discussion around protecting forests from conversion to other land uses, such as agriculture."
 fontsize: 12pt
 mainfont: Times New Roman
 ---
@@ -46,7 +46,7 @@ library(car)
 
 # Set your ggplot theme
 RMtheme <- theme_bw(base_size = 11) +
-  theme(plot.title = element_text(size = 16, color = "gray13", hjust = .5),
+  theme(plot.title = element_text(size = 14, color = "gray13", hjust = .5),
     axis.text = element_text(color = "gray13"),
     axis.title.x = element_text(size = 13),
     axis.title.y = element_text(size = 13),
@@ -83,10 +83,12 @@ As the global population continues to grow and require more food and fuel resour
 This research looks at the trends and tradeoffs in land use across countries from 1990 – 2014. Primary questions include: 
 
 - Is there a relationship between the percentage of land area dedicated to forest versus agricultural in countries?
-- Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
+- Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and nitrous oxide emissions?
 - Is there a relationship between access to electricity or renewable electricity output and the percentage of land dedicated to forestry versus agriculture? 
 
-The research utilizes a data set from the World Bank that has 135 environment-related variables for 264 countries. I have narrowed the environment variable down to 7 that are relevant to land use. Although the full data set dates back to 1960, I have limited to the time scope of the analysis to between 1990 and 2014 because those are the dates for which forest cover data is available. 
+Emissions variables are included becasue emissions are expected to increase if agricultural activities increase. Electricity data are included because biomass from forests can be a source of fuel for those who do not have access to electricity. Furthermore, biofuel produced from wood chips and crops is considered a source of renewable energy. 
+
+The research utilizes a data set from the World Bank that has 135 environment-related variables for 264 countries. I have narrowed the environment variable down to 7 that are relevant to land use. Although the full data set dates back to 1960, I have limited to the time scope of the analysis to between 1990 and 2014 because those are the dates for which all data is available. 
 
 \newpage
 
@@ -94,39 +96,43 @@ The research utilizes a data set from the World Bank that has 135 environment-re
 
 ## Database Information 
 Data were collected from the World Bank website. More information can be found here: https://data.worldbank.org/topic/environment
+
 Data were downloaded as a full data set called “API_6_DS2_en_csv_v2_10518155”. The csv file was saved as “WorldBank_Raw_4.8.19”. 
+
 Variables from among the raw data set were selected to be used in the data set analysed. Only 7 of a possible 135 environment-related variables were retained in the processed data. This csv file was saved as [“WorldBank_Processed”; “WorldBank_Spread” or “WB_Spread”]. 
 
 ## Data Content Information 
-Country: Originally named “Country.Name”, the Country variable includes 264 countries. 
+**Country**: Originally named “Country.Name”, the Country variable includes 264 countries. 
 
-Year: The Year variable was originally spread horizontally from 1960 – 2018. The years were gathered in to one column named “Year” and formatted as a date. 
+**Year**: The Year variable was originally spread horizontally from 1960 – 2018. The years were gathered in to one column named “Year” and formatted as a date. 
 
-Forest: The Forest variable was originally named “Forest area (% of land area)”. Its data range is 1990 – 2016.  
+**Forest**: The Forest variable was originally named “Forest area (% of land area)”. Its data range is 1990 – 2016.  
 
-Agriculture: The Agriculture variable was originally named “Agriculture land (% of land area). Its data range is from 1961 – 2018. 
+**Agriculture**: The Agriculture variable was originally named “Agriculture land (% of land area). Its data range is from 1961 – 2018. 
 
-Ag.Methane: The Ag.Methane variable was originally named “Agriculture methane emissions (thousand metric tons of CO2 equivalent). Its data range is 1970 – 2008. 
+**Ag.Methane**: The Ag.Methane variable was originally named “Agriculture methane emissions (thousand metric tons of CO2 equivalent). Its data range is 1970 – 2008. 
 
-Ag.NO2: The Ag.NO2 variable was originally named “Agriculture nitrous oxide emissions (thousand metric tons of CO2 equivalent). Its data range is 1970 – 2008.
+**Ag.NO2**: The Ag.NO2 variable was originally named “Agriculture nitrous oxide emissions (thousand metric tons of CO2 equivalent). Its data range is 1970 – 2008.
 
-CO2Emissions: The CO2Emissions variable was originally named “CO2 emissions (kt). Its data range is 1960 – 2014. 
+**CO2Emissions**: The CO2Emissions variable was originally named “CO2 emissions (kt). Its data range is 1960 – 2014. 
 
-ElectricityAccess: The ElectricityAccess variable was originally named “Access to electricity (% of total population). Data range is 1990 – 2016. 
+**ElectricityAccess**: The ElectricityAccess variable was originally named “Access to electricity (% of total population). Data range is 1990 – 2016. 
 
-RenewableElectricity: The RenewableElectricity variable was originally named “Renewable electricity output (% of total electricity output). Its data range is 1990 – 2015. 
+**RenewableElectricity**: The RenewableElectricity variable was originally named “Renewable electricity output (% of total electricity output). Its data range is 1990 – 2015. 
 
 ## Naming conventions and file formats
 The files are named according to the following convention:
-`databasename_datatype_details_stage.format`, where:
+databasename_datatype_details_stage.format
+where:
 Files are named according to the following naming convention: 
 **databasename** refers to the database from where the data originated
 **details** are additional descriptive details related to the stage of data wrangling 
-**stage**refers to the stage in data management pipelines (e.g., raw or processed)
+**stage** refers to the stage in data management pipelines (e.g., raw or processed)
 **format** is a non-proprietary file format (e.g., .csv, .txt)
 
 
-## Additional Information and Support
+**Additional Information and Support**
+
 For more information, please contact the data assembler, **Rebecca Marx** (rebecca.marx@duke.edu)
 
 
@@ -135,6 +141,9 @@ For more information, please contact the data assembler, **Rebecca Marx** (rebec
 <Add a table that summarizes your data structure. This table can be made in markdown text or inserted as a `kable` function in an R chunk. If the latter, do not include the code used to generate your table.>
 
 
+
+
+**Summary of Data Structure**
 
 ```{r table1, echo = FALSE, table.cap="\\label{tab:table1}Data Structure"}
 
@@ -151,24 +160,27 @@ kable(data_Label,caption="\\label{tab:table} World Bank Land Cover Data Summary"
 ```
 
 
-Variable     | Units     | Data Strcuture | 
------------- | --------- | -------------- |
- Cell 1      |  Cell 2   | Cells          |
- Cell 3      |  Cell 4   | Cells          |
-
-
 \newpage
 
 # Exploratory Data Analysis and Wrangling
 
+
+##Data Wrangling
 Wrangling the data required multiple operations. First, I used the filter function to select only 7 of a possible 135 variables in the data set. Since the data set was arranged with the years going horizontally, I then had to gather the years in to one column, and create a new column called “Level” that contained the values recorded for each variable in each year. Afterward, I used spread to make each environmental variable its own column. I had to remove an "X" from in front of the Year, and format the Year as a date. I also had to update column names because they were very long. For certain tests, I had to drop na from the data set. 
+
 
 
 ```{r}
 World_Bank_Master <-read.csv("../Raw/WorldBank_Raw2_4.8.19.csv")
 
 #Data Subset
-World_Bank_Filter <- filter(World_Bank_Master, Indicator.Name == "Forest area (% of land area)" | Indicator.Name == "Agricultural land (% of land area)" | Indicator.Name == "Access to electricity (% of population)" | Indicator.Name == "Renewable electricity output (% of total electricity output)" | Indicator.Name == "CO2 emissions (kt)" | Indicator.Name == "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Agricultural methane emissions (thousand metric tons of CO2 equivalent)")
+World_Bank_Filter <- filter(World_Bank_Master, 
+Indicator.Name == "Forest area (% of land area)" | 
+Indicator.Name == "Agricultural land (% of land area)" | 
+Indicator.Name == "Access to electricity (% of population)" | 
+Indicator.Name == "Renewable electricity output (% of total electricity output)" | 
+Indicator.Name == "CO2 emissions (kt)" | 
+Indicator.Name == "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)" | Indicator.Name == "Agricultural methane emissions (thousand metric tons of CO2 equivalent)")
 
 WorldBank_Gather <- gather(World_Bank_Filter, "Year", "Level", X1960:X2018)
 
@@ -187,15 +199,20 @@ WorldBank_Spread$Year = WB_String
 
 #Format as date
 #WB_Fixed$Year <- as.Date(WB_Fixed$Year)
-WorldBank_Spread$Year <- as.Date(WorldBank_Spread$Year, format = "%Y") #can I get it to show only the year? 
+WorldBank_Spread$Year <- as.Date(WorldBank_Spread$Year, format = "%Y") 
 
 #Change column names 
-names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", "ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.N2O", "CO2Emissions", "Forest", "RenewableElectricity")
+names(WorldBank_Spread) <- c("Country", "Indicator.Code", "Year", 
+"ElectricityAccess", "Agriculture", "Ag.Methane", "Ag.N2O", 
+"CO2Emissions", "Forest", "RenewableElectricity")
 
 #Save processed file 
-#write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")
+#write.csv(WorldBank_Spread, 
+#row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")
    
-Five_Countries <- filter(WorldBank_Spread, Country == "Brazil" | Country == "Kenya" | Country == "Spain" | Country == "Indonesia" | Country == "Canada")
+Five_Countries <- filter(WorldBank_Spread, Country == "Brazil" | 
+Country == "Kenya" | Country == "Spain" | 
+Country == "Indonesia" | Country == "Canada")
 
 WB_Spread <- WorldBank_Spread %>% 
   na.exclude #check if I need this for my tests
@@ -209,11 +226,11 @@ WB_Brazil <- filter(WorldBank_Spread, Country == "Brazil")
 
 ```
 
-<Include R chunks for 5+ lines of summary code (display code and output), 3+ exploratory graphs (display graphs only), and any wrangling you do to your dataset(s).> 
-
-
 ```
+##Data Exploration
+
 After the data was wrangled into a format that would function well with my intended R operations, I was able to begin exploring the data set. 
+
 
 ```{r echo=TRUE, warning=FALSE}
 #5+ lines of summary 
@@ -233,11 +250,13 @@ summary(WB_Brazil$Forest)
 
 ```
 
-Figure\ref{fig:fig1} plots agriculture and forest land covers to see if there is a noticable trend. It appears that there is a tendency for forest cover to decrease as agriculture cover increases. In other words, the scatter plot shows some correlation between the Forest and Agriculture variables. 
 
-A second exploratory graph (Figure\ref{fig:fig2}) plots forest levels for all 264 countries over time. The resulting graph shows that there is some movement over time, but many countries see constant levels of land use. Similarly, the plot of agriculture over time shows some movement over time, but many countries see constant levels of land use for agriculture. In later graphs I decided to reduce the number of countries included to be able to better visualized changes. 
+**Figure\ref{fig:fig1}** plots agriculture and forest land covers to see if there is a noticable trend. It appears that there is a tendency for forest cover to decrease as agriculture cover increases. In other words, the scatter plot shows some correlation between the Forest and Agriculture variables. 
 
-The third exploratory graph (Figure\ref{fig:fig3}) is a series of histograms looking at the distribution of forest and agriculture data to determine how to treat the variable in the planned regressions. Although neither forest not agriculture has a particularly normal distribution and both are measure in terms of percentages, I decided not to log transform either becasue the logged version of agriculture seemed less interpretable.  
+A second exploratory graph **(Figure\ref{fig:fig2})** plots forest levels for all 264 countries over time. The resulting graph shows that there is some movement over time, but many countries see constant levels of land use. Similarly, the plot of agriculture over time shows some movement over time, but many countries see constant levels of land use for agriculture. In later graphs I decided to reduce the number of countries included to be able to better visualized changes. 
+
+The third exploratory graph **(Figure\ref{fig:fig3})** is a series of histograms looking at the distribution of forest and agriculture data to determine how to treat the variable in the planned regressions. Although forest cover does have a particularly normal distribution and both are measured in terms of percentages, I decided not to log transform either becasue the logged version of forest seemed less interpretable. Agriculture's distribution actually looks fairly normal. 
+
 
 
 ```{r fig1, echo=FALSE, fig.cap="\\label{fig:fig1}Percentage of Land Use for Forest and Agriculture", fig.widtch=5, fig.height=6, fig.pos='H', warning= FALSE}
@@ -245,12 +264,14 @@ The third exploratory graph (Figure\ref{fig:fig3}) is a series of histograms loo
 #Exploratory graph 1: Agriculture vs. Forest 
 AgVForest <- 
   ggplot(WorldBank_Spread) + 
-  geom_point(aes(x = Agriculture, y = Forest)) +
+  geom_point(aes(x = Agriculture, y = Forest, col = "blue")) +
   ggtitle("Percentage of Land Use for Forest and Agriculture") +
   ylab(expression("% Land Cover in Forest")) +
   xlab(expression("% Land Cover in Agriculture")) +
   scale_y_continuous(limits = c(0,100)) +
-  scale_x_continuous(limits = c(0,100)) 
+  scale_x_continuous(limits = c(0,100)) +
+  scale_color_manual(values = c("darkblue")) +
+  theme(legend.position = "none")
 print(AgVForest)
 ```
 
@@ -285,23 +306,35 @@ grid.arrange(ForestTime, AgricultureTime)
 
 
 ```{r echo=FALSE, fig.cap="\\label{fig:fig3}Forest and Agriculture Data Distributions", fig.widtch=10, fig.height=10, fig.pos='H', warning= FALSE}
+
+#Histograms
 Forest.Hist <- ggplot(WB_Spread) + 
-  geom_histogram(aes(x = Forest)) +
+  geom_histogram(aes(x = Forest, color = "Forest", fill = "Forest")) +
   ggtitle("Forest Data Distribution") +
-  scale_x_continuous(limits = c(0,100))
+   theme(legend.position = "none") +
+  scale_x_continuous(limits = c(0,100)) +
+  scale_color_manual(values = c("brown")) +
+  scale_fill_manual(values = c("darkcyan")) +
+  theme(legend.position = "none")
 #print(Forest.Hist)
 
 WB_Spread2$trans_Forest <- log(WB_Spread2$Forest)
 
 log.Forest.Hist <- ggplot(WB_Spread2) + 
   ggtitle("Forest Data Log Distribution") +
-  geom_histogram(aes(x = Forest)) 
+  geom_histogram(aes(x = Forest, color = "Forest", fill = "Forest")) +
+  scale_color_manual(values = c("brown")) +
+  scale_fill_manual(values = c("darkcyan")) +
+  theme(legend.position = "none")
 #print(log.Forest.Hist)
 
 Ag.Hist <- ggplot(WB_Spread) +
-  geom_histogram(aes(x = Agriculture)) +
+  geom_histogram(aes(x = Agriculture, color = "Agriculture", fill = "Agriculture")) +
   ggtitle("Agriculture Data Distribution") +
-  scale_x_continuous(limits = c(0,100))
+  scale_x_continuous(limits = c(0,100))+
+  scale_color_manual(values = c("brown")) +
+  scale_fill_manual(values = c("goldenrod3")) +
+  theme(legend.position = "none")
 
 grid.arrange(Forest.Hist, log.Forest.Hist, Ag.Hist)
 
@@ -311,16 +344,19 @@ grid.arrange(Forest.Hist, log.Forest.Hist, Ag.Hist)
  
  
 ```
-<Include text sections to accompany these R chunks to explain the reasoning behind your workflow, and the rationale for your approach.>
-
 
 \newpage
+ 
+```
 
 # Analysis
 <Include R chunks for 3+ statistical tests (display code and output) and 3+ final visualization graphs (display graphs only).>
 
-Given that forest cover is my main variable of interest, I started by testing of forest cover changes over time. 
+```
+##Forest Cover and Impacts of Agriculture
 
+Given that forest cover is my main variable of interest, I started by testing of forest cover changes over time. 
+ 
 I used hierarchical or mixed-effect model to include the variable time, expressed in years. I did not set up the model to deal with temporal autocorrelation because, given that there was only one observation per location per year, I did not believe there would be an issue with seasonality. 
 
 I initially attempted three models: a generalized least squares model fit by REML; a linear mixed-effects (LME) model fit by REML with countries as a random effect, and a generalized linear squares (GLS) model which did not allow me to account for fixed effects and random effects. I attempted the GLS because my Forest and Agriculture variables are both measured as percentages meaning a logit model might be more appropriate. GLS allows for non-normal distributions. However, the results of the GLS model were similar to the GLM model which allows for random effects. Both appeared inferior to the LME model which had a lower AIC of 49431 versus 49977 for GLS and 49967 for GLM. As such, I used LME going forward. 
@@ -335,29 +371,24 @@ Forest.Time1 <- gls(data = WB_Spread,
                     Forest ~ Year,
                     method = "REML")
 summary(Forest.Time1)
-#Forest decreasing over time (-.00424, p-value 0.00)
-#AIC 49977.96
 
 Forest.Time2 <- lme(data = WB_Spread,
                 Forest ~ Year,
                 random = ~1| Country,
                 method = "REML")
 summary(Forest.Time2)
-#Forest decreasing over time (-.00421, p-value 0.00)
-#AIC 49431.95
-
-#AIC for the random effect model is lower, so used this going forward. 
 
 Logit_Test <- glm(data = WB_Spread,
              Forest ~ Year)
 summary(Logit_Test)
-#The results were not much different than using gls, and I was not able to account for variance. AIC 49967. -.00425 (p-value 1.74e-15)
+```
+
 ```
 
 After establishing that there is a change in forest cover over time, I ran an LME regression to see if agriculture cover can explain any of the change in forest cover. The result of the test was a statistically significant (p-value = 0.00) negative relationship which, in absolute terms, can be interpreted as a 1% increase in agriculture cover results in a .49% decrease in forest cover. 
 
 I used a test for correlation to better understand this relationship. It revealed that there is slight negative correlation between agriculture and forest with a 95% confidence interval of -.16 and -.10. 
-
+```
 
 ```{r echo=TRUE, warning=FALSE}
 For.Ag.2 <-  lme(data = WB_Spread,
@@ -368,11 +399,11 @@ summary(For.Ag.2)
 
 cor.test(formula = ~ Forest + Agriculture,
          data = WB_Spread)
-#There is some negative correlation between Agriculture and Forest with a 95% confidence interval of -.16 and -.10. 
-
 ```
 
-To visualize the relationship between agriculture and forest, I chose to display one country from each of 5 major continents: North America, South America, Europe, Asia and Africa. The country selection within regions was semi-random. I anticipated that Brazil and Indonesia might show increasing agriculture with decreasing forest based on past research; but Canada, Spain and Kenya were chosen at random with the understanding that these five countries represetn different regions and states of economic development. The graph shows that forest and agriculture, when they do move, do indeed tend to have an inverse relationship. Agriculture is not always leading to a decrease in forest cover, but three of the five samples are moving in oposite directions while the other two have fairly constant levels.  
+
+To visualize the relationship between agriculture and forest, I chose to display one country from each of 5 major continents: North America, South America, Europe, Asia and Africa in **(Figure\ref{fig:fig4})**. The country selection within regions was semi-random. I anticipated that Brazil and Indonesia might show increasing agriculture with decreasing forest based on past research; Canada, Spain and Kenya were chosen at random with the understanding that these five countries represent different regions and states of economic development. The graph shows that forest and agriculture, when they do move, do indeed tend to have an inverse relationship. Agriculture is not always leading to a decrease in forest cover, but three of the five samples are moving in oposite directions while the other two have fairly constant levels. 
+
 
 ```{r echo=FALSE, fig.cap="\\label{fig:fig4}Change in Land Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=5, fig.pos='H', warning= FALSE}
 
@@ -391,13 +422,15 @@ FiveCountries.Facet <-
   scale_y_continuous(limits = c(0,70)) +
   scale_color_manual(LegendTitle1,values = c("goldenrod3", "darkcyan")) +
   labs(caption = "Data Source: World Bank") +
-  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+  theme(strip.background = element_rect(fill= "ivory", "darkslategray")) 
 print(FiveCountries.Facet)
 ```
 
+##Spotlight on Brazil
+
 Zooming in more narrowly on one country, I used Pettit’s test, a nonparametric test that determines if there is a shift in the central tendency of the time series, to determine at what point in time the changepoints occur in Brazil. I applied the test to both Forest Cover and Agriculture Cover to 1) see if there was a change point for agriculture and/or forest and 2) see if the change points occured in the same year for both forest and agriculture. 
 
-Pettitt's applied to a single country (Brazil) initially detects a change point in Forest and Agriculture in the same year. The change for both was in place 9, which is the year 1998. The significant change points for agriculture and forest in Brazil occured in the same years (1998 and 2003), furhter supporting the notion that there is a relationship between the two. 
+Pettitt's applied to a single country (Brazil) initially detects a change point in Forest and Agriculture in the same year. The change for both was in place 13, which is the year 2002 with a p-value of .0001 in both instances. The second change points were only a year apart, as seen in **(Figure\ref{fig:fig5})**. This is an exmaple of agriculture and forest covers moving inversely at the same time. In the case of Spain, the first detected change points occured two years apart. In Kenya, the first detected change points for forest and agricuture covers were 8 years apart. 
 
 
 ```{r echo=TRUE, warning=FALSE}
@@ -412,25 +445,28 @@ WB_Brazil <- select(WB_Brazil, Forest, Agriculture, Country, Year) %>%
 
 #Changes in Brazil Forest
 pettitt.test(WB_Brazil$Forest)
-#13 (of 19): 2002; p-value .0001182 (significant at the .05 level)
 
 pettitt.test(WB_Brazil$Forest[13:27])
 
-#Changes in Brazil Agriculture 
-#7 (13+7 = 20: 2009); p-value .01074 (significant at the .01 level)
-
 pettitt.test(WB_Brazil$Forest[20:27])
-#4 20 + 4 = 24: 2013 (p-value .139: not significant)
+
+#Changes in Brazil Agriculture 
 
 pettitt.test(WB_Brazil$Agriculture)
-#13 (of 19): 2002; p-value .000118 (significant at the .01 level)
 
 pettitt.test(WB_Brazil$Agriculture[13:27])
-#6 (13+6 = 19: 2008); p-value .0155 (significant at the .05 level
 
 pettitt.test(WB_Brazil$Agriculture[19:27])
-#4 (19 +4 = 2012) p-value .1033 (not significant)
 
+#Spain
+Spain.Pettit <- filter(WB_Spread, Country == "Spain")
+pettitt.test(Spain.Pettit$Forest)
+pettitt.test(Spain.Pettit$Agriculture)
+
+#Kenya
+Kenya.Pettit <- filter(WB_Spread, Country == "Kenya")
+pettitt.test(Kenya.Pettit$Forest)
+pettitt.test(Kenya.Pettit$Agriculture)
 ```
 
 ```{r echo=FALSE, fig.cap="\\label{fig:fig5}Change Points in Brazil", fig.widtch=10, fig.height=5, fig.pos='H', warning= FALSE}
@@ -446,7 +482,7 @@ Brazil.Ag <-
   scale_color_manual(LegendTitle1,values = c("goldenrod3")) +
   theme(legend.position = "none") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
-  labs(caption = "Dashed line represent change points                                                                                                                                            Data Source: World Bank") +
+  labs(caption = "Dashed lines represent change points                                                                 Data Source: World Bank") +
   geom_vline(xintercept = as.Date("2002-12-31"),linetype = "dashed", col = 'blue') +  geom_vline(xintercept = as.Date("2008-12-31"),linetype = "dashed", col = 'blue') 
 #print(Brazil.Ag)
 
@@ -461,7 +497,7 @@ Brazil.For <-
   scale_color_manual(LegendTitle1,values = c("darkcyan")) +
   theme(legend.position = "none") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
-  labs(caption = "Dashed line represent change points                                                                                                                                            Data Source: World Bank") +
+  labs(caption = "Dashed lines represent change points                                                                 Data Source: World Bank") +
   geom_vline(xintercept = as.Date("2002-12-31"),linetype = "dashed", col = 'blue') +  geom_vline(xintercept = as.Date("2009-12-31"),linetype = "dashed", col = 'blue') 
 #print(Brazil.For)
 
@@ -469,15 +505,18 @@ grid.arrange(Brazil.Ag, Brazil.For)
 
 ```
 
+##Evaluation of Electricity Variables as a Cause of Deforestation
 
 Having established that agriculture cover has an impact on forest cover, I was also interested in whether access to electricity or the levels of renewable energy produced in countries have a relationship with deforestation. This is because a lack of electricity could drive the use of forest biomass products as an energy source. To the contrary, when included in a model with agriculture electricity access appears to have a negative impact on forest (-.33 coefficient, p-value 0.00). This may be because electricity is needed for some agricultural operations. To test the idea that more agriculture may require more electricity, I ran a variance inflation factor (vif) test to check for multicollinearity in the model. The variance inflation factors were all around 1, meaning multicollinearity is not a problem in the model. I also checked for correlation using the cor.test which revealed that slightly negative correlation between agriculture and electricity access, which I am unable to explain. 
 
-A second theory regarding the negative relationship between electricity access and forest cover is that electricity is produced via biofuels, the production of which might require more forest to be converted to agricultural land. With that theory in mind, I was interested in whether there might be a relationship between forested land and renewable energy output because energy produced from biomass is considered to be renewable. However, the result of my LME revealed that a 1 unit increase in renewable energy output is associated with an .20% increase in forest land, meaning the production of biofuels is likely not a main driver of deforestation across the sample, or biofuel is a very small portion of renewable energy. 
+A second theory regarding the negative relationship between electricity access and forest cover is that electricity is produced via biofuels, the production of which might require more forest to be converted to agricultural land. With that theory in mind, I was interested in whether there might be a relationship between forested land and renewable energy output because energy produced from biomass is considered to be renewable. However, the result of my LME revealed that a 1 unit increase in renewable energy output is associated with an .20% increase in forest land, meaning the production of biofuels is likely not a main driver of deforestation across the sample, or biofuel is a very small portion of renewable energy.
 
+These relationships can be observed in **(Figure\ref{fig:fig6})** higlighting the chosen 5 countries. 
 
 
 ```{r echo=TRUE, warning=FALSE}
-#Looking at Electricity Accesss and Renewable Energy as a Drive of the Ag. / Forest Tradeoff
+#Looking at Electricity Accesss and Renewable Energy 
+#as a Driver of the Ag. / Forest Tradeoff
 
 Forest.Ag.Elec <- lme(data = WB_Spread, 
                     Forest ~ Year + Agriculture + ElectricityAccess,
@@ -497,33 +536,38 @@ summary(Forest.RE)
 
 ```
 
-```{r echo=FALSE, fig.cap="\\label{fig:fig6}Electricity Trends", fig.widtch=10, fig.height=8, fig.pos='H', warning= FALSE}
+```{r echo=FALSE, fig.cap="\\label{fig:fig6}Electricity Trends for Five Countries", fig.widtch=10, fig.height=8, fig.pos='H', warning= FALSE}
+Legend1 <- "Legend"
+
 FiveCountries.RE <- 
   ggplot(Five_Countries) +
   geom_line(aes(x = Year, y = RenewableElectricity, color = "Renewable Electricy Output")) + 
   geom_line(aes(x = Year, y = ElectricityAccess, color = "Population with Electricty Access")) +
   facet_grid(cols = vars(Country)) +
-  ggtitle("Changes in Renewable Electricity and Electricity Access from 1990 to 2014") +
+  ggtitle("Renewable Electricity and Electricity Access from 1990 to 2014") +
   ylab(expression("Percentage of Total")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
   date_breaks = "48 months", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
-  scale_color_manual(values = c("purple", "blue")) +
-  labs(caption = "Analyses show that forest cover has a negative relationship with electricity access and a positive relationship with renewable electricity.                                                                                                                                Data Source: World Bank") +
-  theme(strip.background = element_rect(fill = "aquamarine3", "darkslategray")) 
+  scale_color_manual(Legend1,values = c("purple", "blue")) +
+  labs(caption = "Data Source: World Bank") +
+  theme(strip.background = element_rect(fill = "ivory", "darkslategray")) 
 #print(FiveCountries.RE)
 
 grid.arrange(FiveCountries.RE, FiveCountries.Facet)
 ```
 
+##A Look at Emissions
 
 The next series of tests address the question: Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
 
 In a model with methane as the dependent variable and forest and agriculture as the explanatory variables, A 1% increase in agriculture leads to an increase of methane of 662.28 thousand metric tons of CO2 equivalent (p-value 0.00); A 1% increase in forest leads to a decrease of methane of -17.51 thousand metric tons of CO2 equivalent (p-value .003). I have tested this model for multicollinearity given the significant relationship between agriculture and forest, but it does not seem to be a problem in this model with VIFs around 1. The coefficients are only slightly different that if I made two separate models for agriculture and forest. 
 
-In a model with NO2 as the dependent variable and forest and agriculture as the explanatory variables, A 1% increase in agriculture leads to an increase of nitrous oxide of 491.079 thousand metric tons of CO2 equivalent (p-value 0.002); A 1% increase in forest leads to a decrease of nitrous oxide of -1.526 thousand metric tons of CO2 equivalent, but this is not statistically significant with a p-value of .7986. 
+In a model with N2O as the dependent variable and forest and agriculture as the explanatory variables, A 1% increase in agriculture leads to an increase of nitrous oxide (N2O) of 491.079 thousand metric tons of CO2 equivalent (p-value 0.002); A 1% increase in forest leads to a decrease of nitrous oxide of -1.526 thousand metric tons of CO2 equivalent, but this is not statistically significant with a p-value of .7986. 
 
-The results for carbon emissions were not statistically significant, likely because the number includes a large percentage of carbon emissions that are associated with  the manufacturing sector as opposed to carbon from land use changes. 
+The results for carbon emissions were not statistically significant, likely because the number includes a large percentage of carbon emissions that are associated with the manufacturing sector as opposed to carbon from land use changes. 
+
+All of these emissions changes over time can be compared to forest and agriculture cover changes for five countries in **(Figure\ref{fig:fig7})**. 
 
 
 ```{r echo=TRUE, warning=FALSE}
@@ -559,7 +603,7 @@ ForCO2 <- lme(data = WB_Spread,
 summary(ForCO2)
 ```
 
-```{r echo=FALSE, fig.cap="\\label{fig:fig7}Change in Emissions Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=9, fig.pos='H', warning= FALSE}
+```{r echo=FALSE, fig.cap="\\label{fig:fig7}Change in Emissions Use from 1990 to 2014 for Five Countries", fig.widtch=10, fig.height=8.5, fig.pos='H', warning= FALSE}
 
 LegendTitle2 <- "Emmissions Type"
 
@@ -569,13 +613,13 @@ FiveCountries.Meth.N2O <-
   geom_line(aes(x = Year, y = Ag.N2O, color = "N2O Levels")) +
   facet_grid(cols = vars(Country)) +
   ggtitle("Change in Methane and N2O Emissions from 1990 to 2014") +
-  ylab(expression("Emissions (thousand metric tons)")) +
+  ylab(expression("Thousand Metric Tons)")) +
   scale_x_date(limits = as.Date(c("1990-04-09", "2014-04-09")),
   date_breaks = "48 months", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   scale_color_manual(LegendTitle2,values = c("brown", "gray")) +
-  labs(caption = "Analyses show that agriculture has a positive relationship with methane and N20 emissions while forest has a negative relationship.                                                                                                                                                         Data Source: World Bank") +
-  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+  labs(caption = "Agriculture - positive relationship with methane and N20; Forest - negative relationship.   Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "ivory", "darkslategray"))
 #print(FiveCountries.Meth.NO2)
 
 FiveCountries.Carbon <- 
@@ -588,8 +632,9 @@ FiveCountries.Carbon <-
   date_breaks = "48 months", date_labels = "%Y") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   scale_color_manual(values = c("brown")) +
-  labs(caption = "CO2 does not have a statistically significant relationship with either forest or agriculture.                                                                                                                                                                                                                                     Data Source: World Bank") +
-  theme(strip.background = element_rect(fill= "aquamarine3", "darkslategray")) 
+  theme(legend.position = "none") +
+  labs(caption = "CO2 does not have a statistically significant relationship with either forest or agriculture.     Data Source: World Bank") +
+  theme(strip.background = element_rect(fill= "ivory", "darkslategray")) 
 #print(FiveCountries.Carbon)
 
 grid.arrange(FiveCountries.Meth.N2O, FiveCountries.Facet, FiveCountries.Carbon)
@@ -615,33 +660,36 @@ grid.arrange(FiveCountries.Meth.N2O, FiveCountries.Facet, FiveCountries.Carbon)
 # Summary and Conclusions
 <Summarize your major findings from your analyses. What conclusions do you draw from your findings? Make sure to apply this to a broader application for the research question you have answered.>
 
-This research has looked at the causes and impacts of changes in land use from 1990 to 2014 as it pertains to forest cover and agriculture cover. There is a statistically significant trend of slightly decreasing forest cover over time in the full data set of 263 countries, which can partially be attributed to changes in agriculture cover. Renewable electricity output and electricity access also have statistically significant relationships with forest cover.  Meanwhile, on the other end of the spectrum, changes in land dedicated to agriculture and to forest have explained increases in emissions of agricultural methane and nitrous oxide, though they were not able to explain changes in carbon. 
+##Summary
+
+This research has looks at the causes and impacts of changes in land use from 1990 to 2014 as it pertains to forest cover and agriculture cover. There is a statistically significant trend of slightly decreasing forest cover over time in the full data set of 263 countries, which can partially be attributed to changes in agriculture cover. Renewable electricity output and electricity access also have statistically significant relationships with forest cover.  Meanwhile, on the other end of the spectrum, changes in land dedicated to agriculture and to forest have explained increases in emissions of agricultural methane and nitrous oxide, though they were not able to explain changes in CO2. 
 
 The questions this research attempts to answer are addressed below: 
 
-Is there a relationship between the percentage of land area dedicated to forest versus agricultural in countries?
+**Is there a relationship between the percentage of land area dedicated to forest versus agricultural in countries?**
 
-There is a relationship between the percentage of land area dedicated to forest versus agricultural in countries.  A 1% increase in agriculture cover results in a .49% decrease in forest cover, and there is a slight negative correlation between the two variables. The trend of decreasing forest as agriculture increases is not true for all countries as seen by the exploratory plot where many of the countries land covers appear to stay constant, and the plot that highlight five countries where Spain is actually increasing forest cover while agriculture decreases. It does appear that the variables do more or less move together, however, perhaps more in some countries than others. For example, the Pettit’s test applied to Brazil showed the first change point being the same for both agriculture cover and forest cover while the second point was just a year apart for the two. 
+There is a relationship between the percentage of land area dedicated to forest versus agricultural in countries.  A 1% increase in agriculture cover results in a .49% decrease in forest cover, and there is a slight negative correlation between the two variables. The trend of decreasing forest as agriculture increases is not true for all countries as seen by the exploratory plot where many countries' land covers appear to stay constant. Similarly, in the plot that highlights five countries Spain is actually increasing forest cover while agriculture decreases. It does appear that the forest cover and agriculture do more or less move together, though perhaps more in some countries than others. For example, the Pettit’s test applied to Brazil showed the first change point being the same for both agriculture cover and forest cover, whereas in Kenya the first detected change points for forest and agriculture covers were 8 years apart.  
 
-Is there a relationship between access to electricity or renewable electricity output and the percentage of land dedicated to forestry versus agriculture? 
+**Is there a relationship between access to electricity or renewable electricity output and the percentage of land dedicated to forestry versus agriculture?** 
 
 This question was explored with forest as the dependent variable to see whether electricity access or renewable electricity levels impact forest cover. There was a statistically significant relationship between both variables and forest cover. Electricity access appears to have a statistically significant negative impact on forest cover, while renewable electricity has a statistically significant positive relationship with forest cover. 
 
-Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?
+**Is there a relationship between land uses (agriculture or forest) and levels of CO2, methane, and NO3 emissions?**
 
-There are statistically significant relationships between methane and nitrous oxide emissions and land covers. An increase in agriculture leads to an increase in both methane and nitrous oxide emissions: a  1% increase in agriculture leading to an increase of 662.28 and 491.08 thousand metric tons of CO2 equivalent, respectively. Meanwhile, an increase in Forest cover leads to a decrease in both methane and nitrous oxide: a 1% increase in forest leads to a decrease of methane of -17.51 thousand metric tons of CO2 equivalent. A 1% increase in forest leads to a decrease of nitrous oxide of -1.53 thousand metric tons of CO2 equivalent but this is not statistically significant with a p-value of .7986. 
-The results for carbon emissions were not statistically significant, likely because the number includes a large percentage of carbon emissions that are associated with the manufacturing sector as opposed to carbon from land use changes.
+There are statistically significant relationships between methane and nitrous oxide emissions and land covers. An increase in agriculture leads to an increase in both methane and nitrous oxide emissions: a  1% increase in agriculture leads to a methane increase of 662.28 thousand metric tons of CO2 equivalent, and  a nitrous oxide increase of 491.08 thousand metric tons of CO2 equivalent. Meanwhile, an increase in Forest cover leads to a decrease in both methane and nitrous oxide, though only the methane relationship is statistically significant. A 1% increase in forest leads to a decrease of methane of -17.51 thousand metric tons of CO2 equivalent. 
 
-Conclusion and applications 
+The results for carbon emissions were not statistically significant, likely because the measurement probably includes a large percentage of carbon emissions that are associated with the manufacturing sector as opposed to just carbon from land use changes.
 
-Overall this has been valuable exercise in beginning to parse out the chain of results from activities that lead to land conversion to the environmental impacts of land conversion. The results indicate that while agriculture is a driver of deforestation, there are other considerations that should be taken in to account. For example, given that the correlation between agriculture and electricity access is both low and negative, it is difficult to associate the negative relationship between forest and electricity access with an increase in electricity demanded for agricultural activities. The increase in electricity access that has a negative impact on forest cover could actually be indicative of urban development, which may be another driver of deforestation that is not accounted for by this study. 
+##Conclusions and Applications 
 
-Access to electricity as an explanatory variable could be interesting in a country specific study with multiple data collection sites. This might be a better opportunity to look at whether a lack of electricity could drive deforestation through the use of forest biomass products as an energy source, which was my original reason for including the variable. It is not surprising that deforestation from lack of electricity may not be detected by a model looking at global data because harvest of forest for fuel is likely quite small scale. 
+Overall this has been a valuable exercise in beginning to parse out the chain of results from activities that lead to deforestation to the environmental impacts of land conversion. The results indicate that while agriculture is a driver of deforestation, there are other considerations that should be taken in to account. For example, given that the correlation between agriculture and electricity access is both low and negative, it is difficult to associate the inverse relationship between forest and electricity access with an increase in electricity demanded for agricultural activities. The increase in electricity access that has a negative impact on forest cover could actually be indicative of urban and sub-urban development, which may be another driver of deforestation that is not accounted for by this study. 
 
-While the theory that an increase in renewable energy could actually lead to more forest land being converted to agriculture land for the production of biofuels was not supported by the research results, this could be an interesting question to address using a data set that parses out the quantity of renewable energy that is produced from biofuels. Biofuels are likely a very small portion of the renewable energy data set with other sources like solar, wind, and hydro being bucketed in to the same variable.
+Access to electricity as an explanatory variable could be interesting in a country specific study with multiple data collection sites. This might be a better opportunity to look at whether a lack of electricity could drive deforestation through the use of forest biomass products as an energy source, which was my original reason for including the variable. It is not surprising that deforestation driven by a lack of electricity may not be detected by a model looking at global data because the harvest of forest for fuel is likely a comparitively small scale operation. 
 
-The study draws a clear link between increases in agriculture, decreases in forest, and increases in emissions of methane, which should continue to be explored as we continue to make land use decisions in a time of increasing climate change. This study highlights methane as a priority over nitrous oxide when it comes to land conversion both because its impacts were bigger and because the relationship between nitrous oxide and forest cover is not statistically significant. Going forward, it may be prudent to conduct a study that considers emissions from total agricultural activities as opposed to area under agriculture because agricultural intensification—i.e. more production on the same amount of land—may also be driving emissions. It may be interesting to see how agricultural intensification compares to additional land conversion in terms of emissions. 
+While the theory that an increase in renewable energy could actually lead to more forest land being converted to agriculture land for the production of biofuels was not supported by the research results, this could be an interesting question to address using a data set that separates the quantity of renewable energy that is produced from biofuels from other renewable energy. Biofuels are likely a very small portion of the renewable energy data set with other sources like solar, wind, and hydro being bucketed in to the same measurement.
 
-All in all, these findings are they are helpful in continuing the discussion around protecting forests from conversion to other land uses, such as agriculture. Preservation of forest ecosystem services such as carbon storage, nutrient cycling, water filtration, and wildlife habitat should start to be part of the conversation when deciding whether to give up forest land for agriculture, which continues to be a trend. A more robust study of the causes and impacts of land use changes is in order. 
+The study draws a clear link between increases in agriculture, decreases in forest, and increases in emissions of methane, which should continue to be explored as we continue to make land use decisions in a time of increasing climate change. This study highlights methane as a priority over nitrous oxide when it comes to land conversion both because its impacts were bigger and because the relationship between nitrous oxide and forest cover is not statistically significant. Going forward, it may be prudent to conduct a study that considers emissions from total agricultural activities as opposed to just the area under agriculture because agricultural intensification— i.e. more production on the same amount of land— may also be driving emissions. It may be informative to see how agricultural intensification compares to additional land conversion in terms of emissions. 
+
+All in all, these findings are helpful in continuing the discussion around protecting forests from conversion to other land uses, such as agriculture. Preservation of forest ecosystem services such as carbon storage, nutrient cycling, water filtration, and wildlife habitat should start to be part of the conversation when deciding whether to give up forest land for agriculture, which continues to be a trend. A more robust study of the causes and impacts of land use change is in order. 
 
 

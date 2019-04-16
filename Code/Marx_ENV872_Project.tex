@@ -137,17 +137,17 @@ explained, in part, by an increase in agriculture cover. In addition to
 addressing the impacts of agricultural expansion on forest cover, the
 study considers the roles that electricity access and renewable energy
 have to play in forest cover trends. Finally, a clear link is drawn
-between increases in agriculture, decreases in forest, and increases in
-emissions of methane and nitrous oxide. The study was conducted using a
-series of linear mixed-effect models with country as a random effect, as
-well as tests to confirm there are no problems with multicollinearity.
-While the study looks at trends across all countries in the data set, it
-also highlights the chain of causes and impacts of land cover change in
-five countries in five distinct regions. A set of graphs illustrate the
-differences and similarities of individual country experiences. Overall,
-the study is a helpful resource for continuing the discussion around
-protecting forests from conversion to other land uses, such as
-agriculture.
+between increases in agriculture cover, decreases in forest cover, and
+increases in emissions of methane and nitrous oxide. The study was
+conducted using a series of linear mixed-effect models with country as a
+random effect, as well as tests to confirm there are no problems with
+multicollinearity. While the study looks at trends across all countries
+in the data set, it also highlights the chain of causes and impacts of
+land cover change in five countries in five distinct regions. A set of
+graphs illustrate the differences and similarities of individual country
+experiences. Overall, the study is a helpful resource for continuing the
+discussion around protecting forests from conversion to other land uses,
+such as agriculture.
 \end{abstract}
 
 \newpage
@@ -183,19 +183,25 @@ countries from 1990 -- 2014. Primary questions include:
   to forest versus agricultural in countries?
 \item
   Is there a relationship between land uses (agriculture or forest) and
-  levels of CO2, methane, and NO3 emissions?
+  levels of CO2, methane, and nitrous oxide emissions?
 \item
   Is there a relationship between access to electricity or renewable
   electricity output and the percentage of land dedicated to forestry
   versus agriculture?
 \end{itemize}
 
+Emissions variables are included becasue emissions are expected to
+increase if agricultural activities increase. Electricity data are
+included because biomass from forests can be a source of fuel for those
+who do not have access to electricity. Furthermore, biofuel produced
+from wood chips and crops is considered a source of renewable energy.
+
 The research utilizes a data set from the World Bank that has 135
 environment-related variables for 264 countries. I have narrowed the
 environment variable down to 7 that are relevant to land use. Although
 the full data set dates back to 1960, I have limited to the time scope
 of the analysis to between 1990 and 2014 because those are the dates for
-which forest cover data is available.
+which all data is available.
 
 \newpage
 
@@ -204,67 +210,72 @@ which forest cover data is available.
 \subsection{Database Information}\label{database-information}
 
 Data were collected from the World Bank website. More information can be
-found here: \url{https://data.worldbank.org/topic/environment} Data were
-downloaded as a full data set called
+found here: \url{https://data.worldbank.org/topic/environment}
+
+Data were downloaded as a full data set called
 ``API\_6\_DS2\_en\_csv\_v2\_10518155''. The csv file was saved as
-``WorldBank\_Raw\_4.8.19''. Variables from among the raw data set were
-selected to be used in the data set analysed. Only 7 of a possible 135
-environment-related variables were retained in the processed data. This
-csv file was saved as {[}``WorldBank\_Processed''; ``WorldBank\_Spread''
-or ``WB\_Spread''{]}.
+``WorldBank\_Raw\_4.8.19''.
+
+Variables from among the raw data set were selected to be used in the
+data set analysed. Only 7 of a possible 135 environment-related
+variables were retained in the processed data. This csv file was saved
+as {[}``WorldBank\_Processed''; ``WorldBank\_Spread'' or
+``WB\_Spread''{]}.
 
 \subsection{Data Content Information}\label{data-content-information}
 
-Country: Originally named ``Country.Name'', the Country variable
-includes 264 countries.
+\textbf{Country}: Originally named ``Country.Name'', the Country
+variable includes 264 countries.
 
-Year: The Year variable was originally spread horizontally from 1960 --
-2018. The years were gathered in to one column named ``Year'' and
-formatted as a date.
+\textbf{Year}: The Year variable was originally spread horizontally from
+1960 -- 2018. The years were gathered in to one column named ``Year''
+and formatted as a date.
 
-Forest: The Forest variable was originally named ``Forest area (\% of
-land area)''. Its data range is 1990 -- 2016.
+\textbf{Forest}: The Forest variable was originally named ``Forest area
+(\% of land area)''. Its data range is 1990 -- 2016.
 
-Agriculture: The Agriculture variable was originally named ``Agriculture
-land (\% of land area). Its data range is from 1961 -- 2018.
+\textbf{Agriculture}: The Agriculture variable was originally named
+``Agriculture land (\% of land area). Its data range is from 1961 --
+2018.
 
-Ag.Methane: The Ag.Methane variable was originally named ``Agriculture
-methane emissions (thousand metric tons of CO2 equivalent). Its data
-range is 1970 -- 2008.
+\textbf{Ag.Methane}: The Ag.Methane variable was originally named
+``Agriculture methane emissions (thousand metric tons of CO2
+equivalent). Its data range is 1970 -- 2008.
 
-Ag.NO2: The Ag.NO2 variable was originally named ``Agriculture nitrous
-oxide emissions (thousand metric tons of CO2 equivalent). Its data range
-is 1970 -- 2008.
+\textbf{Ag.NO2}: The Ag.NO2 variable was originally named ``Agriculture
+nitrous oxide emissions (thousand metric tons of CO2 equivalent). Its
+data range is 1970 -- 2008.
 
-CO2Emissions: The CO2Emissions variable was originally named ``CO2
-emissions (kt). Its data range is 1960 -- 2014.
+\textbf{CO2Emissions}: The CO2Emissions variable was originally named
+``CO2 emissions (kt). Its data range is 1960 -- 2014.
 
-ElectricityAccess: The ElectricityAccess variable was originally named
-``Access to electricity (\% of total population). Data range is 1990 --
-2016.
+\textbf{ElectricityAccess}: The ElectricityAccess variable was
+originally named ``Access to electricity (\% of total population). Data
+range is 1990 -- 2016.
 
-RenewableElectricity: The RenewableElectricity variable was originally
-named ``Renewable electricity output (\% of total electricity output).
-Its data range is 1990 -- 2015.
+\textbf{RenewableElectricity}: The RenewableElectricity variable was
+originally named ``Renewable electricity output (\% of total electricity
+output). Its data range is 1990 -- 2015.
 
 \subsection{Naming conventions and file
 formats}\label{naming-conventions-and-file-formats}
 
 The files are named according to the following convention:
-\texttt{databasename\_datatype\_details\_stage.format}, where: Files are
-named according to the following naming convention:
-\textbf{databasename} refers to the database from where the data
-originated \textbf{details} are additional descriptive details related
-to the stage of data wrangling \textbf{stage}refers to the stage in data
-management pipelines (e.g., raw or processed) \textbf{format} is a
-non-proprietary file format (e.g., .csv, .txt)
+databasename\_datatype\_details\_stage.format where: Files are named
+according to the following naming convention: \textbf{databasename}
+refers to the database from where the data originated \textbf{details}
+are additional descriptive details related to the stage of data
+wrangling \textbf{stage} refers to the stage in data management
+pipelines (e.g., raw or processed) \textbf{format} is a non-proprietary
+file format (e.g., .csv, .txt)
 
-\subsection{Additional Information and
-Support}\label{additional-information-and-support}
+\textbf{Additional Information and Support}
 
 For more information, please contact the data assembler, \textbf{Rebecca
 Marx}
 (\href{mailto:rebecca.marx@duke.edu}{\nolinkurl{rebecca.marx@duke.edu}})
+
+\textbf{Summary of Data Structure}
 
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:table} World Bank Land Cover Data
@@ -291,20 +302,12 @@ RenewableElectricity & \% Total Output & Numeric\tabularnewline
 \bottomrule
 \end{longtable}
 
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Variable & Units & Data Strcuture\tabularnewline
-\midrule
-\endhead
-Cell 1 & Cell 2 & Cells\tabularnewline
-Cell 3 & Cell 4 & Cells\tabularnewline
-\bottomrule
-\end{longtable}
-
 \newpage
 
 \section{Exploratory Data Analysis and
 Wrangling}\label{exploratory-data-analysis-and-wrangling}
+
+\subsection{Data Wrangling}\label{data-wrangling}
 
 Wrangling the data required multiple operations. First, I used the
 filter function to select only 7 of a possible 135 variables in the data
@@ -322,7 +325,13 @@ set.
 \NormalTok{World_Bank_Master <-}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"../Raw/WorldBank_Raw2_4.8.19.csv"}\NormalTok{)}
 
 \CommentTok{#Data Subset}
-\NormalTok{World_Bank_Filter <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(World_Bank_Master, Indicator.Name }\OperatorTok{==}\StringTok{ "Forest area (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural land (% of land area)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Access to electricity (% of population)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Renewable electricity output (% of total electricity output)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "CO2 emissions (kt)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural methane emissions (thousand metric tons of CO2 equivalent)"}\NormalTok{)}
+\NormalTok{World_Bank_Filter <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(World_Bank_Master, }
+\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Forest area (% of land area)"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural land (% of land area)"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Access to electricity (% of population)"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Renewable electricity output (% of total electricity output)"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "CO2 emissions (kt)"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural nitrous oxide emissions (thousand metric tons of CO2 equivalent)"} \OperatorTok{|}\StringTok{ }\NormalTok{Indicator.Name }\OperatorTok{==}\StringTok{ "Agricultural methane emissions (thousand metric tons of CO2 equivalent)"}\NormalTok{)}
 
 \NormalTok{WorldBank_Gather <-}\StringTok{ }\KeywordTok{gather}\NormalTok{(World_Bank_Filter, }\StringTok{"Year"}\NormalTok{, }\StringTok{"Level"}\NormalTok{, X1960}\OperatorTok{:}\NormalTok{X2018)}
 
@@ -341,15 +350,20 @@ set.
 
 \CommentTok{#Format as date}
 \CommentTok{#WB_Fixed$Year <- as.Date(WB_Fixed$Year)}
-\NormalTok{WorldBank_Spread}\OperatorTok{$}\NormalTok{Year <-}\StringTok{ }\KeywordTok{as.Date}\NormalTok{(WorldBank_Spread}\OperatorTok{$}\NormalTok{Year, }\DataTypeTok{format =} \StringTok{"%Y"}\NormalTok{) }\CommentTok{#can I get it to show only the year? }
+\NormalTok{WorldBank_Spread}\OperatorTok{$}\NormalTok{Year <-}\StringTok{ }\KeywordTok{as.Date}\NormalTok{(WorldBank_Spread}\OperatorTok{$}\NormalTok{Year, }\DataTypeTok{format =} \StringTok{"%Y"}\NormalTok{) }
 
 \CommentTok{#Change column names }
-\KeywordTok{names}\NormalTok{(WorldBank_Spread) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Country"}\NormalTok{, }\StringTok{"Indicator.Code"}\NormalTok{, }\StringTok{"Year"}\NormalTok{, }\StringTok{"ElectricityAccess"}\NormalTok{, }\StringTok{"Agriculture"}\NormalTok{, }\StringTok{"Ag.Methane"}\NormalTok{, }\StringTok{"Ag.N2O"}\NormalTok{, }\StringTok{"CO2Emissions"}\NormalTok{, }\StringTok{"Forest"}\NormalTok{, }\StringTok{"RenewableElectricity"}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(WorldBank_Spread) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Country"}\NormalTok{, }\StringTok{"Indicator.Code"}\NormalTok{, }\StringTok{"Year"}\NormalTok{, }
+\StringTok{"ElectricityAccess"}\NormalTok{, }\StringTok{"Agriculture"}\NormalTok{, }\StringTok{"Ag.Methane"}\NormalTok{, }\StringTok{"Ag.N2O"}\NormalTok{, }
+\StringTok{"CO2Emissions"}\NormalTok{, }\StringTok{"Forest"}\NormalTok{, }\StringTok{"RenewableElectricity"}\NormalTok{)}
 
 \CommentTok{#Save processed file }
-\CommentTok{#write.csv(WorldBank_Spread, row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")}
+\CommentTok{#write.csv(WorldBank_Spread, }
+\CommentTok{#row.names = FALSE, file = "../Processed/WorldBank_Processed.csv")}
    
-\NormalTok{Five_Countries <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(WorldBank_Spread, Country }\OperatorTok{==}\StringTok{ "Brazil"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Kenya"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Spain"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Indonesia"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Canada"}\NormalTok{)}
+\NormalTok{Five_Countries <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(WorldBank_Spread, Country }\OperatorTok{==}\StringTok{ "Brazil"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Country }\OperatorTok{==}\StringTok{ "Kenya"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Spain"} \OperatorTok{|}\StringTok{ }
+\NormalTok{Country }\OperatorTok{==}\StringTok{ "Indonesia"} \OperatorTok{|}\StringTok{ }\NormalTok{Country }\OperatorTok{==}\StringTok{ "Canada"}\NormalTok{)}
 
 \NormalTok{WB_Spread <-}\StringTok{ }\NormalTok{WorldBank_Spread }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\NormalTok{na.exclude }\CommentTok{#check if I need this for my tests}
@@ -362,10 +376,9 @@ set.
 \end{Shaded}
 
 \begin{verbatim}
-
-<Include R chunks for 5+ lines of summary code (display code and output), 3+ exploratory graphs (display graphs only), and any wrangling you do to your dataset(s).> 
-
 \end{verbatim}
+
+\subsection{Data Exploration}\label{data-exploration}
 
 After the data was wrangled into a format that would function well with
 my intended R operations, I was able to begin exploring the data set.
@@ -547,27 +560,27 @@ my intended R operations, I was able to begin exploring the data set.
 ##   58.93   59.74   61.32   61.66   63.43   65.41      32
 \end{verbatim}
 
-Figure\ref{fig:fig1} plots agriculture and forest land covers to see if
-there is a noticable trend. It appears that there is a tendency for
-forest cover to decrease as agriculture cover increases. In other words,
-the scatter plot shows some correlation between the Forest and
-Agriculture variables.
+\textbf{Figure\ref{fig:fig1}} plots agriculture and forest land covers
+to see if there is a noticable trend. It appears that there is a
+tendency for forest cover to decrease as agriculture cover increases. In
+other words, the scatter plot shows some correlation between the Forest
+and Agriculture variables.
 
-A second exploratory graph (Figure\ref{fig:fig2}) plots forest levels
-for all 264 countries over time. The resulting graph shows that there is
-some movement over time, but many countries see constant levels of land
-use. Similarly, the plot of agriculture over time shows some movement
-over time, but many countries see constant levels of land use for
-agriculture. In later graphs I decided to reduce the number of countries
-included to be able to better visualized changes.
+A second exploratory graph \textbf{(Figure\ref{fig:fig2})} plots forest
+levels for all 264 countries over time. The resulting graph shows that
+there is some movement over time, but many countries see constant levels
+of land use. Similarly, the plot of agriculture over time shows some
+movement over time, but many countries see constant levels of land use
+for agriculture. In later graphs I decided to reduce the number of
+countries included to be able to better visualized changes.
 
-The third exploratory graph (Figure\ref{fig:fig3}) is a series of
-histograms looking at the distribution of forest and agriculture data to
-determine how to treat the variable in the planned regressions. Although
-neither forest not agriculture has a particularly normal distribution
-and both are measure in terms of percentages, I decided not to log
-transform either becasue the logged version of agriculture seemed less
-interpretable.
+The third exploratory graph \textbf{(Figure\ref{fig:fig3})} is a series
+of histograms looking at the distribution of forest and agriculture data
+to determine how to treat the variable in the planned regressions.
+Although forest cover does have a particularly normal distribution and
+both are measured in terms of percentages, I decided not to log
+transform either becasue the logged version of forest seemed less
+interpretable. Agriculture's distribution actually looks fairly normal.
 
 \begin{figure}
 \centering
@@ -595,16 +608,18 @@ Agriculture}
 \end{figure}
 
 \begin{verbatim}
-<Include text sections to accompany these R chunks to explain the reasoning behind your workflow, and the rationale for your approach.>
-
 
 \newpage
+ 
+\end{verbatim}
 
-# Analysis
-<Include R chunks for 3+ statistical tests (display code and output) and 3+ final visualization graphs (display graphs only).>
+\section{Analysis}\label{analysis}
+
+\begin{verbatim}
+##Forest Cover and Impacts of Agriculture
 
 Given that forest cover is my main variable of interest, I started by testing of forest cover changes over time. 
-
+ 
 I used hierarchical or mixed-effect model to include the variable time, expressed in years. I did not set up the model to deal with temporal autocorrelation because, given that there was only one observation per location per year, I did not believe there would be an issue with seasonality. 
 
 I initially attempted three models: a generalized least squares model fit by REML; a linear mixed-effects (LME) model fit by REML with countries as a random effect, and a generalized linear squares (GLS) model which did not allow me to account for fixed effects and random effects. I attempted the GLS because my Forest and Agriculture variables are both measured as percentages meaning a logit model might be more appropriate. GLS allows for non-normal distributions. However, the results of the GLS model were similar to the GLM model which allows for random effects. Both appeared inferior to the LME model which had a lower AIC of 49431 versus 49977 for GLS and 49967 for GLM. As such, I used LME going forward. 
@@ -648,9 +663,6 @@ The LME model revealed that forest does change over time with a negative coeffic
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Forest decreasing over time (-.00424, p-value 0.00)}
-\CommentTok{#AIC 49977.96}
-
 \NormalTok{Forest.Time2 <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
 \NormalTok{                Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year,}
                 \DataTypeTok{random =} \OperatorTok{~}\DecValTok{1}\OperatorTok{|}\StringTok{ }\NormalTok{Country,}
@@ -688,11 +700,6 @@ The LME model revealed that forest does change over time with a negative coeffic
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Forest decreasing over time (-.00421, p-value 0.00)}
-\CommentTok{#AIC 49431.95}
-
-\CommentTok{#AIC for the random effect model is lower, so used this going forward. }
-
 \NormalTok{Logit_Test <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread,}
 \NormalTok{             Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year)}
 \KeywordTok{summary}\NormalTok{(Logit_Test)}
@@ -724,22 +731,12 @@ The LME model revealed that forest does change over time with a negative coeffic
 ## Number of Fisher Scoring iterations: 2
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#The results were not much different than using gls, and I was not able to account for variance. AIC 49967. -.00425 (p-value 1.74e-15)}
-\end{Highlighting}
-\end{Shaded}
+\begin{verbatim}
 
-After establishing that there is a change in forest cover over time, I
-ran an LME regression to see if agriculture cover can explain any of the
-change in forest cover. The result of the test was a statistically
-significant (p-value = 0.00) negative relationship which, in absolute
-terms, can be interpreted as a 1\% increase in agriculture cover results
-in a .49\% decrease in forest cover.
+After establishing that there is a change in forest cover over time, I ran an LME regression to see if agriculture cover can explain any of the change in forest cover. The result of the test was a statistically significant (p-value = 0.00) negative relationship which, in absolute terms, can be interpreted as a 1% increase in agriculture cover results in a .49% decrease in forest cover. 
 
-I used a test for correlation to better understand this relationship. It
-revealed that there is slight negative correlation between agriculture
-and forest with a 95\% confidence interval of -.16 and -.10.
+I used a test for correlation to better understand this relationship. It revealed that there is slight negative correlation between agriculture and forest with a 95% confidence interval of -.16 and -.10. 
+\end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -801,24 +798,19 @@ and forest with a 95\% confidence interval of -.16 and -.10.
 ## -0.1300639
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#There is some negative correlation between Agriculture and Forest with a 95% confidence interval of -.16 and -.10. }
-\end{Highlighting}
-\end{Shaded}
-
 To visualize the relationship between agriculture and forest, I chose to
 display one country from each of 5 major continents: North America,
-South America, Europe, Asia and Africa. The country selection within
-regions was semi-random. I anticipated that Brazil and Indonesia might
-show increasing agriculture with decreasing forest based on past
-research; but Canada, Spain and Kenya were chosen at random with the
-understanding that these five countries represetn different regions and
-states of economic development. The graph shows that forest and
-agriculture, when they do move, do indeed tend to have an inverse
-relationship. Agriculture is not always leading to a decrease in forest
-cover, but three of the five samples are moving in oposite directions
-while the other two have fairly constant levels.
+South America, Europe, Asia and Africa in
+\textbf{(Figure\ref{fig:fig4})}. The country selection within regions
+was semi-random. I anticipated that Brazil and Indonesia might show
+increasing agriculture with decreasing forest based on past research;
+Canada, Spain and Kenya were chosen at random with the understanding
+that these five countries represent different regions and states of
+economic development. The graph shows that forest and agriculture, when
+they do move, do indeed tend to have an inverse relationship.
+Agriculture is not always leading to a decrease in forest cover, but
+three of the five samples are moving in oposite directions while the
+other two have fairly constant levels.
 
 \begin{figure}
 \centering
@@ -826,6 +818,8 @@ while the other two have fairly constant levels.
 \caption{\label{fig:fig4}Change in Land Use from 1990 to 2014 for Five
 Countries}
 \end{figure}
+
+\subsection{Spotlight on Brazil}\label{spotlight-on-brazil}
 
 Zooming in more narrowly on one country, I used Pettit's test, a
 nonparametric test that determines if there is a shift in the central
@@ -837,10 +831,13 @@ same year for both forest and agriculture.
 
 Pettitt's applied to a single country (Brazil) initially detects a
 change point in Forest and Agriculture in the same year. The change for
-both was in place 9, which is the year 1998. The significant change
-points for agriculture and forest in Brazil occured in the same years
-(1998 and 2003), furhter supporting the notion that there is a
-relationship between the two.
+both was in place 13, which is the year 2002 with a p-value of .0001 in
+both instances. The second change points were only a year apart, as seen
+in \textbf{(Figure\ref{fig:fig5})}. This is an exmaple of agriculture
+and forest covers moving inversely at the same time. In the case of
+Spain, the first detected change points occured two years apart. In
+Kenya, the first detected change points for forest and agricuture covers
+were 8 years apart.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -889,8 +886,6 @@ relationship between the two.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#13 (of 19): 2002; p-value .0001182 (significant at the .05 level)}
-
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Forest[}\DecValTok{13}\OperatorTok{:}\DecValTok{27}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
@@ -909,9 +904,6 @@ relationship between the two.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Changes in Brazil Agriculture }
-\CommentTok{#7 (13+7 = 20: 2009); p-value .01074 (significant at the .01 level)}
-
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Forest[}\DecValTok{20}\OperatorTok{:}\DecValTok{27}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
@@ -930,7 +922,7 @@ relationship between the two.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#4 20 + 4 = 24: 2013 (p-value .139: not significant)}
+\CommentTok{#Changes in Brazil Agriculture }
 
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Agriculture)}
 \end{Highlighting}
@@ -950,8 +942,6 @@ relationship between the two.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#13 (of 19): 2002; p-value .000118 (significant at the .01 level)}
-
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Agriculture[}\DecValTok{13}\OperatorTok{:}\DecValTok{27}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
@@ -972,8 +962,6 @@ relationship between the two.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#6 (13+6 = 19: 2008); p-value .0155 (significant at the .05 level}
-
 \KeywordTok{pettitt.test}\NormalTok{(WB_Brazil}\OperatorTok{$}\NormalTok{Agriculture[}\DecValTok{19}\OperatorTok{:}\DecValTok{27}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
@@ -992,15 +980,88 @@ relationship between the two.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#4 (19 +4 = 2012) p-value .1033 (not significant)}
+\CommentTok{#Spain}
+\NormalTok{Spain.Pettit <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(WB_Spread, Country }\OperatorTok{==}\StringTok{ "Spain"}\NormalTok{)}
+\KeywordTok{pettitt.test}\NormalTok{(Spain.Pettit}\OperatorTok{$}\NormalTok{Forest)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  Spain.Pettit$Forest
+## U* = 90, p-value = 0.002386
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K                            <NA> 
+##                               9                              10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pettitt.test}\NormalTok{(Spain.Pettit}\OperatorTok{$}\NormalTok{Agriculture)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  Spain.Pettit$Agriculture
+## U* = 88, p-value = 0.003207
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K 
+##                              11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Kenya}
+\NormalTok{Kenya.Pettit <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(WB_Spread, Country }\OperatorTok{==}\StringTok{ "Kenya"}\NormalTok{)}
+\KeywordTok{pettitt.test}\NormalTok{(Kenya.Pettit}\OperatorTok{$}\NormalTok{Forest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  Kenya.Pettit$Forest
+## U* = 76, p-value = 0.01646
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K 
+##                               6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pettitt.test}\NormalTok{(Kenya.Pettit}\OperatorTok{$}\NormalTok{Agriculture)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pettitt's test for single change-point detection
+## 
+## data:  Kenya.Pettit$Agriculture
+## U* = 42, p-value = 0.4617
+## alternative hypothesis: two.sided
+## sample estimates:
+## probable change point at time K 
+##                              14
+\end{verbatim}
 
 \begin{figure}
 \centering
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf}
 \caption{\label{fig:fig5}Change Points in Brazil}
 \end{figure}
+
+\subsection{Evaluation of Electricity Variables as a Cause of
+Deforestation}\label{evaluation-of-electricity-variables-as-a-cause-of-deforestation}
 
 Having established that agriculture cover has an impact on forest cover,
 I was also interested in whether access to electricity or the levels of
@@ -1030,9 +1091,13 @@ forest land, meaning the production of biofuels is likely not a main
 driver of deforestation across the sample, or biofuel is a very small
 portion of renewable energy.
 
+These relationships can be observed in \textbf{(Figure\ref{fig:fig6})}
+higlighting the chosen 5 countries.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Looking at Electricity Accesss and Renewable Energy as a Drive of the Ag. / Forest Tradeoff}
+\CommentTok{#Looking at Electricity Accesss and Renewable Energy }
+\CommentTok{#as a Driver of the Ag. / Forest Tradeoff}
 
 \NormalTok{Forest.Ag.Elec <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ WB_Spread, }
 \NormalTok{                    Forest }\OperatorTok{~}\StringTok{ }\NormalTok{Year }\OperatorTok{+}\StringTok{ }\NormalTok{Agriculture }\OperatorTok{+}\StringTok{ }\NormalTok{ElectricityAccess,}
@@ -1147,8 +1212,10 @@ portion of renewable energy.
 \begin{figure}
 \centering
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf}
-\caption{\label{fig:fig6}Electricity Trends}
+\caption{\label{fig:fig6}Electricity Trends for Five Countries}
 \end{figure}
+
+\subsection{A Look at Emissions}\label{a-look-at-emissions}
 
 The next series of tests address the question: Is there a relationship
 between land uses (agriculture or forest) and levels of CO2, methane,
@@ -1165,9 +1232,9 @@ seem to be a problem in this model with VIFs around 1. The coefficients
 are only slightly different that if I made two separate models for
 agriculture and forest.
 
-In a model with NO2 as the dependent variable and forest and agriculture
+In a model with N2O as the dependent variable and forest and agriculture
 as the explanatory variables, A 1\% increase in agriculture leads to an
-increase of nitrous oxide of 491.079 thousand metric tons of CO2
+increase of nitrous oxide (N2O) of 491.079 thousand metric tons of CO2
 equivalent (p-value 0.002); A 1\% increase in forest leads to a decrease
 of nitrous oxide of -1.526 thousand metric tons of CO2 equivalent, but
 this is not statistically significant with a p-value of .7986.
@@ -1176,6 +1243,10 @@ The results for carbon emissions were not statistically significant,
 likely because the number includes a large percentage of carbon
 emissions that are associated with the manufacturing sector as opposed
 to carbon from land use changes.
+
+All of these emissions changes over time can be compared to forest and
+agriculture cover changes for five countries in
+\textbf{(Figure\ref{fig:fig7})}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1384,39 +1455,42 @@ Five Countries}
 
 \section{Summary and Conclusions}\label{summary-and-conclusions}
 
-This research has looked at the causes and impacts of changes in land
-use from 1990 to 2014 as it pertains to forest cover and agriculture
-cover. There is a statistically significant trend of slightly decreasing
-forest cover over time in the full data set of 263 countries, which can
+\subsection{Summary}\label{summary}
+
+This research has looks at the causes and impacts of changes in land use
+from 1990 to 2014 as it pertains to forest cover and agriculture cover.
+There is a statistically significant trend of slightly decreasing forest
+cover over time in the full data set of 263 countries, which can
 partially be attributed to changes in agriculture cover. Renewable
 electricity output and electricity access also have statistically
 significant relationships with forest cover. Meanwhile, on the other end
 of the spectrum, changes in land dedicated to agriculture and to forest
 have explained increases in emissions of agricultural methane and
-nitrous oxide, though they were not able to explain changes in carbon.
+nitrous oxide, though they were not able to explain changes in CO2.
 
 The questions this research attempts to answer are addressed below:
 
-Is there a relationship between the percentage of land area dedicated to
-forest versus agricultural in countries?
+\textbf{Is there a relationship between the percentage of land area
+dedicated to forest versus agricultural in countries?}
 
 There is a relationship between the percentage of land area dedicated to
 forest versus agricultural in countries. A 1\% increase in agriculture
 cover results in a .49\% decrease in forest cover, and there is a slight
 negative correlation between the two variables. The trend of decreasing
 forest as agriculture increases is not true for all countries as seen by
-the exploratory plot where many of the countries land covers appear to
-stay constant, and the plot that highlight five countries where Spain is
+the exploratory plot where many countries' land covers appear to stay
+constant. Similarly, in the plot that highlights five countries Spain is
 actually increasing forest cover while agriculture decreases. It does
-appear that the variables do more or less move together, however,
-perhaps more in some countries than others. For example, the Pettit's
-test applied to Brazil showed the first change point being the same for
-both agriculture cover and forest cover while the second point was just
-a year apart for the two.
+appear that the forest cover and agriculture do more or less move
+together, though perhaps more in some countries than others. For
+example, the Pettit's test applied to Brazil showed the first change
+point being the same for both agriculture cover and forest cover,
+whereas in Kenya the first detected change points for forest and
+agriculture covers were 8 years apart.
 
-Is there a relationship between access to electricity or renewable
-electricity output and the percentage of land dedicated to forestry
-versus agriculture?
+\textbf{Is there a relationship between access to electricity or
+renewable electricity output and the percentage of land dedicated to
+forestry versus agriculture?}
 
 This question was explored with forest as the dependent variable to see
 whether electricity access or renewable electricity levels impact forest
@@ -1426,56 +1500,59 @@ statistically significant negative impact on forest cover, while
 renewable electricity has a statistically significant positive
 relationship with forest cover.
 
-Is there a relationship between land uses (agriculture or forest) and
-levels of CO2, methane, and NO3 emissions?
+\textbf{Is there a relationship between land uses (agriculture or
+forest) and levels of CO2, methane, and NO3 emissions?}
 
 There are statistically significant relationships between methane and
 nitrous oxide emissions and land covers. An increase in agriculture
 leads to an increase in both methane and nitrous oxide emissions: a 1\%
-increase in agriculture leading to an increase of 662.28 and 491.08
-thousand metric tons of CO2 equivalent, respectively. Meanwhile, an
-increase in Forest cover leads to a decrease in both methane and nitrous
-oxide: a 1\% increase in forest leads to a decrease of methane of -17.51
-thousand metric tons of CO2 equivalent. A 1\% increase in forest leads
-to a decrease of nitrous oxide of -1.53 thousand metric tons of CO2
-equivalent but this is not statistically significant with a p-value of
-.7986. The results for carbon emissions were not statistically
-significant, likely because the number includes a large percentage of
+increase in agriculture leads to a methane increase of 662.28 thousand
+metric tons of CO2 equivalent, and a nitrous oxide increase of 491.08
+thousand metric tons of CO2 equivalent. Meanwhile, an increase in Forest
+cover leads to a decrease in both methane and nitrous oxide, though only
+the methane relationship is statistically significant. A 1\% increase in
+forest leads to a decrease of methane of -17.51 thousand metric tons of
+CO2 equivalent.
+
+The results for carbon emissions were not statistically significant,
+likely because the measurement probably includes a large percentage of
 carbon emissions that are associated with the manufacturing sector as
-opposed to carbon from land use changes.
+opposed to just carbon from land use changes.
 
-Conclusion and applications
+\subsection{Conclusions and
+Applications}\label{conclusions-and-applications}
 
-Overall this has been valuable exercise in beginning to parse out the
-chain of results from activities that lead to land conversion to the
+Overall this has been a valuable exercise in beginning to parse out the
+chain of results from activities that lead to deforestation to the
 environmental impacts of land conversion. The results indicate that
 while agriculture is a driver of deforestation, there are other
 considerations that should be taken in to account. For example, given
 that the correlation between agriculture and electricity access is both
-low and negative, it is difficult to associate the negative relationship
+low and negative, it is difficult to associate the inverse relationship
 between forest and electricity access with an increase in electricity
 demanded for agricultural activities. The increase in electricity access
 that has a negative impact on forest cover could actually be indicative
-of urban development, which may be another driver of deforestation that
-is not accounted for by this study.
+of urban and sub-urban development, which may be another driver of
+deforestation that is not accounted for by this study.
 
 Access to electricity as an explanatory variable could be interesting in
 a country specific study with multiple data collection sites. This might
 be a better opportunity to look at whether a lack of electricity could
 drive deforestation through the use of forest biomass products as an
 energy source, which was my original reason for including the variable.
-It is not surprising that deforestation from lack of electricity may not
-be detected by a model looking at global data because harvest of forest
-for fuel is likely quite small scale.
+It is not surprising that deforestation driven by a lack of electricity
+may not be detected by a model looking at global data because the
+harvest of forest for fuel is likely a comparitively small scale
+operation.
 
 While the theory that an increase in renewable energy could actually
 lead to more forest land being converted to agriculture land for the
 production of biofuels was not supported by the research results, this
-could be an interesting question to address using a data set that parses
-out the quantity of renewable energy that is produced from biofuels.
-Biofuels are likely a very small portion of the renewable energy data
-set with other sources like solar, wind, and hydro being bucketed in to
-the same variable.
+could be an interesting question to address using a data set that
+separates the quantity of renewable energy that is produced from
+biofuels from other renewable energy. Biofuels are likely a very small
+portion of the renewable energy data set with other sources like solar,
+wind, and hydro being bucketed in to the same measurement.
 
 The study draws a clear link between increases in agriculture, decreases
 in forest, and increases in emissions of methane, which should continue
@@ -1485,20 +1562,19 @@ over nitrous oxide when it comes to land conversion both because its
 impacts were bigger and because the relationship between nitrous oxide
 and forest cover is not statistically significant. Going forward, it may
 be prudent to conduct a study that considers emissions from total
-agricultural activities as opposed to area under agriculture because
-agricultural intensification---i.e.~more production on the same amount
-of land---may also be driving emissions. It may be interesting to see
-how agricultural intensification compares to additional land conversion
-in terms of emissions.
+agricultural activities as opposed to just the area under agriculture
+because agricultural intensification--- i.e.~more production on the same
+amount of land--- may also be driving emissions. It may be informative
+to see how agricultural intensification compares to additional land
+conversion in terms of emissions.
 
-All in all, these findings are they are helpful in continuing the
-discussion around protecting forests from conversion to other land uses,
-such as agriculture. Preservation of forest ecosystem services such as
-carbon storage, nutrient cycling, water filtration, and wildlife habitat
-should start to be part of the conversation when deciding whether to
-give up forest land for agriculture, which continues to be a trend. A
-more robust study of the causes and impacts of land use changes is in
-order.
+All in all, these findings are helpful in continuing the discussion
+around protecting forests from conversion to other land uses, such as
+agriculture. Preservation of forest ecosystem services such as carbon
+storage, nutrient cycling, water filtration, and wildlife habitat should
+start to be part of the conversation when deciding whether to give up
+forest land for agriculture, which continues to be a trend. A more
+robust study of the causes and impacts of land use change is in order.
 
 
 \end{document}
