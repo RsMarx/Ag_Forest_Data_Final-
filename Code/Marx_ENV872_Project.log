@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.1.17)  15 APR 2019 17:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.1.17)  16 APR 2019 07:59
 entering extended mode
 **./Marx_ENV872_Project.tex
 (Marx_ENV872_Project.tex
@@ -611,11 +611,7 @@ Package: titling 2009/09/04 v2.1d maketitle typesetting
 \thanksmarkwidth=\skip53
 \thanksmargin=\skip54
 \droptitle=\skip55
-) (Marx_ENV872_Project.aux
-
-LaTeX Warning: Label `fig:fig4' multiply defined.
-
-)
+) (Marx_ENV872_Project.aux)
 \openout1 = `Marx_ENV872_Project.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 130.
@@ -810,17 +806,17 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \openout7 = `Marx_ENV872_Project.lof'.
 
 [4]
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 165.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 182.
 
 ("C:\Users\rsmar\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd"
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [5]
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 237.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 254.
 
 ("C:\Users\rsmar\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\t1lmtt.fd"
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-Overfull \hbox (79.79889pt too wide) in paragraph at lines 236--244
+Overfull \hbox (79.79889pt too wide) in paragraph at lines 253--261
 \T1/lmr/m/n/12 (-20) The files are named ac-cord-ing to the fol-low-ing con-ven
 -tion: \T1/lmtt/m/n/12 databasename_datatype_details_stage.format\T1/lmr/m/n/12
  (-20) ,
@@ -828,145 +824,154 @@ Overfull \hbox (79.79889pt too wide) in paragraph at lines 236--244
 
 [6] [7]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 276.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 297.
 
-Overfull \hbox (542.94511pt too wide) in paragraph at lines 319--319
+Underfull \vbox (badness 10000) detected at line 337
+ []
+
+[8]
+Overfull \hbox (542.94511pt too wide) in paragraph at lines 343--343
 []\T1/lmtt/m/n/12 <Include R chunks for 5+ lines of summary code (display code 
 and output), 3+ exploratory graphs (display graphs only), and any wrangling you
  do to your dataset(s).>[] 
  []
 
-[8] [9]
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 413
+[9]
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 437
 .
 ("C:\Users\rsmar\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmtt.fd"
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-<Marx_ENV872_Project_files/figure-latex/fig1-1.pdf, id=115, 469.755pt x 433.62p
+) [10]
+<Marx_ENV872_Project_files/figure-latex/fig1-1.pdf, id=119, 469.755pt x 433.62p
 t>
 File: Marx_ENV872_Project_files/figure-latex/fig1-1.pdf Graphic file (type pdf)
 
 <use Marx_ENV872_Project_files/figure-latex/fig1-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/fig1-1.pdf  use
-d on input line 474.
+d on input line 529.
 (pdftex.def)             Requested size: 469.75386pt x 433.61894pt.
-[10] [11 <./Marx_ENV872_Project_files/figure-latex/fig1-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf, id=131, 469.755p
-t x 722.7pt>
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf, id=120, 469.755p
+t x 578.16pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3
--1.pdf  used on input line 498.
-(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
-
-LaTeX Warning: Float too large for page by 26.83795pt on input line 501.
-
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf, id=132, 469.755p
+-1.pdf  used on input line 536.
+(pdftex.def)             Requested size: 469.75386pt x 578.15858pt.
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf, id=121, 469.755p
 t x 722.7pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4
--1.pdf  used on input line 505.
+-1.pdf  used on input line 548.
 (pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
 
-LaTeX Warning: Float too large for page by 26.83795pt on input line 508.
+LaTeX Warning: Float too large for page by 26.83795pt on input line 550.
 
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf, id=133, 469.755p
-t x 722.7pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5
--1.pdf  used on input line 518.
-(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
 
-LaTeX Warning: Float too large for page by 26.83795pt on input line 521.
+Overfull \hbox (363.87003pt too wide) in paragraph at lines 568--568
+[]\T1/lmtt/m/n/12 <Include text sections to accompany these R chunks to explain
+ the reasoning behind your workflow, and the rationale for your approach.>[] 
+ []
 
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf, id=134, 469.755p
-t x 722.7pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6
--1.pdf  used on input line 534.
-(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
 
-LaTeX Warning: Float too large for page by 26.83795pt on input line 536.
+Overfull \hbox (308.295pt too wide) in paragraph at lines 568--568
+[]\T1/lmtt/m/n/12 <Include R chunks for 3+ statistical tests (display code and 
+output) and 3+ final visualization graphs (display graphs only).>[] 
+ []
 
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf, id=135, 469.755p
-t x 325.215pt>
+
+Overfull \hbox (221.84496pt too wide) in paragraph at lines 568--568
+[]\T1/lmtt/m/n/12 Given that forest cover is my main variable of interest, I st
+arted by testing of forest cover changes over time.[] 
+ []
+
+
+Overfull \hbox (1320.9955pt too wide) in paragraph at lines 568--568
+[]\T1/lmtt/m/n/12 I used hierarchical or mixed-effect model to include the vari
+able time, expressed in years. I did not set up the model to deal with temporal
+ autocorrelation because, given that there was only one observation per locatio
+n per year, I did not believe there would be an issue with seasonality.[] 
+ []
+
+
+Overfull \hbox (3945.32977pt too wide) in paragraph at lines 568--568
+[]\T1/lmtt/m/n/12 I initially attempted three models: a generalized least squar
+es model fit by REML; a linear mixed-effects (LME) model fit by REML with count
+ries as a random effect, and a generalized linear squares (GLS) model which did
+ not allow me to account for fixed effects and random effects. I attempted the 
+GLS because my Forest and Agriculture variables are both measured as percentage
+s meaning a logit model might be more appropriate. GLS allows for non-normal di
+stributions. However, the results of the GLS model were similar to the GLM mode
+l which allows for random effects. Both appeared inferior to the LME model whic
+h had a lower AIC of 49431 versus 49977 for GLS and 49967 for GLM. As such, I u
+sed LME going forward.[] 
+ []
+
+
+Overfull \hbox (1407.44554pt too wide) in paragraph at lines 568--568
+[]\T1/lmtt/m/n/12 The LME model revealed that forest does change over time with
+ a negative coefficient of -.00424 and a p-value of 0.00. It is difficult to di
+rectly interpret this becasue the chosen model structure may not be perfect, bu
+t this could be read: on average, there is .004% decrease in forest cover every
+ year.[] 
+ []
+
+[11] [12 <./Marx_ENV872_Project_files/figure-latex/fig1-1.pdf>] [13 <./Marx_ENV
+872_Project_files/figure-latex/unnamed-chunk-3-1.pdf>] [14 <./Marx_ENV872_Proje
+ct_files/figure-latex/unnamed-chunk-4-1.pdf>] [15] [16] [17]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf, id=166, 469.755p
+t x 361.35pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7
--1.pdf  used on input line 555.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[12] [13 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf>] [14 
-<./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf>] [15 <./Marx_E
-NV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf>] [16 <./Marx_ENV872_Pro
-ject_files/figure-latex/unnamed-chunk-6-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf, id=177, 469.755p
-t x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7
--2.pdf  used on input line 563.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[17 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf, id=187, 469.755p
-t x 325.215pt>
+-1.pdf  used on input line 780.
+(pdftex.def)             Requested size: 469.75386pt x 361.34912pt.
+[18] [19 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf>] [20]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf, id=186, 469.755p
+t x 361.35pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9
--1.pdf  used on input line 586.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[18 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf, id=197, 469.755
-pt x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf Graphic fil
+-1.pdf  used on input line 956.
+(pdftex.def)             Requested size: 469.75386pt x 361.34912pt.
+[21] [22 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf>] [23]
+[24] [25] [26] [27] [28]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-12-1.pdf, id=225, 469.755
+pt x 722.7pt>
+File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-12-1.pdf Graphic fil
 e (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf>
+<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-1
-0-1.pdf  used on input line 588.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[19 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf, id=208, 469.755
-pt x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fil
-e (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-1
-1-1.pdf  used on input line 590.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[20 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf>] [21 <./M
-arx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf>] [22] [23] [24] [
-25] [26] [27] [28] [29] [30] [31] [32]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1224.
-[33]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1224.
+2-1.pdf  used on input line 1318.
+(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
+
+LaTeX Warning: Float too large for page by 26.83795pt on input line 1321.
+
+[29] [30 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-12-1.pdf>] [31
+]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1451.
+[32]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1451.
 (Marx_ENV872_Project.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1224.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1224.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1451.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1451.
 
 Package rerunfilecheck Info: File `Marx_ENV872_Project.out' has not changed.
-(rerunfilecheck)             Checksum: 072BEC25F389383306030B15E37A0F3C;1677.
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1224.
+(rerunfilecheck)             Checksum: 36586A141F6DC39B629244DC96F1469D;1593.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1451.
  ) 
 Here is how much of TeX's memory you used:
- 13220 strings out of 492946
- 198776 string characters out of 3126266
- 308077 words of memory out of 3000000
- 16791 multiletter control sequences out of 15000+200000
- 65709 words of font info for 101 fonts, out of 3000000 for 9000
+ 13232 strings out of 492946
+ 197928 string characters out of 3126266
+ 308137 words of memory out of 3000000
+ 16776 multiletter control sequences out of 15000+200000
+ 66919 words of font info for 115 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,6n,38p,1057b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 32i,6n,38p,1057b,461s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.e
 nc}{C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.e
 nc}<C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmbx
@@ -979,9 +984,9 @@ e1/public/lm/lmri12.pfb><C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/fonts
 /type1/public/lm/lmtk10.pfb><C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/f
 onts/type1/public/lm/lmtt12.pfb><C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2
 .9/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Marx_ENV872_Project.pdf (33 pages, 2520319 bytes).
+Output written on Marx_ENV872_Project.pdf (32 pages, 696625 bytes).
 PDF statistics:
- 327 PDF objects out of 1000 (max. 8388607)
- 52 named destinations out of 1000 (max. 500000)
- 14459 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 296 PDF objects out of 1000 (max. 8388607)
+ 51 named destinations out of 1000 (max. 500000)
+ 14431 words of extra memory for PDF output out of 17280 (max. 10000000)
 
