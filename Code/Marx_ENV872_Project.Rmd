@@ -355,6 +355,7 @@ grid.arrange(Forest.Hist, log.Forest.Hist, Ag.Hist)
 ```
 ##Forest Cover and Impacts of Agriculture
 
+```
 Given that forest cover is my main variable of interest, I started by testing of forest cover changes over time. 
  
 I used hierarchical or mixed-effect model to include the variable time, expressed in years. I did not set up the model to deal with temporal autocorrelation because, given that there was only one observation per location per year, I did not believe there would be an issue with seasonality. 
@@ -363,6 +364,7 @@ I initially attempted three models: a generalized least squares model fit by REM
 
 The LME model revealed that forest does change over time with a negative coefficient of -.00424 and a p-value of 0.00. It is difficult to directly interpret this becasue the chosen model structure may not be perfect, but this could be read: on average, there is .004% decrease in forest cover every year.
 
+```
 ```
 
 ```{r echo=TRUE, warning=FALSE}
@@ -383,7 +385,6 @@ Logit_Test <- glm(data = WB_Spread,
 summary(Logit_Test)
 ```
 
-```
 
 After establishing that there is a change in forest cover over time, I ran an LME regression to see if agriculture cover can explain any of the change in forest cover. The result of the test was a statistically significant (p-value = 0.00) negative relationship which, in absolute terms, can be interpreted as a 1% increase in agriculture cover results in a .49% decrease in forest cover. 
 
