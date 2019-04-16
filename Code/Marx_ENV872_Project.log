@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.1.17)  15 APR 2019 17:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6930 64-bit) (preloaded format=pdflatex 2019.1.17)  15 APR 2019 17:52
 entering extended mode
 **./Marx_ENV872_Project.tex
 (Marx_ENV872_Project.tex
@@ -611,7 +611,11 @@ Package: titling 2009/09/04 v2.1d maketitle typesetting
 \thanksmarkwidth=\skip53
 \thanksmargin=\skip54
 \droptitle=\skip55
-) (Marx_ENV872_Project.aux)
+) (Marx_ENV872_Project.aux
+
+LaTeX Warning: Label `fig:fig4' multiply defined.
+
+)
 \openout1 = `Marx_ENV872_Project.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 130.
@@ -838,161 +842,128 @@ LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 413
 ("C:\Users\rsmar\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ts1lmtt.fd"
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<Marx_ENV872_Project_files/figure-latex/fig1-1.pdf, id=122, 469.755pt x 433.62p
+<Marx_ENV872_Project_files/figure-latex/fig1-1.pdf, id=115, 469.755pt x 433.62p
 t>
 File: Marx_ENV872_Project_files/figure-latex/fig1-1.pdf Graphic file (type pdf)
 
 <use Marx_ENV872_Project_files/figure-latex/fig1-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/fig1-1.pdf  use
-d on input line 478.
+d on input line 474.
 (pdftex.def)             Requested size: 469.75386pt x 433.61894pt.
 [10] [11 <./Marx_ENV872_Project_files/figure-latex/fig1-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf, id=137, 469.755p
-t x 325.215pt>
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf, id=131, 469.755p
+t x 722.7pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3
--1.pdf  used on input line 500.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-2.pdf, id=138, 469.755p
-t x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-2.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-2.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3
--2.pdf  used on input line 501.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-3.pdf, id=139, 469.755p
-t x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-3.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-3.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3
--3.pdf  used on input line 502.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+-1.pdf  used on input line 498.
+(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 500--503
-[][]
- []
+LaTeX Warning: Float too large for page by 26.83795pt on input line 501.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 500--503
-[]
- []
-
-[12 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf>] [13 <./Ma
-rx_ENV872_Project_files/figure-latex/unnamed-chunk-3-2.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf, id=159, 469.755p
-t x 325.215pt>
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf, id=132, 469.755p
+t x 722.7pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4
--1.pdf  used on input line 523.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[14 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-3.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-2.pdf, id=169, 469.755p
-t x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-2.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-2.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4
--2.pdf  used on input line 529.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[15 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-3.pdf, id=179, 469.755p
-t x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-3.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-3.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4
--3.pdf  used on input line 537.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[16 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-2.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf, id=189, 469.755p
-t x 325.215pt>
+-1.pdf  used on input line 505.
+(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
+
+LaTeX Warning: Float too large for page by 26.83795pt on input line 508.
+
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf, id=133, 469.755p
+t x 722.7pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5
--1.pdf  used on input line 559.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[17 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-3.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf, id=199, 469.755p
-t x 325.215pt>
-File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf Graphic file
- (type pdf)
-<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf>
-Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5
--2.pdf  used on input line 578.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[18 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf, id=209, 469.755p
-t x 325.215pt>
+-1.pdf  used on input line 518.
+(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
+
+LaTeX Warning: Float too large for page by 26.83795pt on input line 521.
+
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf, id=134, 469.755p
+t x 722.7pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6
--1.pdf  used on input line 586.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[19 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf>]
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf, id=220, 469.755p
+-1.pdf  used on input line 534.
+(pdftex.def)             Requested size: 422.78276pt x 650.43501pt.
+
+LaTeX Warning: Float too large for page by 26.83795pt on input line 536.
+
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf, id=135, 469.755p
 t x 325.215pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7
--1.pdf  used on input line 594.
+-1.pdf  used on input line 555.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[20 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf>]
-Underfull \hbox (badness 2042) in paragraph at lines 601--601
-[]\T1/lmr/bx/n/14.4 Warning: Re-moved 35 rows con-tain-ing miss-ing val-ues
- []
-
-
-Underfull \hbox (badness 2042) in paragraph at lines 610--610
-[]\T1/lmr/bx/n/14.4 Warning: Re-moved 35 rows con-tain-ing miss-ing val-ues
- []
-
-
-Underfull \hbox (badness 2042) in paragraph at lines 613--613
-[]\T1/lmr/bx/n/14.4 Warning: Re-moved 35 rows con-tain-ing miss-ing val-ues
- []
-
-<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf, id=230, 469.755p
+[12] [13 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf>] [14 
+<./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf>] [15 <./Marx_E
+NV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf>] [16 <./Marx_ENV872_Pro
+ject_files/figure-latex/unnamed-chunk-6-1.pdf>]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf, id=177, 469.755p
+t x 325.215pt>
+File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf Graphic file
+ (type pdf)
+<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf>
+Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7
+-2.pdf  used on input line 563.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[17 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf>]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf, id=187, 469.755p
 t x 325.215pt>
 File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file
  (type pdf)
 <use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf>
 Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9
--1.pdf  used on input line 617.
+-1.pdf  used on input line 586.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[21 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf>] [22 <./Ma
-rx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf>] [23] [24]
-
-LaTeX Warning: Reference `fig:fig3' on page 25 undefined on input line 788.
-
-[25] [26] [27] [28] [29] [30] [31] [32] [33]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1251.
-[34]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1251.
+[18 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf>]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf, id=197, 469.755
+pt x 325.215pt>
+File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf Graphic fil
+e (type pdf)
+<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf>
+Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-1
+0-1.pdf  used on input line 588.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[19 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf>]
+<Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf, id=208, 469.755
+pt x 325.215pt>
+File: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fil
+e (type pdf)
+<use Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: Marx_ENV872_Project_files/figure-latex/unnamed-chunk-1
+1-1.pdf  used on input line 590.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[20 <./Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf>] [21 <./M
+arx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf>] [22] [23] [24] [
+25] [26] [27] [28] [29] [30] [31] [32]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1224.
+[33]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1224.
 (Marx_ENV872_Project.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1251.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1251.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1224.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1224.
 
 Package rerunfilecheck Info: File `Marx_ENV872_Project.out' has not changed.
-(rerunfilecheck)             Checksum: D9F91AD1C050FF6CFB0EEC5AC4A28BB4;2889.
+(rerunfilecheck)             Checksum: 072BEC25F389383306030B15E37A0F3C;1677.
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1251.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1224.
  ) 
 Here is how much of TeX's memory you used:
- 13232 strings out of 492946
- 199577 string characters out of 3126266
- 308119 words of memory out of 3000000
- 16803 multiletter control sequences out of 15000+200000
+ 13220 strings out of 492946
+ 198776 string characters out of 3126266
+ 308077 words of memory out of 3000000
+ 16791 multiletter control sequences out of 15000+200000
  65709 words of font info for 101 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  32i,6n,38p,1057b,457s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1008,9 +979,9 @@ e1/public/lm/lmri12.pfb><C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/fonts
 /type1/public/lm/lmtk10.pfb><C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2.9/f
 onts/type1/public/lm/lmtt12.pfb><C:/Users/rsmar/AppData/Local/Programs/MiKTeX 2
 .9/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Marx_ENV872_Project.pdf (34 pages, 2611766 bytes).
+Output written on Marx_ENV872_Project.pdf (33 pages, 2520319 bytes).
 PDF statistics:
- 348 PDF objects out of 1000 (max. 8388607)
+ 327 PDF objects out of 1000 (max. 8388607)
  52 named destinations out of 1000 (max. 500000)
- 14493 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 14459 words of extra memory for PDF output out of 17280 (max. 10000000)
 

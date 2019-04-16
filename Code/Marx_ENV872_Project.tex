@@ -456,8 +456,8 @@ my intended R operations, I was able to begin exploring the data set.
 ##       0     687    4638  138432   36696 3464398
 \end{verbatim}
 
-(Figure\ref{fig:fig1}) plots agriculture and forest land covers to see
-if there is a noticable trend. It appears that there is a tendency for
+Figure\ref{fig:fig1} plots agriculture and forest land covers to see if
+there is a noticable trend. It appears that there is a tendency for
 forest cover to decrease as agriculture cover increases.
 
 \begin{verbatim}
@@ -465,12 +465,8 @@ forest cover to decrease as agriculture cover increases.
 ## {
 ##     enexpr(expr)
 ## }
-## <bytecode: 0x000000001a9610c8>
+## <bytecode: 0x000000001a022e28>
 ## <environment: namespace:rlang>
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: Removed 8897 rows containing missing values (geom_point).
 \end{verbatim}
 
 \begin{figure}
@@ -480,83 +476,68 @@ forest cover to decrease as agriculture cover increases.
 Agriculture}
 \end{figure}
 
-A second exploratory graph plots forest levels for all 264 countries
-over time. The resulting graph shows that there is some movement over
-time, but many countries see constant levels of land use. In later
-graphs I decided to reduce the number of countries included to be able
-to better visualized changes. Similarly, a plot of agriculture over time
-shows some movement over time, but many countries see constant levels of
-land use for agriculture.
+A second exploratory graph (Figure\ref{fig:fig2}) plots forest levels
+for all 264 countries over time. The resulting graph shows that there is
+some movement over time, but many countries see constant levels of land
+use. Similarly, the plot of agriculture over time shows some movement
+over time, but many countries see constant levels of land use for
+agriculture. In later graphs I decided to reduce the number of countries
+included to be able to better visualized changes.
 
 \begin{verbatim}
 ## function (expr) 
 ## {
 ##     enexpr(expr)
 ## }
-## <bytecode: 0x000000001a9610c8>
+## <bytecode: 0x000000001a022e28>
 ## <environment: namespace:rlang>
 \end{verbatim}
 
+\begin{figure}
+\centering
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-1.pdf}
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-2.pdf}
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-3-3.pdf}
+\caption{\label{fig:fig2}Percentage of Land Use for Forest and
+Agriculture}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf}
+\caption{\label{fig:fig3}Change in Land Use from 1990 to 2014 for Five
+Countries}
+\end{figure}
 
 Since the research attempts to decipher whether a change in forest
 levels is related to a change in agriculture levels, I also wanted to
 see if a change in the amount of land dedicated to agriculture leads to
 a change in various emissions levels. The following graphs explore these
-relationships.
+relationships using the 5 selected countries.
+
+\begin{figure}
+\centering
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf}
+\caption{\label{fig:fig4}Change in Emissions Use from 1990 to 2014 for
+Five Countries}
+\end{figure}
 
 \begin{verbatim}
 ## function (expr) 
 ## {
 ##     enexpr(expr)
 ## }
-## <bytecode: 0x000000001a9610c8>
+## <bytecode: 0x000000001a022e28>
 ## <environment: namespace:rlang>
 \end{verbatim}
 
-\begin{verbatim}
-## Warning: Removed 6297 rows containing missing values (geom_point).
-\end{verbatim}
+\begin{figure}
+\centering
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf}
+\caption{\label{fig:fig4}Emissions versus Agriculture}
+\end{figure}
 
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-1.pdf}
-
-\begin{verbatim}
-## Warning: Removed 10791 rows containing missing values (geom_point).
-\end{verbatim}
-
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-2.pdf}
-
-\begin{verbatim}
-## Warning: Removed 10791 rows containing missing values (geom_point).
-
-## Warning: Removed 6297 rows containing missing values (geom_point).
-\end{verbatim}
-
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-4-3.pdf}
-
-```
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{AgVCarbon <-}\StringTok{ }
-\StringTok{  }\KeywordTok{ggplot}\NormalTok{(WorldBank_Spread) }\OperatorTok{+}\StringTok{ }
-\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Agriculture, }\DataTypeTok{y =}\NormalTok{ CO2Emissions)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Agriculture vs. Carbon"}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"Carbon"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"% Land in Agriculture"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{100}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale_color_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"brown"}\NormalTok{, }\StringTok{"goldenrod"}\NormalTok{)) }
-\KeywordTok{print}\NormalTok{(AgVCarbon)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: Removed 3900 rows containing missing values (geom_point).
-\end{verbatim}
-
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-1.pdf}
+``` Deforestation is also associated with the release of Carbon, so I
+checked to see whether a relationship between forst and carbon emissions
+could be seen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -571,50 +552,42 @@ relationships.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## Warning: Removed 9616 rows containing missing values (geom_point).
-\end{verbatim}
-
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-5-2.pdf}
-
-\begin{verbatim}
-## Warning: Removed 35 rows containing missing values (geom_path).
-
-## Warning: Removed 35 rows containing missing values (geom_path).
-\end{verbatim}
-
-\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-6-1.pdf}
-
-\begin{verbatim}
-## Warning: Removed 40 rows containing missing values (geom_path).
-
-## Warning: Removed 40 rows containing missing values (geom_path).
-\end{verbatim}
-
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-1.pdf}
 
-\begin{verbatim}
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{grid.arrange}\NormalTok{(ForestVCarbon, AgVCarbon) }
+\end{Highlighting}
+\end{Shaded}
 
-\end{verbatim}
-
-\subsection{Warning: Removed 35 rows containing missing values
-(geom\_path).}\label{warning-removed-35-rows-containing-missing-values-geom_path.}
-
-\begin{verbatim}
-
-![](Marx_ENV872_Project_files/figure-latex/unnamed-chunk-8-1.pdf)<!-- --> 
-
-\end{verbatim}
-
-\subsection{Warning: Removed 35 rows containing missing values
-(geom\_path).}\label{warning-removed-35-rows-containing-missing-values-geom_path.-1}
-
-\subsection{Warning: Removed 35 rows containing missing values
-(geom\_path).}\label{warning-removed-35-rows-containing-missing-values-geom_path.-2}
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-7-2.pdf}
 
 ```
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{FiveCountries.RE <-}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(Five_Countries) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Year, }\DataTypeTok{y =}\NormalTok{ RenewableElectricity, }\DataTypeTok{color =} \StringTok{"Renewable Energy Output"}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Year, }\DataTypeTok{y =}\NormalTok{ ElectricityAccess, }\DataTypeTok{color =} \StringTok{"Population with Electricty Access"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_grid}\NormalTok{(}\DataTypeTok{cols =} \KeywordTok{vars}\NormalTok{(Country)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Change in Methane Emissions from 1990 to 2014"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\KeywordTok{expression}\NormalTok{(}\StringTok{"Percentage of Total"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_date}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{as.Date}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"1990-04-09"}\NormalTok{, }\StringTok{"2014-04-09"}\NormalTok{)),}
+  \DataTypeTok{date_breaks =} \StringTok{"48 months"}\NormalTok{, }\DataTypeTok{date_labels =} \StringTok{"%Y"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{75}\NormalTok{, }\DataTypeTok{hjust =} \DecValTok{1}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_color_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"purple"}\NormalTok{, }\StringTok{"blue"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{caption =} \StringTok{"Data Source: World Bank"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{strip.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill=} \StringTok{"aquamarine3"}\NormalTok{, }\StringTok{"darkslategray"}\NormalTok{)) }
+\KeywordTok{print}\NormalTok{(FiveCountries.RE)}
+\end{Highlighting}
+\end{Shaded}
+
 \includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\includegraphics{Marx_ENV872_Project_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 \newpage
 
